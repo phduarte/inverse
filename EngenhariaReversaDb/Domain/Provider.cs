@@ -2,6 +2,7 @@
 {
     public enum Provider
     {
-        SQLite
+        MSSQLServer = 0,
+        SQLite = 1,
     }
 }

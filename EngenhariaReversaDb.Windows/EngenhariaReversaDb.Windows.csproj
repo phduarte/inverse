@@ -10,4 +10,8 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EngenhariaReversaDb\EngenhariaReversaDb.csproj" />
+  </ItemGroup>
+
 </Project>

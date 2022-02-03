@@ -6,7 +6,7 @@
 
         protected Entity()
         {
-            Id = default(T);
+            Id = default;
         }
 
         public override bool Equals(object obj)
