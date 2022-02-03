@@ -1,7 +1,7 @@
 ﻿using System;
-using EngenhariaReversaDb.Domain;
+using EngenhariaReversaDb.Domain.Model;
 
-namespace EngenhariaReversaDb.Services
+namespace EngenhariaReversaDb.Domain.Services
 {
     public static class DatabaseGeneratorFactory
     {

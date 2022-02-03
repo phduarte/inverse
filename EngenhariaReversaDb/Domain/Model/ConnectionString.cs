@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EngenhariaReversaDb.Domain
+namespace EngenhariaReversaDb.Domain.Model
 {
     class ConnectionString
     {

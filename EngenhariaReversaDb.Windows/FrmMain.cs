@@ -1,5 +1,5 @@
-﻿using EngenhariaReversaDb.Domain;
-using EngenhariaReversaDb.Services;
+﻿using EngenhariaReversaDb.Domain.Model;
+using EngenhariaReversaDb.Domain.Services;
 using System;
 using System.Data;
 using System.Drawing;
@@ -15,7 +15,7 @@ namespace EngenhariaReversaDb.Windows
         const int MARGIN = 50;
 
         private string _connectionString;
-        private Domain.Provider _provider;
+        private Provider _provider;
         private Database _database = new Database(Provider.MSSQLServer);
         StringFormat _textFormat = new StringFormat(StringFormatFlags.NoClip)
         {

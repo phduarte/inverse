@@ -1,4 +1,4 @@
-﻿namespace EngenhariaReversaDb.Domain
+﻿namespace EngenhariaReversaDb.Domain.Model
 {
     public interface IDraggableElement : IVisualElement
     {

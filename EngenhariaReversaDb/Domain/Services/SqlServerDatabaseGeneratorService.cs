@@ -1,11 +1,11 @@
-﻿using EngenhariaReversaDb.Domain;
+﻿using EngenhariaReversaDb.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace EngenhariaReversaDb.Services
+namespace EngenhariaReversaDb.Domain.Services
 {
     internal class SqlServerDatabaseGeneratorService : IDatabaseGeneratorService
     {

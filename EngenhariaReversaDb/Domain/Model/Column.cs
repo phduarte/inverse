@@ -1,4 +1,4 @@
-﻿namespace EngenhariaReversaDb.Domain
+﻿namespace EngenhariaReversaDb.Domain.Model
 {
     public class Column : Entity<string>, IVisualElement
     {

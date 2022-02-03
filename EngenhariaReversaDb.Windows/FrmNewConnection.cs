@@ -1,4 +1,5 @@
-﻿using EngenhariaReversaDb.Services;
+﻿using EngenhariaReversaDb.Domain.Model;
+using EngenhariaReversaDb.Domain.Services;
 using System;
 using System.Windows.Forms;
 
@@ -28,7 +29,7 @@ namespace EngenhariaReversaDb.Windows
 
         private void btnRevert_Click(object sender, EventArgs e)
         {
-            var service = DatabaseGeneratorFactory.Create((Domain.Provider)cmbProvider.SelectedIndex);
+            var service = DatabaseGeneratorFactory.Create((Provider)cmbProvider.SelectedIndex);
             var database = service.GetDatabase(txtConnectionString.Text);
 
             _parentForm.UseDatabase(database);
