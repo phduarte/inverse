@@ -1,7 +1,7 @@
 ﻿
 namespace EngenhariaReversaDb.Windows
 {
-    partial class Form1
+    partial class FrmMain
     {
         /// <summary>
         ///  Required designer variable.
@@ -113,10 +113,11 @@ namespace EngenhariaReversaDb.Windows
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // Form1
+            // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1081, 513);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnRefresh);
@@ -124,9 +125,9 @@ namespace EngenhariaReversaDb.Windows
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.Name = "Form1";
+            this.Name = "FrmMain";
             this.Text = "Reversing DB";
-            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

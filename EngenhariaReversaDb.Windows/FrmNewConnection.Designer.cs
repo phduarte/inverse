@@ -1,7 +1,7 @@
 ﻿
 namespace EngenhariaReversaDb.Windows
 {
-    partial class NewConnection
+    partial class FrmNewConnection
     {
         /// <summary>
         /// Required designer variable.
@@ -29,22 +29,22 @@ namespace EngenhariaReversaDb.Windows
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnRevert = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.cmbProvider = new System.Windows.Forms.ComboBox();
+            this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // btnRevert
             // 
-            this.button1.Location = new System.Drawing.Point(254, 129);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Use";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnRevert.Location = new System.Drawing.Point(254, 129);
+            this.btnRevert.Name = "btnRevert";
+            this.btnRevert.Size = new System.Drawing.Size(75, 23);
+            this.btnRevert.TabIndex = 2;
+            this.btnRevert.Text = "Revert";
+            this.btnRevert.UseVisualStyleBackColor = true;
+            this.btnRevert.Click += new System.EventHandler(this.btnRevert_Click);
             // 
             // label1
             // 
@@ -55,24 +55,24 @@ namespace EngenhariaReversaDb.Windows
             this.label1.TabIndex = 1;
             this.label1.Text = "ConnectionString";
             // 
-            // comboBox1
+            // cmbProvider
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cmbProvider.FormattingEnabled = true;
+            this.cmbProvider.Items.AddRange(new object[] {
             "MSSQL",
             "SQLite"});
-            this.comboBox1.Location = new System.Drawing.Point(12, 30);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(317, 23);
-            this.comboBox1.TabIndex = 0;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cmbProvider.Location = new System.Drawing.Point(12, 30);
+            this.cmbProvider.Name = "cmbProvider";
+            this.cmbProvider.Size = new System.Drawing.Size(317, 23);
+            this.cmbProvider.TabIndex = 0;
+            this.cmbProvider.SelectedIndexChanged += new System.EventHandler(this.cmbProvider_SelectedIndexChanged);
             // 
-            // textBox1
+            // txtConnectionString
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 84);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(317, 23);
-            this.textBox1.TabIndex = 1;
+            this.txtConnectionString.Location = new System.Drawing.Point(12, 84);
+            this.txtConnectionString.Name = "txtConnectionString";
+            this.txtConnectionString.Size = new System.Drawing.Size(317, 23);
+            this.txtConnectionString.TabIndex = 1;
             // 
             // label2
             // 
@@ -83,18 +83,20 @@ namespace EngenhariaReversaDb.Windows
             this.label2.TabIndex = 4;
             this.label2.Text = "Provider";
             // 
-            // NewConnection
+            // FrmNewConnection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(341, 183);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.txtConnectionString);
+            this.Controls.Add(this.cmbProvider);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Name = "NewConnection";
-            this.Text = "NewConnection";
+            this.Controls.Add(this.btnRevert);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "FrmNewConnection";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Create New";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,10 +104,10 @@ namespace EngenhariaReversaDb.Windows
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRevert;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox cmbProvider;
+        private System.Windows.Forms.TextBox txtConnectionString;
         private System.Windows.Forms.Label label2;
     }
 }

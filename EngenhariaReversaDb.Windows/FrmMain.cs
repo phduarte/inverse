@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace EngenhariaReversaDb.Windows
 {
-    public partial class Form1 : Form
+    public partial class FrmMain : Form
     {
         const int MARGIN = 50;
 
@@ -32,7 +32,7 @@ namespace EngenhariaReversaDb.Windows
         Table _currentTable = null;
         Point _currentPoint = Point.Empty;
 
-        public Form1()
+        public FrmMain()
         {
             InitializeComponent();
             panel1.SetDoubleBuffered();
@@ -374,7 +374,7 @@ namespace EngenhariaReversaDb.Windows
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            var form = new NewConnection(this);
+            var form = new FrmNewConnection(this);
             form.ShowDialog();
         }
 
@@ -402,7 +402,7 @@ namespace EngenhariaReversaDb.Windows
             panel1.Height = flowLayoutPanel1.Height;
         }
 
-        private void Form1_SizeChanged(object sender, EventArgs e)
+        private void Main_SizeChanged(object sender, EventArgs e)
         {
             ResetPanelSize();
         }
