@@ -383,7 +383,7 @@ namespace EngenhariaReversaDb.Windows
             if (string.IsNullOrEmpty(_connectionString))
                 return;
 
-            var service = DatabaseModelFactory.Create(_provider);
+            var service = DatabaseGeneratorFactory.Create(_provider);
             var database = service.GetDatabase(_connectionString);
 
             UseDatabase(database);

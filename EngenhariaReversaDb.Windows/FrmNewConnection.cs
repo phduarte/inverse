@@ -28,7 +28,7 @@ namespace EngenhariaReversaDb.Windows
 
         private void btnRevert_Click(object sender, EventArgs e)
         {
-            var service = DatabaseModelFactory.Create((Domain.Provider)cmbProvider.SelectedIndex);
+            var service = DatabaseGeneratorFactory.Create((Domain.Provider)cmbProvider.SelectedIndex);
             var database = service.GetDatabase(txtConnectionString.Text);
 
             _parentForm.UseDatabase(database);
