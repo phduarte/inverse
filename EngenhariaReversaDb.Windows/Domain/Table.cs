@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace EngenhariaReversaDb.Domain
 {
-    public class Table : Entity<Guid>, IDraggableElement
+    public class Table : Entity<string>, IDraggableElement
     {
-        readonly List<Column> _columns = new List<Column>();
+        readonly List<Column> _columns = new();
 
         public string Name { get; set; }
 
@@ -68,14 +67,33 @@ namespace EngenhariaReversaDb.Domain
             Resize();
         }
 
+        internal void AddRange(IEnumerable<Column> enumerable)
+        {
+            foreach (var e in enumerable)
+            {
+                if (e is ForeignKey fk)
+                {
+                    Add(fk);
+                }
+                else
+                {
+                    Add(e);
+                }
+            }
+        }
+
         public void MoveTo(int x, int y)
         {
+            if (x < 0 || y < 0) return;
+
             Left = x;
             Top = y;
         }
 
         public virtual void MoveOffset(int x, int y)
         {
+            if (x < 0 || y < 0) return;
+
             Left += x;
             Top += y;
         }
@@ -87,7 +105,8 @@ namespace EngenhariaReversaDb.Domain
 
         private void Resize()
         {
-            Width = Columns.Select(x => x.Name.Length).Max() * 10;
+            var max = Columns.Select(x => x.Name.Length).Max();
+            Width = System.Math.Max(Name.Length, max) * 11;
             Height = Columns.Sum(x => x.Height) + 30;
         }
 

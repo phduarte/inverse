@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace EngenhariaReversaDb.Domain
+﻿namespace EngenhariaReversaDb.Domain
 {
-    public class Column : Entity<Guid>, IVisualElement
+    public class Column : Entity<string>, IVisualElement
     {
         public int Index { get; set; }
         public string Name { get; set; }
@@ -11,6 +9,7 @@ namespace EngenhariaReversaDb.Domain
         public bool Required { get; set; }
         public virtual bool IsPrimaryKey { get; }
         public virtual bool IsForeignKey { get; }
+        public virtual string Prefix { get; } = string.Empty;
 
         public int Width => Table.Width;
 

@@ -12,7 +12,11 @@ namespace EngenhariaReversaDb.Windows
 {
     public partial class Form1 : Form
     {
-        private Database _database = new Database();
+        const int MARGIN = 50;
+
+        private string _connectionString;
+        private Domain.Provider _provider;
+        private Database _database = new Database(Provider.MSSQLServer);
         StringFormat _textFormat = new StringFormat(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
@@ -31,23 +35,20 @@ namespace EngenhariaReversaDb.Windows
         public Form1()
         {
             InitializeComponent();
-
             panel1.SetDoubleBuffered();
-
-            //Arrange();
         }
 
         public void UseDatabase(Database database)
         {
             _database = database;
+            _connectionString = database.ConnectionString;
+            _provider = database.Provider;
             Arrange();
             panel1.Refresh();
         }
 
         private void Arrange()
         {
-            const int MARGIN = 50;
-
             var left = MARGIN;
             var top = MARGIN;
             const int COLUMN_HEIGHT = 30;
@@ -67,6 +68,9 @@ namespace EngenhariaReversaDb.Windows
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
+            if (_database.IsEmpty)
+                return;
+
             var g = e.Graphics;
             var bordaTabela = new Pen(Brushes.Black, 2);
             var bordaTabelaSelecionada = new Pen(Brushes.Blue, 2);
@@ -105,6 +109,26 @@ namespace EngenhariaReversaDb.Windows
                     {
                         g.DrawLine(bordaTabela, source.Right, source.Top, target.Left, target.Middle);
                     }
+
+                    //if (target is PrimaryKey pk)
+                    //{
+                    //    if (isGoingToRight)
+                    //    {
+                    //        var areaNomeColunaPk = new RectangleF(target.Left - 20, target.Top, 50, 50);
+                    //        g.DrawString("1", Font, Brushes.Black, areaNomeColunaPk, _textFormat);
+
+                    //        var areaNomeColunaFk = new RectangleF(source.Right + 10, source.Top, 50, 50);
+                    //        g.DrawString("N", Font, Brushes.Black, areaNomeColunaFk, _textFormat);
+                    //    }
+                    //    else
+                    //    {
+                    //        var areaNomeColunaPK = new RectangleF(target.Left - 20, target.Top, 50, 50);
+                    //        g.DrawString("U", Font, Brushes.Black, areaNomeColunaPK, _textFormat);
+
+                    //        var areaNomeColunaFk = new RectangleF(source.Right + 10, source.Top, 50, 50);
+                    //        g.DrawString("0:N", Font, Brushes.Black, areaNomeColunaFk, _textFormat);
+                    //    }
+                    //}
                 }
             }
 
@@ -134,20 +158,14 @@ namespace EngenhariaReversaDb.Windows
 
                 const int MARGIN_COLUMN_NAME = 30;
 
-                for (var i = 0; i < table.Columns.Count; i++)
+                foreach (var col in table.Columns)
                 {
-                    var col = table.Columns[i];
-                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, MARGIN_COLUMN_NAME, col.Height);
                     var areaNomeColuna = new RectangleF(col.Left + MARGIN_COLUMN_NAME, col.Top, col.Width - MARGIN_COLUMN_NAME, col.Height);
 
-                    if (col is PrimaryKey)
+                    if (col is ForeignKey || col is PrimaryKey)
                     {
-                        g.DrawString("PK", new Font(Font, FontStyle.Bold), Brushes.Black, areaChaveColuna, _textFormat);
-                    }
-
-                    if (col is ForeignKey)
-                    {
-                        g.DrawString("FK", new Font(Font, FontStyle.Bold), Brushes.Black, areaChaveColuna, _textFormat);
+                        var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, MARGIN_COLUMN_NAME, col.Height);
+                        g.DrawString(col.Prefix, new Font(Font, FontStyle.Bold), Brushes.Black, areaChaveColuna, _textFormat);
                     }
 
                     if (col.Required)
@@ -164,6 +182,9 @@ namespace EngenhariaReversaDb.Windows
 
                 g.SmoothingMode = x;
             }
+
+            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Max(x => x.Right) + MARGIN);
+            panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Max(x => x.Bottom) + MARGIN);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -198,16 +219,22 @@ namespace EngenhariaReversaDb.Windows
             panel1.Invalidate();
         }
 
-        private void button2_Click(object sender, System.EventArgs e)
+        private void btnSave_Click(object sender, System.EventArgs e)
         {
-            var form = new SaveFileDialog();
-            //form.Filter = "";
-            form.DefaultExt = ".dm";
+            if (_database.IsEmpty)
+                return;
+
+            var form = new SaveFileDialog
+            {
+                Filter = "Arquivo de Modelo de dados|*.dm",
+                DefaultExt = ".dm"
+            };
+
             form.ShowDialog();
 
             using (var sw = new StreamWriter(form.FileName))
             {
-                sw.WriteLine($"<database name=\"{_database.Name}\" id=\"{_database.Id}\" connectionstring=\"{_database.ConnectionString}\">");
+                sw.WriteLine($"<database name=\"{_database.Name}\" id=\"{_database.Id}\" provider=\"{_database.Provider}\" connectionstring=\"{_database.ConnectionString}\">");
                 sw.WriteLine($"    <tables>");
                 foreach (var table in _database.Tables)
                 {
@@ -232,11 +259,9 @@ namespace EngenhariaReversaDb.Windows
                 sw.WriteLine($"    </tables>");
                 sw.WriteLine($"</database>");
             }
-
-            //MessageBox.Show("Arquivo salvo com sucesso!");
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void btnLoad_Click(object sender, System.EventArgs e)
         {
             var form = new OpenFileDialog();
             form.Filter = "Arquivo de Modelo de dados|*.dm";
@@ -251,11 +276,13 @@ namespace EngenhariaReversaDb.Windows
 
                 var dbName = doc.GetAttribute("name");
                 var dbGuid = doc.GetAttribute("id");
+                var dbProvider = doc.GetAttribute("provider");
                 var dbConnectionString = doc.GetAttribute("connectionstring");
+                var dbId = Guid.Parse(dbGuid);
 
-                var database = new Database
+                var database = new Database(Enum.Parse<Provider>(dbProvider))
                 {
-                    Id = Guid.Parse(dbGuid),
+                    Id = dbId,
                     Name = dbName,
                     ConnectionString = dbConnectionString
                 };
@@ -270,7 +297,7 @@ namespace EngenhariaReversaDb.Windows
                     var tbTop = xmlTable.Attributes["top"].Value;
                     var table = new Table
                     {
-                        Id = Guid.Parse(tbGuid),
+                        Id = tbGuid,
                         Name = tbName,
                         Database = database,
                         Left = int.Parse(tbLeft),
@@ -292,7 +319,7 @@ namespace EngenhariaReversaDb.Windows
                         {
                             var column = new Column
                             {
-                                Id = Guid.Parse(colGuid),
+                                Id = colGuid,
                                 Name = colName,
                                 Type = colType,
                                 Table = table,
@@ -309,7 +336,7 @@ namespace EngenhariaReversaDb.Windows
 
                             var column = new ForeignKey
                             {
-                                Id = Guid.Parse(colGuid),
+                                Id = colGuid,
                                 Name = colName,
                                 Type = colType,
                                 Table = table,
@@ -325,7 +352,7 @@ namespace EngenhariaReversaDb.Windows
                         {
                             var column = new PrimaryKey
                             {
-                                Id = Guid.Parse(colGuid),
+                                Id = colGuid,
                                 Name = colName,
                                 Type = colType,
                                 Table = table,
@@ -345,10 +372,39 @@ namespace EngenhariaReversaDb.Windows
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnNew_Click(object sender, EventArgs e)
         {
             var form = new NewConnection(this);
             form.ShowDialog();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_connectionString))
+                return;
+
+            var service = DatabaseModelFactory.Create(_provider);
+            var database = service.GetDatabase(_connectionString);
+
+            UseDatabase(database);
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            _database = new Database(_provider);
+            ResetPanelSize();
+        }
+
+        private void ResetPanelSize()
+        {
+            panel1.Invalidate();
+            panel1.Width = flowLayoutPanel1.Width;
+            panel1.Height = flowLayoutPanel1.Height;
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            ResetPanelSize();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Services
 {
-    class GenerateModelService : IGenerateModelService
+    internal class GenerateModelService : IGenerateModelService
     {
         public Provider Provider { get; }
 
@@ -17,15 +17,16 @@ namespace EngenhariaReversaDb.Services
 
         public Database GetDatabase(string connectionString)
         {
-            var database = new Database
+            var database = new Database(Provider)
             {
                 Id = Guid.NewGuid(),
-                Name = "Database 1",
                 ConnectionString = connectionString
             };
 
             using (var cnn = new SQLiteConnection(connectionString))
             {
+                database.Name = cnn.Database;
+
                 using (var cmd = cnn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1";
@@ -37,7 +38,7 @@ namespace EngenhariaReversaDb.Services
                         {
                             var table = new Table
                             {
-                                Id = Guid.NewGuid(),
+                                Id = Guid.NewGuid().ToString(),
                                 Name = rdr.GetString(0),
                                 Database = database
                             };
@@ -104,28 +105,32 @@ namespace EngenhariaReversaDb.Services
                 {
                     while (rdr.Read())
                     {
+                        var id = Guid.NewGuid().ToString();
+                        var name = rdr.GetString(1);
+                        var type = rdr.GetString(2);
+                        var required = rdr.GetBoolean(3);
                         var pk = rdr.GetBoolean(5);
 
                         if (pk)
                         {
                             table.Add(new PrimaryKey
                             {
-                                Id = Guid.NewGuid(),
-                                Name = rdr.GetString(1),
-                                Type = rdr.GetString(2),
+                                Id = id,
+                                Name = name,
+                                Type = type,
                                 Table = table,
-                                Required = rdr.GetBoolean(3),
+                                Required = required,
                             });
                         }
                         else
                         {
                             table.Add(new Column
                             {
-                                Id = Guid.NewGuid(),
-                                Name = rdr.GetString(1),
-                                Type = rdr.GetString(2),
+                                Id = id,
+                                Name = name,
+                                Type = type,
                                 Table = table,
-                                Required = rdr.GetBoolean(3),
+                                Required = required,
                             });
                         }
                     }
