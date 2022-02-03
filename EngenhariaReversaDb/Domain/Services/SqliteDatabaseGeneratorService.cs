@@ -1,5 +1,6 @@
 ﻿using EngenhariaReversaDb.Domain.Model;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
@@ -43,8 +44,8 @@ namespace EngenhariaReversaDb.Domain.Services
                                 Database = database
                             };
 
-                            AddColumns(cnn, table);
-                            AddForeignKeys(cnn, table);
+                            table.AddRange(GetColumns(cnn, table));
+                            table.AddRange(GetForeignKeys(cnn, table));
 
                             database.Tables.Add(table);
                         }
@@ -55,7 +56,7 @@ namespace EngenhariaReversaDb.Domain.Services
             return database;
         }
 
-        private void AddForeignKeys(IDbConnection connection, Table table)
+        private IEnumerable<ForeignKey> GetForeignKeys(IDbConnection connection, Table table)
         {
             using (var cmd = connection.CreateCommand())
             {
@@ -74,7 +75,7 @@ namespace EngenhariaReversaDb.Domain.Services
                         var to = rdr.GetString(4);
                         var col = table.Columns.FirstOrDefault(x => x.Name.Equals(from));
 
-                        table.Add(new ForeignKey
+                        yield return new ForeignKey
                         {
                             Id = col.Id,
                             Name = col.Name,
@@ -84,13 +85,13 @@ namespace EngenhariaReversaDb.Domain.Services
                             RelatedColumn = to,
                             Table = table,
                             Required = col.Required
-                        });
+                        };
                     }
                 }
             }
         }
 
-        private void AddColumns(IDbConnection connection, Table table)
+        private IEnumerable<Column> GetColumns(IDbConnection connection, Table table)
         {
             using (var cmd = connection.CreateCommand())
             {
@@ -113,25 +114,25 @@ namespace EngenhariaReversaDb.Domain.Services
 
                         if (pk)
                         {
-                            table.Add(new PrimaryKey
+                            yield return new PrimaryKey
                             {
                                 Id = id,
                                 Name = name,
                                 Type = type,
                                 Table = table,
                                 Required = required,
-                            });
+                            };
                         }
                         else
                         {
-                            table.Add(new Column
+                            yield return new Column
                             {
                                 Id = id,
                                 Name = name,
                                 Type = type,
                                 Table = table,
                                 Required = required,
-                            });
+                            };
                         }
                     }
                 }
