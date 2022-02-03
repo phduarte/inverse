@@ -2,7 +2,7 @@
 
 namespace EngenhariaReversaDb.Services
 {
-    public interface IGenerateModelService
+    public interface IDatabaseGeneratorService
     {
         Provider Provider { get; }
         Database GetDatabase(string connectionString);

@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Services
 {
-    internal class SqlServerGenerateModelService : IGenerateModelService
+    internal class SqlServerDatabaseGeneratorService : IDatabaseGeneratorService
     {
         public Provider Provider { get; }
 
-        public SqlServerGenerateModelService(Provider provider)
+        public SqlServerDatabaseGeneratorService(Provider provider)
         {
             Provider = provider;
         }

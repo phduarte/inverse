@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Services
 {
-    internal class GenerateModelService : IGenerateModelService
+    internal class SqliteDatabaseGeneratorService : IDatabaseGeneratorService
     {
         public Provider Provider { get; }
 
-        public GenerateModelService(Provider provider)
+        public SqliteDatabaseGeneratorService(Provider provider)
         {
             Provider = provider;
         }

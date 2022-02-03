@@ -4,15 +4,15 @@ namespace EngenhariaReversaDb.Services
 {
     public static class DatabaseModelFactory
     {
-        public static IGenerateModelService Create(Domain.Provider provider)
+        public static IDatabaseGeneratorService Create(Domain.Provider provider)
         {
             if (provider == Domain.Provider.SQLite)
             {
-                return new GenerateModelService(provider);
+                return new SqliteDatabaseGeneratorService(provider);
             }
             else if (provider == Domain.Provider.MSSQLServer)
             {
-                return new SqlServerGenerateModelService(provider);
+                return new SqlServerDatabaseGeneratorService(provider);
             }
 
             throw new NotImplementedException();
