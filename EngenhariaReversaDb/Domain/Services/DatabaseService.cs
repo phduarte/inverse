@@ -3,7 +3,7 @@ using EngenhariaReversaDb.Domain.Model;
 
 namespace EngenhariaReversaDb.Domain.Services
 {
-    public static class DatabaseGeneratorFactory
+    public static class DatabaseService
     {
         public static Database GetDatabase(Provider provider, string connectionString)
         {

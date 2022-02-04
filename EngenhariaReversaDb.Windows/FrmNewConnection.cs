@@ -29,7 +29,7 @@ namespace EngenhariaReversaDb.Windows
 
         private void btnRevert_Click(object sender, EventArgs e)
         {
-            var database = DatabaseGeneratorFactory.GetDatabase((Provider)cmbProvider.SelectedIndex, txtConnectionString.Text);
+            var database = DatabaseService.GetDatabase((Provider)cmbProvider.SelectedIndex, txtConnectionString.Text);
 
             _parentForm.UseDatabase(database);
             Close();

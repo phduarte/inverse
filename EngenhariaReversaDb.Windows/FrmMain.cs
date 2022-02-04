@@ -390,7 +390,7 @@ namespace EngenhariaReversaDb.Windows
             if (string.IsNullOrEmpty(_connectionString))
                 return;
 
-            var database = DatabaseGeneratorFactory.GetDatabase(_provider, _connectionString);
+            var database = DatabaseService.GetDatabase(_provider, _connectionString);
 
             UseDatabase(database);
         }
@@ -429,7 +429,7 @@ namespace EngenhariaReversaDb.Windows
             if (string.IsNullOrEmpty(dialog.FileName))
                 return;
 
-            DatabaseGeneratorFactory.Export(_database, dialog.FileName);
+            DatabaseService.Export(_database, dialog.FileName);
 
             MessageBox.Show("Script exportado com sucesso.");
         }
