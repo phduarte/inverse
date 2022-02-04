@@ -21,15 +21,8 @@ namespace Inverse.Domain.Services
 
         public void Export(Database database, string filename)
         {
-            if (database.Provider == Provider.MSSQLServer)
-            {
-                var svc = new SqlServerScriptingGeneratorStrategy();
-                svc.ExportToFile(database, filename);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            var svc = new SqlServerScriptingGeneratorStrategy();
+            svc.ExportToFile(database, filename);
         }
     }
 }
