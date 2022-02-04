@@ -9,11 +9,11 @@ namespace EngenhariaReversaDb.Domain.Services
         {
             if (provider == Provider.SQLite)
             {
-                return new SqliteDatabaseGeneratorService(provider).GetDatabase(connectionString);
+                return new SqliteDatabaseGeneratorStrategy(provider).GetDatabase(connectionString);
             }
             else if (provider == Provider.MSSQLServer)
             {
-                return new SqlServerDatabaseGeneratorService(provider).GetDatabase(connectionString);
+                return new SqlServerDatabaseGeneratorStrategy(provider).GetDatabase(connectionString);
             }
 
             throw new NotImplementedException();
@@ -23,7 +23,7 @@ namespace EngenhariaReversaDb.Domain.Services
         {
             if (database.Provider == Provider.MSSQLServer)
             {
-                var svc = new SqlServerScriptingGenerator();
+                var svc = new SqlServerScriptingGeneratorStrategy();
                 svc.GenerateFile(database, filename);
             }
 

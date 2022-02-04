@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Domain.Services
 {
-    class SqlServerScriptingGenerator : IScriptingGeneratorStrategy
+    class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
     {
         public void GenerateFile(Database database, string filename)
         {

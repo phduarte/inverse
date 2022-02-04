@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Domain.Services
 {
-    internal class SqlServerDatabaseGeneratorService : IDatabaseGeneratorStrategy
+    internal class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
         public Provider Provider { get; }
 
-        public SqlServerDatabaseGeneratorService(Provider provider)
+        public SqlServerDatabaseGeneratorStrategy(Provider provider)
         {
             Provider = provider;
         }
