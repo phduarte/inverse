@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EngenhariaReversaDb\EngenhariaReversaDb.csproj" />
+    <ProjectReference Include="..\EngenhariaReversaDb\Inverse.csproj" />
   </ItemGroup>
 
 </Project>

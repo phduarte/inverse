@@ -138,7 +138,7 @@ namespace EngenhariaReversaDb.Windows
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "FrmMain";
-            this.Text = "Reversing DB";
+            this.Text = "Inverse DB";
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
