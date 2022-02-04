@@ -13,6 +13,7 @@ namespace EngenhariaReversaDb.Windows
     public partial class FrmMain : Form
     {
         const int MARGIN = 50;
+        readonly IDatabaseService _service;
 
         private string _connectionString;
         private Provider _provider;
@@ -36,6 +37,7 @@ namespace EngenhariaReversaDb.Windows
         {
             InitializeComponent();
             panel1.SetDoubleBuffered();
+            _service = new DatabaseService();
         }
 
         public void UseDatabase(Database database)
@@ -45,6 +47,12 @@ namespace EngenhariaReversaDb.Windows
             _provider = database.Provider;
             Arrange();
             panel1.Refresh();
+        }
+
+        public void UseDatabase(Provider provider, string connectionString)
+        {
+            var database = _service.LoadDatabase(provider, connectionString);
+            UseDatabase(database);
         }
 
         private void Arrange()
@@ -390,7 +398,7 @@ namespace EngenhariaReversaDb.Windows
             if (string.IsNullOrEmpty(_connectionString))
                 return;
 
-            var database = DatabaseService.GetDatabase(_provider, _connectionString);
+            var database = _service.LoadDatabase(_provider, _connectionString);
 
             UseDatabase(database);
         }
@@ -429,7 +437,7 @@ namespace EngenhariaReversaDb.Windows
             if (string.IsNullOrEmpty(dialog.FileName))
                 return;
 
-            DatabaseService.Export(_database, dialog.FileName);
+            _service.Export(_database, dialog.FileName);
 
             MessageBox.Show("Script exportado com sucesso.");
         }

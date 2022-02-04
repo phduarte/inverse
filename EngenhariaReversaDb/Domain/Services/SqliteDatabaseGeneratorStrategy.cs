@@ -16,7 +16,7 @@ namespace EngenhariaReversaDb.Domain.Services
             Provider = provider;
         }
 
-        public Database GetDatabase(string connectionString)
+        public Database LoadDatabase(string connectionString)
         {
             var database = new Database(Provider)
             {

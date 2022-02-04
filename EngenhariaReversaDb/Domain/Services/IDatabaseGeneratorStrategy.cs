@@ -5,6 +5,6 @@ namespace EngenhariaReversaDb.Domain.Services
     public interface IDatabaseGeneratorStrategy
     {
         Provider Provider { get; }
-        Database GetDatabase(string connectionString);
+        Database LoadDatabase(string connectionString);
     }
 }

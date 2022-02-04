@@ -7,7 +7,7 @@ namespace EngenhariaReversaDb.Domain.Services
 {
     class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
     {
-        public void GenerateFile(Database database, string filename)
+        public void ExportToFile(Database database, string filename)
         {
             var nomeTabelasRelacionadas = database.Tables.OrderBy(t => t.ForeignKeysCount).SelectMany(t => t.ForeignKeys.Select(s => s.RelatedTable)).Distinct();
             var relacionadas = database.Tables.Where(t => nomeTabelasRelacionadas.Contains(t.Name));
@@ -17,8 +17,12 @@ namespace EngenhariaReversaDb.Domain.Services
             {
                 var sql = new System.Text.StringBuilder();
 
-                sql.AppendLine($"--Scripting Created By Reversing DB");
-                sql.AppendLine($"--Created At : {DateTime.Today:yyyy-MM-dd HH:mm:ss}");
+                sql.AppendLine($"/*");
+                sql.AppendLine($"Scripting Created By Reversing DB");
+                sql.AppendLine($"Created By: {Environment.UserName}");
+                sql.AppendLine($"Created At: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                sql.AppendLine($"Original: {database.ConnectionString}");
+                sql.AppendLine($"*/");
                 sql.AppendLine($"CREATE DATABASE {database.Name};");
                 sql.AppendLine();
                 sql.AppendLine($"GO");

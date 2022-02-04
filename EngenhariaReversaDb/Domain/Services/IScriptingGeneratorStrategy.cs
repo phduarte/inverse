@@ -4,6 +4,6 @@ namespace EngenhariaReversaDb.Domain.Services
 {
     public interface IScriptingGeneratorStrategy
     {
-        void GenerateFile(Database database, string filename);
+        void ExportToFile(Database database, string filename);
     }
 }
