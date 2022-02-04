@@ -81,13 +81,14 @@ namespace Inverse.Windows
 
             var g = e.Graphics;
             var bordaTabela = new Pen(Brushes.Black, 2);
-            var bordaTabelaSelecionada = new Pen(Brushes.Blue, 2);
+            var bordaTabelaSelecionada = new Pen(Brushes.DarkOrange, 2);
             const int COLUMN_HEIGHT = 30;
 
             var linha = new Pen(Brushes.Black, 1);
+            var tables = _database.Tables.Where(x => chkShowHiddenTables.Checked || !x.IsHidden);
 
             // desenhar relacionamentos
-            foreach (var table in _database.Tables)
+            foreach (var table in tables)
             {
                 foreach (var source in table.Columns.OfType<ForeignKey>())
                 {
@@ -140,7 +141,7 @@ namespace Inverse.Windows
                 }
             }
 
-            foreach (var table in _database.Tables.OrderByDescending(x => x.Columns.OfType<ForeignKey>().Count()))
+            foreach (var table in tables.OrderByDescending(x => x.Columns.OfType<ForeignKey>().Count()))
             {
                 var x = g.SmoothingMode;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
@@ -206,8 +207,6 @@ namespace Inverse.Windows
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
-            _currentPoint = e.Location;
-
             if (_pressedPoint != Point.Empty && _currentTable != null)
             {
                 _currentTable.MoveTo(e.X, e.Y);
@@ -219,6 +218,9 @@ namespace Inverse.Windows
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
+            _currentPoint = e.Location;
+            toolStripStatusLabel1.Text = $"X={_currentPoint.X},Y={_currentPoint.Y}";
+
             if (_currentTable is not null)
             {
                 _currentTable.MoveTo(e.X, e.Y);
@@ -249,7 +251,7 @@ namespace Inverse.Windows
                 sw.WriteLine($"    <tables>");
                 foreach (var table in _database.Tables)
                 {
-                    sw.WriteLine($"        <table id=\"{table.Id}\" name=\"{table.Name}\" left=\"{table.Left}\" top=\"{table.Top}\">");
+                    sw.WriteLine($"        <table id=\"{table.Id}\" name=\"{table.Name}\" left=\"{table.Left}\" top=\"{table.Top}\" isHidden=\"{table.IsHidden}\">");
                     sw.WriteLine($"            <columns>");
 
                     foreach (var column in table.Columns)
@@ -310,13 +312,15 @@ namespace Inverse.Windows
                     var tbName = xmlTable.Attributes["name"].Value;
                     var tbLeft = xmlTable.Attributes["left"].Value;
                     var tbTop = xmlTable.Attributes["top"].Value;
+                    var isHidden = xmlTable.Attributes["isHidden"]?.Value ?? "false";
                     var table = new Table
                     {
                         Id = tbGuid,
                         Name = tbName,
                         Database = database,
                         Left = int.Parse(tbLeft),
-                        Top = int.Parse(tbTop)
+                        Top = int.Parse(tbTop),
+                        IsHidden = bool.Parse(isHidden)
                     };
 
                     var xmlColumns = xmlTable.SelectNodes(".//column");
@@ -440,6 +444,37 @@ namespace Inverse.Windows
             _service.Export(_database, dialog.FileName);
 
             MessageBox.Show("Script exportado com sucesso.");
+        }
+
+        private void chkShowHiddenTables_CheckedChanged(object sender, EventArgs e)
+        {
+            panel1.Invalidate();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = GetActiveTable() is null;
+        }
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (GetActiveTable() is Table activeTable)
+            {
+                activeTable.Hide();
+            }
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (GetActiveTable() is Table activeTable)
+            {
+                activeTable.Show();
+            }
+        }
+
+        private Table GetActiveTable()
+        {
+            return _database.Tables.FirstOrDefault(f => f.IsHover(_currentPoint.X, _currentPoint.Y));
         }
     }
 }

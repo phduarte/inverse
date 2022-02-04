@@ -23,7 +23,7 @@ namespace Inverse.Domain.Model
         public int PrimaryKeysCount => PrimaryKeys.Count();
         public IEnumerable<PrimaryKey> PrimaryKeys => Columns.OfType<PrimaryKey>();
         public IEnumerable<ForeignKey> ForeignKeys => Columns.OfType<ForeignKey>();
-
+        public bool IsHidden { get; set; }
         public Database Database { get; set; }
 
         public Table()
@@ -71,7 +71,7 @@ namespace Inverse.Domain.Model
             Resize();
         }
 
-        internal void AddRange(IEnumerable<Column> enumerable)
+        public void AddRange(IEnumerable<Column> enumerable)
         {
             foreach (var e in enumerable)
             {
@@ -104,7 +104,17 @@ namespace Inverse.Domain.Model
 
         public bool IsHover(int x, int y)
         {
-            return x > Left && x < Right && y > Top && y < Bottom;
+            return x.IsBetween(Left, Right) && y.IsBetween(Top, Bottom);
+        }
+
+        public void Hide()
+        {
+            IsHidden = true;
+        }
+
+        public void Show()
+        {
+            IsHidden = false;
         }
 
         private void Resize()
