@@ -1,9 +1,9 @@
-﻿using EngenhariaReversaDb.Domain.Model;
+﻿using Inverse.Domain.Model;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace EngenhariaReversaDb.Domain.Services
+namespace Inverse.Domain.Services
 {
     class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
     {

@@ -1,4 +1,4 @@
-﻿namespace EngenhariaReversaDb.Domain.Model
+﻿namespace Inverse.Domain.Model
 {
     public class PrimaryKey : Column
     {

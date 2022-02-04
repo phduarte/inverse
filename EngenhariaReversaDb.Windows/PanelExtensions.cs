@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows.Forms;
 
-namespace EngenhariaReversaDb.Windows
+namespace Inverse.Windows
 {
     public static class PanelExtensions
     {

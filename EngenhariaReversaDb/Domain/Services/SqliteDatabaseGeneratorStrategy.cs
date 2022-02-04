@@ -1,11 +1,11 @@
-﻿using EngenhariaReversaDb.Domain.Model;
+﻿using Inverse.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 
-namespace EngenhariaReversaDb.Domain.Services
+namespace Inverse.Domain.Services
 {
     internal class SqliteDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {

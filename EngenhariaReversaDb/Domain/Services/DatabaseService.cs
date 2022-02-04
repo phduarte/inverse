@@ -1,7 +1,7 @@
 ﻿using System;
-using EngenhariaReversaDb.Domain.Model;
+using Inverse.Domain.Model;
 
-namespace EngenhariaReversaDb.Domain.Services
+namespace Inverse.Domain.Services
 {
     public class DatabaseService : IDatabaseService
     {

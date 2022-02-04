@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace EngenhariaReversaDb.Domain.Model
+namespace Inverse.Domain.Model
 {
     public class Table : Entity<string>, IDraggableElement
     {

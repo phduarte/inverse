@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace EngenhariaReversaDb.Windows
+namespace Inverse.Windows
 {
     static class Program
     {

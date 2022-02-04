@@ -1,9 +1,9 @@
-﻿using EngenhariaReversaDb.Domain.Model;
-using EngenhariaReversaDb.Domain.Services;
+﻿using Inverse.Domain.Model;
+using Inverse.Domain.Services;
 using System;
 using System.Windows.Forms;
 
-namespace EngenhariaReversaDb.Windows
+namespace Inverse.Windows
 {
     public partial class FrmNewConnection : Form
     {

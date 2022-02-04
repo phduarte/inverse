@@ -1,5 +1,5 @@
-﻿using EngenhariaReversaDb.Domain.Model;
-using EngenhariaReversaDb.Domain.Services;
+﻿using Inverse.Domain.Model;
+using Inverse.Domain.Services;
 using System;
 using System.Data;
 using System.Drawing;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace EngenhariaReversaDb.Windows
+namespace Inverse.Windows
 {
     public partial class FrmMain : Form
     {

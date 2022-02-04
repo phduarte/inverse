@@ -1,5 +1,5 @@
 ﻿
-namespace EngenhariaReversaDb.Windows
+namespace Inverse.Windows
 {
     partial class FrmMain
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EngenhariaReversaDb.Domain.Model
+namespace Inverse.Domain.Model
 {
     public class Database : Entity<Guid>
     {
