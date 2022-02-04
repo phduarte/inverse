@@ -29,86 +29,58 @@ namespace Inverse.Windows
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnRevert = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbProvider = new System.Windows.Forms.ComboBox();
-            this.txtConnectionString = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmNewConnection));
+            this.picSqlite = new System.Windows.Forms.PictureBox();
+            this.picMssqlServer = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picSqlite)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMssqlServer)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnRevert
+            // picSqlite
             // 
-            this.btnRevert.Location = new System.Drawing.Point(254, 129);
-            this.btnRevert.Name = "btnRevert";
-            this.btnRevert.Size = new System.Drawing.Size(75, 23);
-            this.btnRevert.TabIndex = 2;
-            this.btnRevert.Text = "Revert";
-            this.btnRevert.UseVisualStyleBackColor = true;
-            this.btnRevert.Click += new System.EventHandler(this.btnRevert_Click);
+            this.picSqlite.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picSqlite.Image = ((System.Drawing.Image)(resources.GetObject("picSqlite.Image")));
+            this.picSqlite.Location = new System.Drawing.Point(183, 12);
+            this.picSqlite.Name = "picSqlite";
+            this.picSqlite.Size = new System.Drawing.Size(166, 143);
+            this.picSqlite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picSqlite.TabIndex = 5;
+            this.picSqlite.TabStop = false;
+            this.picSqlite.Click += new System.EventHandler(this.picSqlite_Click);
             // 
-            // label1
+            // picMssqlServer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 66);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "ConnectionString";
-            // 
-            // cmbProvider
-            // 
-            this.cmbProvider.FormattingEnabled = true;
-            this.cmbProvider.Items.AddRange(new object[] {
-            "MSSQL",
-            "SQLite"});
-            this.cmbProvider.Location = new System.Drawing.Point(12, 30);
-            this.cmbProvider.Name = "cmbProvider";
-            this.cmbProvider.Size = new System.Drawing.Size(317, 23);
-            this.cmbProvider.TabIndex = 0;
-            this.cmbProvider.SelectedIndexChanged += new System.EventHandler(this.cmbProvider_SelectedIndexChanged);
-            // 
-            // txtConnectionString
-            // 
-            this.txtConnectionString.Location = new System.Drawing.Point(12, 84);
-            this.txtConnectionString.Name = "txtConnectionString";
-            this.txtConnectionString.Size = new System.Drawing.Size(317, 23);
-            this.txtConnectionString.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Provider";
+            this.picMssqlServer.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picMssqlServer.Image = ((System.Drawing.Image)(resources.GetObject("picMssqlServer.Image")));
+            this.picMssqlServer.Location = new System.Drawing.Point(25, 33);
+            this.picMssqlServer.Name = "picMssqlServer";
+            this.picMssqlServer.Size = new System.Drawing.Size(129, 107);
+            this.picMssqlServer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picMssqlServer.TabIndex = 6;
+            this.picMssqlServer.TabStop = false;
+            this.picMssqlServer.Click += new System.EventHandler(this.picMssqlServer_Click);
             // 
             // FrmNewConnection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(341, 183);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtConnectionString);
-            this.Controls.Add(this.cmbProvider);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnRevert);
+            this.ClientSize = new System.Drawing.Size(375, 173);
+            this.Controls.Add(this.picMssqlServer);
+            this.Controls.Add(this.picSqlite);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FrmNewConnection";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create New";
+            ((System.ComponentModel.ISupportInitialize)(this.picSqlite)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMssqlServer)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnRevert;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbProvider;
-        private System.Windows.Forms.TextBox txtConnectionString;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox picSqlite;
+        private System.Windows.Forms.PictureBox picMssqlServer;
     }
 }

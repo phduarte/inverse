@@ -1,6 +1,4 @@
-﻿using Inverse.Domain.Model;
-using Inverse.Domain.Services;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Inverse.Windows
@@ -15,21 +13,19 @@ namespace Inverse.Windows
             InitializeComponent();
         }
 
-        private void cmbProvider_SelectedIndexChanged(object sender, EventArgs e)
+        private void picMssqlServer_Click(object sender, EventArgs e)
         {
-            if (cmbProvider.SelectedIndex == 0)
-            {
-                txtConnectionString.Text = @"Server=;Database=;";
-            }
-            else if (cmbProvider.SelectedIndex == 1)
-            {
-                txtConnectionString.Text = @"Data source=;";
-            }
+            var frm = new FrmNewConnectionSqlServer(_parentForm);
+            Hide();
+            frm.ShowDialog();
+            Close();
         }
 
-        private void btnRevert_Click(object sender, EventArgs e)
+        private void picSqlite_Click(object sender, EventArgs e)
         {
-            _parentForm.UseDatabase((Provider)cmbProvider.SelectedIndex, txtConnectionString.Text);
+            var frm = new FrmNewConnectionSqlite(_parentForm);
+            Hide();
+            frm.ShowDialog();
             Close();
         }
     }

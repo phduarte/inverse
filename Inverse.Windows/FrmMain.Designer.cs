@@ -139,6 +139,7 @@ namespace Inverse.Windows
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "FrmMain";
             this.Text = "Inverse DB";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
