@@ -3,3 +3,8 @@
 /.vs/*
 /EngenhariaReversaDb.Windows/bin/*
 /EngenhariaReversaDb.Windows/obj/*
+/Inverse/bin/Debug/net5.0
+/Inverse/obj
+/Inverse.Windows/bin/Debug/net5.0-windows
+/Inverse.Windows/obj
+*.user
