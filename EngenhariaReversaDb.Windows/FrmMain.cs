@@ -224,15 +224,18 @@ namespace EngenhariaReversaDb.Windows
             if (_database.IsEmpty)
                 return;
 
-            var form = new SaveFileDialog
+            var dialog = new SaveFileDialog
             {
                 Filter = "Arquivo de Modelo de dados|*.dm",
                 DefaultExt = ".dm"
             };
 
-            form.ShowDialog();
+            dialog.ShowDialog();
 
-            using (var sw = new StreamWriter(form.FileName))
+            if (string.IsNullOrEmpty(dialog.FileName))
+                return;
+
+            using (var sw = new StreamWriter(dialog.FileName))
             {
                 sw.WriteLine($"<database name=\"{_database.Name}\" id=\"{_database.Id}\" provider=\"{_database.Provider}\" connectionstring=\"{_database.ConnectionString}\">");
                 sw.WriteLine($"    <tables>");
@@ -246,6 +249,10 @@ namespace EngenhariaReversaDb.Windows
                         if (column is ForeignKey fk)
                         {
                             sw.WriteLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.Required}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable}\" relatedColumn=\"{fk.RelatedColumn}\"/>");
+                        }
+                        else if (column is PrimaryKey pk)
+                        {
+                            sw.WriteLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.Required}\" class=\"{pk.GetType().Name}\" />");
                         }
                         else
                         {
@@ -263,15 +270,15 @@ namespace EngenhariaReversaDb.Windows
 
         private void btnLoad_Click(object sender, System.EventArgs e)
         {
-            var form = new OpenFileDialog();
-            form.Filter = "Arquivo de Modelo de dados|*.dm";
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Arquivo de Modelo de dados|*.dm";
 
-            form.ShowDialog();
+            dialog.ShowDialog();
 
-            if (!string.IsNullOrEmpty(form.FileName))
+            if (!string.IsNullOrEmpty(dialog.FileName))
             {
                 var xml = new XmlDocument();
-                xml.Load(form.FileName);
+                xml.Load(dialog.FileName);
                 var doc = xml.DocumentElement;
 
                 var dbName = doc.GetAttribute("name");
@@ -383,8 +390,7 @@ namespace EngenhariaReversaDb.Windows
             if (string.IsNullOrEmpty(_connectionString))
                 return;
 
-            var service = DatabaseGeneratorFactory.Create(_provider);
-            var database = service.GetDatabase(_connectionString);
+            var database = DatabaseGeneratorFactory.GetDatabase(_provider, _connectionString);
 
             UseDatabase(database);
         }
@@ -405,6 +411,27 @@ namespace EngenhariaReversaDb.Windows
         private void Main_SizeChanged(object sender, EventArgs e)
         {
             ResetPanelSize();
+        }
+
+        private void btnScripting_Click(object sender, EventArgs e)
+        {
+            if (_database.IsEmpty)
+                return;
+
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Structured Query Language|*.sql",
+                DefaultExt = ".sql"
+            };
+
+            dialog.ShowDialog();
+
+            if (string.IsNullOrEmpty(dialog.FileName))
+                return;
+
+            DatabaseGeneratorFactory.Export(_database, dialog.FileName);
+
+            MessageBox.Show("Script exportado com sucesso.");
         }
     }
 }

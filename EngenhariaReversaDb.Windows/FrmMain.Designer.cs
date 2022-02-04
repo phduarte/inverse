@@ -36,6 +36,7 @@ namespace EngenhariaReversaDb.Windows
             this.btnNew = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnScripting = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,12 +114,23 @@ namespace EngenhariaReversaDb.Windows
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // btnScripting
+            // 
+            this.btnScripting.Location = new System.Drawing.Point(542, 13);
+            this.btnScripting.Name = "btnScripting";
+            this.btnScripting.Size = new System.Drawing.Size(100, 23);
+            this.btnScripting.TabIndex = 6;
+            this.btnScripting.Text = "Scripting";
+            this.btnScripting.UseVisualStyleBackColor = true;
+            this.btnScripting.Click += new System.EventHandler(this.btnScripting_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1081, 513);
+            this.Controls.Add(this.btnScripting);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnNew);
@@ -142,6 +154,7 @@ namespace EngenhariaReversaDb.Windows
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnScripting;
     }
 }
 

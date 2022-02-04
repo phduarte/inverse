@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Domain.Services
 {
-    internal class SqliteDatabaseGeneratorService : IDatabaseGeneratorService
+    internal class SqliteDatabaseGeneratorService : IDatabaseGeneratorStrategy
     {
         public Provider Provider { get; }
 

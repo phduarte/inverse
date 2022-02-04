@@ -19,6 +19,10 @@ namespace EngenhariaReversaDb.Domain.Model
         public int Bottom => Top + Height;
         public int Center => Left + (Width / 2);
         public int Middle => Top + (Height / 2);
+        public int ForeignKeysCount => ForeignKeys.Count();
+        public int PrimaryKeysCount => PrimaryKeys.Count();
+        public IEnumerable<PrimaryKey> PrimaryKeys => Columns.OfType<PrimaryKey>();
+        public IEnumerable<ForeignKey> ForeignKeys => Columns.OfType<ForeignKey>();
 
         public Database Database { get; set; }
 

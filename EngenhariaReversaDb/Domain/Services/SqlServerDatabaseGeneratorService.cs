@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace EngenhariaReversaDb.Domain.Services
 {
-    internal class SqlServerDatabaseGeneratorService : IDatabaseGeneratorService
+    internal class SqlServerDatabaseGeneratorService : IDatabaseGeneratorStrategy
     {
         public Provider Provider { get; }
 
@@ -101,6 +101,7 @@ namespace EngenhariaReversaDb.Domain.Services
 		                                c.is_nullable,
 		                                t.name as type_name,
 		                                c.max_length,
+                                        c.precision,
 		                                (
 			                                select distinct i.name as primarykey_name
 			                                from sys.indexes i 
@@ -117,8 +118,19 @@ namespace EngenhariaReversaDb.Domain.Services
                 var id = rdr["column_id"].ToString();
                 var name = rdr["column_name"].ToString();
                 var type = rdr["type_name"].ToString();
-                var required = rdr["is_nullable"].ToString().Equals("0");
+                var required = rdr["is_nullable"].ToString().Equals("False");
                 var pk = rdr["primary_key_name"].ToString();
+                var size = rdr["max_length"].ToString();
+                var precision = rdr["precision"].ToString();
+
+                if (type == "varchar" || type == "char")
+                {
+                    type = $"{type}({size})";
+                }
+                else if (type == "numeric" || type == "decimal")
+                {
+                    type = $"{type}({precision},{size})";
+                }
 
                 if (!string.IsNullOrEmpty(pk))
                 {
