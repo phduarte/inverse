@@ -9,11 +9,11 @@ namespace Inverse.Domain.Services
         {
             if (provider == Provider.SQLite)
             {
-                return new SqliteDatabaseGeneratorStrategy(provider).LoadDatabase(connectionString);
+                return SqliteDatabaseGeneratorStrategy.Create().LoadDatabase(connectionString);
             }
             else if (provider == Provider.MSSQLServer)
             {
-                return new SqlServerDatabaseGeneratorStrategy(provider).LoadDatabase(connectionString);
+                return SqlServerDatabaseGeneratorStrategy.Create().LoadDatabase(connectionString);
             }
 
             throw new NotImplementedException();

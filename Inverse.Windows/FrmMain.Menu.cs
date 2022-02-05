@@ -247,6 +247,11 @@ namespace Inverse.Windows
             _currentFilename = string.IsNullOrEmpty(_currentFilename) ? lastFilename : _currentFilename;
         }
 
+        private void arrangeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Arrange();
+        }
+
         private void ToggleMenuButtons()
         {
             saveAsToolStripMenuItem.Enabled
@@ -254,7 +259,8 @@ namespace Inverse.Windows
                 = refreshToolStripMenuItem.Enabled
                 = scriptToolStripMenuItem.Enabled
                 = closeToolStripMenuItem.Enabled
-                = exportToolStripMenuItem.Enabled = !_database.IsEmpty;
+                = exportToolStripMenuItem.Enabled 
+                = arrangeToolStripMenuItem.Enabled = !_database.IsEmpty;
         }
     }
 }

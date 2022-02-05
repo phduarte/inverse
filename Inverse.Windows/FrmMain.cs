@@ -1,9 +1,11 @@
 ﻿using Inverse.Domain.Model;
 using Inverse.Domain.Services;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Inverse.Windows
@@ -53,23 +55,111 @@ namespace Inverse.Windows
             UseDatabase(database);
         }
 
-        private void Arrange()
+        private const int COLUMN_HEIGHT = 30;
+
+        private async Task Arrange()
         {
             var left = MARGIN;
             var top = MARGIN;
-            const int COLUMN_HEIGHT = 30;
+            var tabelas = new List<Table>();
+            const int DELAY = 200;
 
-            foreach (var t in _database.Tables.OrderByDescending(x => x.Columns.OfType<ForeignKey>().Count()))
+            foreach (var t in _database.Tables)
             {
-                var width = t.Columns.Select(x => x.Name.Length).Max() * 10;
-                var height = (t.Columns.Count + 1) * COLUMN_HEIGHT;
+                t.MoveTo(0, 0);
+            }
+
+            var dic = new Dictionary<string, int>();
+
+            foreach (var r in _database.Tables.SelectMany(c => c.ForeignKeys.Select(x => x.RelatedTable)))
+            {
+                if (dic.ContainsKey(r))
+                {
+                    dic[r]++;
+                }
+                else
+                {
+                    dic.Add(r, 1);
+                }
+            }
+
+            // coloca a que tem mais relacionamentos no centro da tela.
+            var maior = dic.OrderByDescending(x => x.Value).First();
+
+            var temMais = _database.Tables.FirstOrDefault(x => x.Name.Equals(maior.Key));
+
+            if (temMais != null)
+            {
+                var centro = Width / 2;
+                var meio = Height / 2;
+
+                SetPosition(temMais, ref centro, ref meio);
+
+                tabelas.Add(temMais);
+            }
+
+            foreach (var t in _database.Tables)
+            {
+                if (tabelas.Contains(t))
+                {
+                    continue;
+                }
+
+                var relacionadas = t.ForeignKeys.Select(_ => _.RelatedTable);
+
+                foreach (var r in relacionadas)
+                {
+                    var tb = _database.Tables.First(_ => _.Name.Equals(r));
+                    var alturaDaMae = t.Top == 0 ? top : t.Top;
+
+                    if (tabelas.Contains(tb))
+                    {
+                        continue;
+                    }
+
+                    SetPosition(tb, ref left, ref alturaDaMae);
+
+                    tabelas.Add(tb);
+
+                    await Task.Delay(DELAY);
+                    panel1.Invalidate();
+                }
+
+                SetPosition(t, ref left, ref top);
+
+                tabelas.Add(t);
+
+                await Task.Delay(DELAY);
+                panel1.Invalidate();
+            }
+        }
+
+        private void SetPosition(Table table, ref int left, ref int top)
+        {
+            var intersect = false;
+
+            do
+            {
+                var width = table.Columns.Select(x => x.Name.Length).Max() * 10;
+                var height = (table.Columns.Count + 1) * COLUMN_HEIGHT;
                 var layout = new Rectangle(left, top, width, height);
 
-                t.Left = layout.Left;
-                t.Top = layout.Top;
+                if (layout.Right > panel1.Width)
+                {
+                    left = MARGIN;
+                    top = _database.Tables.Max(_ => _.Bottom) + MARGIN;
+                }
+
+                table.Left = layout.Left;
+                table.Top = layout.Top;
 
                 left += layout.Width + MARGIN;
-            }
+
+                var overridenTable = _database.Tables.Except(new List<Table> { table }).FirstOrDefault(x => x.IsHover(table.Left, table.Top));
+
+                intersect = overridenTable is not null;
+
+            } while (intersect);
         }
 
         private void ResetPanelSize()

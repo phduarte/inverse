@@ -16,6 +16,7 @@ namespace Inverse.Windows
             InitializeComponent();
 
             txtFilename.Text = _filename;
+            btnRevert.Enabled = File.Exists(txtFilename.Text);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

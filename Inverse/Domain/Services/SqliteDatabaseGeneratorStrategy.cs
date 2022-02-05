@@ -138,5 +138,10 @@ namespace Inverse.Domain.Services
                 }
             }
         }
+
+        public static IDatabaseGeneratorStrategy Create()
+        {
+            return new SqliteDatabaseGeneratorStrategy(Provider.SQLite);
+        }
     }
 }

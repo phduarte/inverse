@@ -172,5 +172,10 @@ namespace Inverse.Domain.Services
                 yield return reader;
             }
         }
+
+        public static IDatabaseGeneratorStrategy Create()
+        {
+            return new SqlServerDatabaseGeneratorStrategy(Provider.MSSQLServer);
+        }
     }
 }
