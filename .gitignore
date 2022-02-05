@@ -8,3 +8,5 @@
 /Inverse.Windows/bin/Debug/net5.0-windows
 /Inverse.Windows/obj
 *.user
+/Inverse.Tests/bin/Debug/net5.0
+/Inverse.Tests/obj

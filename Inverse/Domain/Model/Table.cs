@@ -8,11 +8,9 @@ namespace Inverse.Domain.Model
         readonly List<Column> _columns = new();
 
         public string Name { get; set; }
-
         public IReadOnlyList<Column> Columns => _columns;
-
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; private set; } = LayoutDefinition.Tables.WIDTH;
+        public int Height { get; private set; } = LayoutDefinition.Columns.HEIGHT;
         public int Left { get; set; }
         public int Right => Left + Width;
         public int Top { get; set; }
@@ -26,29 +24,7 @@ namespace Inverse.Domain.Model
         public bool IsHidden { get; set; }
         public Database Database { get; set; }
 
-        public Table()
-        {
-            Width = 100;
-            Height = 30;
-        }
-
         public void Add(Column column)
-        {
-            column.Index = _columns.Count + 1;
-            _columns.Add(column);
-
-            Resize();
-        }
-
-        public void Add(PrimaryKey column)
-        {
-            column.Index = _columns.Count + 1;
-            _columns.Add(column);
-
-            Resize();
-        }
-
-        public void Add(ForeignKey column)
         {
             if (_columns.Any(x => x.Id.Equals(column.Id)))
             {
@@ -73,17 +49,7 @@ namespace Inverse.Domain.Model
 
         public void AddRange(IEnumerable<Column> enumerable)
         {
-            foreach (var e in enumerable)
-            {
-                if (e is ForeignKey fk)
-                {
-                    Add(fk);
-                }
-                else
-                {
-                    Add(e);
-                }
-            }
+            enumerable.ToList().ForEach(e => Add(e));
         }
 
         public void MoveTo(int x, int y)
@@ -96,7 +62,7 @@ namespace Inverse.Domain.Model
 
         public virtual void MoveOffset(int x, int y)
         {
-            if (x < 0 || y < 0) return;
+            if (Left + x < 0 || Top + y < 0) return;
 
             Left += x;
             Top += y;
@@ -120,8 +86,8 @@ namespace Inverse.Domain.Model
         private void Resize()
         {
             var max = Columns.Select(x => x.Name.Length).Max();
-            Width = System.Math.Max(Name.Length, max) * 11;
-            Height = Columns.Sum(x => x.Height) + 30;
+            Width = System.Math.Max(Name.Length, max) * LayoutDefinition.Tables.WIDTH;
+            Height = Columns.Sum(x => x.Height) + LayoutDefinition.Columns.HEIGHT;
         }
 
         public override string ToString()
