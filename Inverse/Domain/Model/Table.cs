@@ -26,6 +26,8 @@ namespace Inverse.Domain.Model
 
         public void Add(Column column)
         {
+            column.Table = this;
+
             if (_columns.Any(x => x.Id.Equals(column.Id)))
             {
                 for (var i = 0; i < _columns.Count; i++)
@@ -86,7 +88,7 @@ namespace Inverse.Domain.Model
         private void Resize()
         {
             var max = Columns.Select(x => x.Name.Length).Max();
-            Width = System.Math.Max(Name.Length, max) * LayoutDefinition.Tables.WIDTH;
+            Width = System.Math.Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH;
             Height = Columns.Sum(x => x.Height) + LayoutDefinition.Columns.HEIGHT;
         }
 

@@ -124,7 +124,7 @@ namespace Inverse.Windows
                         }
                     }
 
-                    database.Tables.Add(table);
+                    database.Add(table);
                 }
 
                 _database = database;

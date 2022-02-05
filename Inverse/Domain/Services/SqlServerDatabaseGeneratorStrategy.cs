@@ -43,7 +43,7 @@ namespace Inverse.Domain.Services
                 table.AddRange(GetColumns(connectionString, table));
                 table.AddRange(GetForeignKeys(connectionString, table));
 
-                database.Tables.Add(table);
+                database.Add(table);
             }
 
             return database;

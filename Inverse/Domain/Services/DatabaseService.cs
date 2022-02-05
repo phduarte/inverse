@@ -5,6 +5,18 @@ namespace Inverse.Domain.Services
 {
     public class DatabaseService : IDatabaseService
     {
+        //readonly SqliteDatabaseGeneratorStrategy _sqliteDatabaseGeneratorStrategy;
+
+        //public DatabaseService()
+        //{
+
+        //}
+
+        //public DatabaseService(SqliteDatabaseGeneratorStrategy sqliteDatabaseGeneratorStrategy)
+        //{
+        //    _sqliteDatabaseGeneratorStrategy = sqliteDatabaseGeneratorStrategy;
+        //}
+
         public Database LoadDatabase(Provider provider, string connectionString)
         {
             if (provider == Provider.SQLite)
