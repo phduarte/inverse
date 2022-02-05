@@ -11,7 +11,9 @@
 
         public override bool Equals(object obj)
         {
-            return obj is Entity<T> entity && Id.Equals(entity.Id);
+            return obj.GetType() == GetType()
+                && obj is Entity<T> entity
+                && Id.Equals(entity.Id);
         }
 
         public override int GetHashCode()
