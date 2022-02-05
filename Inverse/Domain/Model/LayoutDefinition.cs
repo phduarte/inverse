@@ -10,6 +10,8 @@
         public static class Columns
         {
             public const int HEIGHT = 30;
+            public const string PRIMARY_KEY_PREFIX = "PK";
+            public const string FOREIGN_KEY_PREFIX = "FK";
         }
 
         public static class Chars

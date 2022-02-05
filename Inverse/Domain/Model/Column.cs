@@ -13,7 +13,7 @@
 
         public int Width => Table.Width;
 
-        public int Height => 30;
+        public int Height => LayoutDefinition.Columns.HEIGHT;
 
         public int Left => Table.Left;
 
@@ -29,7 +29,7 @@
 
         public bool IsHover(int x, int y)
         {
-            return x > Left && x < Right && y > Top && y < Bottom;
+            return x.IsBetween(Left, Right) && y.IsBetween(Top, Bottom);
         }
 
         public override string ToString()
