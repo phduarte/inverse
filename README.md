@@ -23,7 +23,9 @@ Também é possível exportar o diagrama para arquivo de script `.SQL`. Isso fac
 
 ![exportação de script](tela4.png)
 
-## Informações técnicas:
+## Requisitos:
 
 - Plataforma Windows Forms .NET 5
 - Linguagem C# versão 9.0
+- xUnit 2.4.1+
+- FakeItEasy 7.3+
