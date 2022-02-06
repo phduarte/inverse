@@ -28,5 +28,13 @@ namespace Inverse.Domain.Model
             table.Database = this;
             _tables.Add(table);
         }
+
+        public void AddRange(params Table[] tables)
+        {
+            foreach (var t in tables)
+            {
+                Add(t);
+            }
+        }
     }
 }

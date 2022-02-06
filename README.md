@@ -1,5 +1,6 @@
 # Inverse DB
 [![.NET Core Desktop](https://github.com/phduarte/inverse/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/phduarte/inverse/actions/workflows/dotnet-desktop.yml)
+[![codecov](https://codecov.io/gh/phduarte/inverse/branch/master/graph/badge.svg?token=MmEDT29uzh)](https://codecov.io/gh/phduarte/inverse)
 
 Sistema de Engenharia Reversa de Banco de Dados compatível com SQLite e SQL Server
 

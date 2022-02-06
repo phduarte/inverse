@@ -57,7 +57,7 @@ namespace Inverse.Domain.Services
                                 })
                                     .Where(w => w.Related != null);
 
-                                sql.AppendLine($"\tCONSTRAINT FK_{t.Name.ToUpper()}_{relatedTableName} FOREIGN KEY ({string.Join(",", chavesOriginal.Select(s => s.Name))}) REFERENCES {relatedTableName}({string.Join(",", chavesOriginal.Select(s => s.Related.Name))}),");
+                                sql.AppendLine($"\tCONSTRAINT FK_{t.Name.ToUpper()}_{relatedTableName.ToUpper()} FOREIGN KEY ({string.Join(",", chavesOriginal.Select(s => s.Name))}) REFERENCES {relatedTableName}({string.Join(",", chavesOriginal.Select(s => s.Related.Name))}),");
                             }
                         }
                     }

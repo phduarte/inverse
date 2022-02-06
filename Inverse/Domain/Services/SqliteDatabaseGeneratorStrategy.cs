@@ -9,12 +9,12 @@ namespace Inverse.Domain.Services
 {
     internal class SqliteDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
-        public Provider Provider { get; }
+        public Provider Provider => Provider.SQLite;
 
-        public SqliteDatabaseGeneratorStrategy(Provider provider)
-        {
-            Provider = provider;
-        }
+        //public SqliteDatabaseGeneratorStrategy(Provider provider)
+        //{
+        //    Provider = provider;
+        //}
 
         public Database LoadDatabase(string connectionString)
         {
@@ -141,7 +141,7 @@ namespace Inverse.Domain.Services
 
         public static IDatabaseGeneratorStrategy Create()
         {
-            return new SqliteDatabaseGeneratorStrategy(Provider.SQLite);
+            return new SqliteDatabaseGeneratorStrategy();
         }
     }
 }

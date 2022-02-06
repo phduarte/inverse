@@ -200,11 +200,11 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldAddRangeColumns()
         {
-            table.AddRange(new[]
+            table.AddRange((System.Collections.Generic.IEnumerable<Column>)(new[]
             {
                 new Column { Id = "1", Name = "ID" },
                 new Column { Id = "2", Name = "NAME" }
-            });
+            }));
 
             Assert.Equal(2, table.Columns.Count);
         }
@@ -212,12 +212,12 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldAddRangeColumnsWithDifferentTypes()
         {
-            table.AddRange(new[]
+            table.AddRange((System.Collections.Generic.IEnumerable<Column>)(new[]
             {
                 new PrimaryKey { Id = "1", Name = "ID" },
                 new Column { Id = "2", Name = "NAME" },
                 new ForeignKey { Id = "3", Name = "ADDRESS_ID" }
-            });
+            }));
 
             Assert.Equal(3, table.Columns.Count);
             Assert.Equal(1, table.PrimaryKeysCount);

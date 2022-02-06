@@ -49,6 +49,14 @@ namespace Inverse.Domain.Model
             Resize();
         }
 
+        public void AddRange(params Column[] columns)
+        {
+            foreach (var c in columns)
+            {
+                Add(c);
+            }
+        }
+
         public void AddRange(IEnumerable<Column> enumerable)
         {
             enumerable.ToList().ForEach(e => Add(e));
