@@ -12,32 +12,31 @@ namespace Inverse.Windows
 {
     public partial class FrmMain : Form
     {
-        const int MARGIN = 50;
-        readonly IDatabaseService _service;
+        private readonly IDatabaseService _databaseService;
 
         private string _connectionString;
         private Provider _provider;
         private Database _database = new Database(Provider.MSSQLServer);
-        StringFormat _textFormat = new StringFormat(StringFormatFlags.NoClip)
+        private StringFormat _textFormat = new StringFormat(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Near
         };
 
-        StringFormat _textFormatTitle = new StringFormat(StringFormatFlags.NoClip)
+        private StringFormat _textFormatTitle = new StringFormat(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Center
         };
-        Point _pressedPoint = Point.Empty;
-        Table _currentTable = null;
-        Point _currentPoint = Point.Empty;
+        private Point _pressedPoint = Point.Empty;
+        private Table _currentTable = null;
+        private Point _currentPoint = Point.Empty;
 
         public FrmMain()
         {
             InitializeComponent();
             panel1.SetDoubleBuffered();
-            _service = new DatabaseService();
+            _databaseService = new DatabaseService();
         }
 
         public void UseDatabase(Database database)
@@ -45,13 +44,13 @@ namespace Inverse.Windows
             _database = database;
             _connectionString = database.ConnectionString;
             _provider = database.Provider;
-            Arrange();
+            Arrange().GetAwaiter();
             panel1.Refresh();
         }
 
         public void UseDatabase(Provider provider, string connectionString)
         {
-            var database = _service.LoadDatabase(provider, connectionString);
+            var database = _databaseService.LoadDatabase(provider, connectionString);
             UseDatabase(database);
         }
 
@@ -59,8 +58,8 @@ namespace Inverse.Windows
 
         private async Task Arrange()
         {
-            var left = MARGIN;
-            var top = MARGIN;
+            var left = LayoutDefinition.Tables.MARGIN;
+            var top = LayoutDefinition.Tables.MARGIN;
             var tabelas = new List<Table>();
             const int DELAY = 200;
 
@@ -146,14 +145,14 @@ namespace Inverse.Windows
 
                 if (layout.Right > panel1.Width)
                 {
-                    left = MARGIN;
-                    top = _database.Tables.Max(_ => _.Bottom) + MARGIN;
+                    left = LayoutDefinition.Tables.MARGIN;
+                    top = _database.Tables.Max(_ => _.Bottom) + LayoutDefinition.Tables.MARGIN;
                 }
 
                 table.Left = layout.Left;
                 table.Top = layout.Top;
 
-                left += layout.Width + MARGIN;
+                left += layout.Width + LayoutDefinition.Tables.MARGIN;
 
                 var overridenTable = _database.Tables.Except(new List<Table> { table }).FirstOrDefault(x => x.IsHover(table.Left, table.Top));
 

@@ -126,8 +126,8 @@ namespace Inverse.Windows
                 g.SmoothingMode = x;
             }
 
-            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Max(x => x.Right) + MARGIN);
-            panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Max(x => x.Bottom) + MARGIN);
+            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Max(x => x.Right) + LayoutDefinition.Tables.MARGIN);
+            panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Max(x => x.Bottom) + LayoutDefinition.Tables.MARGIN);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)

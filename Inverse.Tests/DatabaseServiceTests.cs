@@ -9,6 +9,8 @@ namespace Inverse.Tests
 {
     public class DatabaseServiceTests
     {
+        private string encodedContent = "Grv5n8ThhgvbafwmLC0o6VCIJuYz0Wc2RuWV18EzizhazAcz4D2V+7HhyvXfbTmluHSoMw4OcsG3BdTyYVVYzduKM8EpYCVUalAu3chTgIMFk6Uy9kEPUzbkYDT2YFhIOfL2b7tmsYyZ7fM3N9oFg3Cc3m4U76lrV3NrUcTocR4/5YH2XfBeqtBpFVCDG5Uu9BwE+wQFTdX5+J5oF93HSyVqtN0vqxYVFfRdK4sb2cV8Qy69EI4p78YU770r1fBWFqzTQtQPhpMZNJqpoJKU6d3MLdxTvzXYMhm+W37JF8f0zrY/oBtKepuQkJZYBL45GDiFwjaJPbYVuphnnyMhwYVzWJ14v161vqpBxOF3lqoeLqaNKKvcFesAmfVpuoThRL6S0sQP1Q0LVHEhyCrJQ7EXaGV3bp6laJnf7u3WqhTbkEIJirMh4mijzl65GTfkWi6l1JzH1M03t4XPsGBocnbBniZb9PmK6c0w1c8v5ead96DdIJlVE38peJhedM/y9B44Sy6iaJEPzIp1X1034Dc3P1fTmwXu5AyJt5NH6FW+Q1NjompGsfejCRoHAhFpcgkkn4GMGf7l6JQlgnFG21oW7FhNg/VhOiwTAIEFWF1ZvgIlWNv4LQPHQ2EY6t1MGE40uFh4qxuL8N7ZL6ZJMg4hAW3CaHecWv6TtH1jyJYwP7Cgnzu2Wa7hkqtLdUA1QMHPtV1E3QqFoBHvONajAQR5CaBnA9iyia00zakYVBmc9GH6la47kgwW/AnqETu8sqpZWfLOAzkeRyxBT48ho1XOPfNu/+jcAyfArrsa94DJ+VCOBeOt3+o9hGQtwBoqPEJ4eOFOoiLuWcz3rP2O0r1xXkCcJzSm8bhJf4y/kqtfBquFPrLgmdSwCf7V85ZJY7xH9EGe1BFpLCAw51v7jkfb2cLXks+IvAxXVHD3PvdsOpHOOA8N4Fs2xYZiEINhROHsUlXkXx/HAd9Okhc84jQ0ejPWvv/yO8zuLIjY05Cv3/kueBpGbpY04wA9xXW9cZPRqXhDpXPLjFX4tJakX+kuPc2X7tiGu47qX9fpt0LSg+OJjLJTn5qAb7ohR7x8cByIA54QdyncnR9Xio/XZaSKaL7M1k62BkcUzqCL39BjX+pOmXGuyvcZJit402EjrJ05Z2le7EmW/352fbMZ4UySbXXBTKXmPUsQUGAuD+Wg/nY+6soPFg9zM+jmHlUdVXKyoNyrHZXolDedTVIYUwTKM5VQhadenh2Cg2cgzk2o3r/2acz7sg40JUvclFaX+GcS27vTS/FToZKu5J4yTFMPWnxTb8625kM3FZMD5F/Ye5PH1mnppdeOXEm4PcFkL95ifyl+Aq2WU6GGEWJs5pvNysvHh+TINcgvj3AubxQ=";
+
         [Fact]
         public void ShouldExportDatabaseWithOneTableToFile()
         {
@@ -79,6 +81,75 @@ namespace Inverse.Tests
                 .MustHaveHappenedOnceExactly();
         }
 
+        [Fact]
+        public void ShouldUseStrategyToSaveFile()
+        {
+            var fake = A.Fake<IFileManagerStrategy>();
+            var db = CreateDatabaseWithOneTable();
+            A.CallTo(() => fake.SaveFile(A<Database>.Ignored, A<string>.Ignored)).DoesNothing();
+
+            var svc = new DatabaseService(fileManagerStrategy: fake);
+
+            svc.SaveFile(db, "test1.idb");
+
+            A.CallTo(() => fake.SaveFile(A<Database>.Ignored, A<string>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void ShouldUseStrategyToOpenFile()
+        {
+            var fake = A.Fake<IFileManagerStrategy>();
+            var db = CreateDatabaseWithOneTable();
+            A.CallTo(() => fake.OpenFile(A<string>.Ignored)).Returns(db);
+
+            var svc = new DatabaseService(fileManagerStrategy: fake);
+
+            var ret = svc.OpenFile("test1.idb");
+
+            A.CallTo(() => fake.OpenFile(A<string>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void ShouldSaveToFile()
+        {
+            var svc = new DatabaseService();
+            var fileName = "test3.idb";
+            var db = CreateDatabaseWithTwoTables();
+            svc.SaveFile(db, fileName);
+            var expected = encodedContent;
+            var actual = ReadContent(fileName, true);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ShouldOpenFile()
+        {
+            var svc = new DatabaseService();
+            var fileName = "test4.idb";
+            var expected = CreateDatabaseWithTwoTables();
+            var actual = new Database(Provider.MSSQLServer);
+
+            try
+            {
+                File.WriteAllText(fileName, encodedContent);
+
+                actual = svc.OpenFile(fileName);
+            }
+            finally
+            {
+                if (File.Exists(fileName)) File.Delete(fileName);
+            }
+
+            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Name, actual.Name);
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Tables, actual.Tables);
+            Assert.Equal(expected.ConnectionString, actual.ConnectionString);
+            Assert.Equal(expected.Provider, actual.Provider);
+        }
+
         private string ExportAndReadScript(Database db, string temp_file)
         {
             var svc = new DatabaseService();
@@ -90,17 +161,19 @@ namespace Inverse.Tests
 
             svc.Export(db, temp_file);
 
+            return ReadContent(temp_file);
+        }
+
+        private string ReadContent(string fileName, bool deleteAfterReaded = true)
+        {
             try
             {
-                using (var sr = new StreamReader(temp_file))
-                {
-                    var txt = sr.ReadToEnd(); // this line to make copyng easier
-                    return txt;
-                }
+                using var sr = new StreamReader(fileName);
+                return sr.ReadToEnd();
             }
             finally
             {
-                File.Delete(temp_file);
+                if (deleteAfterReaded) File.Delete(fileName);
             }
         }
 
@@ -108,7 +181,7 @@ namespace Inverse.Tests
         {
             var db = new Database(Provider.SQLite)
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
             };
@@ -150,7 +223,7 @@ namespace Inverse.Tests
         {
             var db = new Database(Provider.SQLite)
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
             };
@@ -235,7 +308,7 @@ namespace Inverse.Tests
         {
             var db = new Database(Provider.SQLite)
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
             };
@@ -316,7 +389,7 @@ namespace Inverse.Tests
         {
             var db = new Database(Provider.SQLite)
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
             };
@@ -368,7 +441,7 @@ namespace Inverse.Tests
         {
             var db = new Database(Provider.SQLite)
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
             };

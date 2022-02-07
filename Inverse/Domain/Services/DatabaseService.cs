@@ -19,18 +19,33 @@ namespace Inverse.Domain.Services
 
         IDatabaseGeneratorStrategy _databaseGeneratorStrategy;
         IScriptingGeneratorStrategy _scriptingGeneratorStrategy;
+        IFileManagerStrategy _fileManagerStrategy;
 
         public DatabaseService()
         {
             _databaseGeneratorStrategy = null;
+            _scriptingGeneratorStrategy = null;
+            _fileManagerStrategy = new EncryptedXmlFileManagerStrategy();
         }
 
         public DatabaseService(
             IDatabaseGeneratorStrategy databaseGenerator = null,
-            IScriptingGeneratorStrategy scriptingGenerator = null)
+            IScriptingGeneratorStrategy scriptingGenerator = null,
+            IFileManagerStrategy fileManagerStrategy = null)
         {
             _databaseGeneratorStrategy = databaseGenerator;
             _scriptingGeneratorStrategy = scriptingGenerator;
+            _fileManagerStrategy = fileManagerStrategy;
+        }
+
+        public void SaveFile(Database database, string fileName)
+        {
+            _fileManagerStrategy.SaveFile(database, fileName);
+        }
+
+        public Database OpenFile(string currentFilename)
+        {
+            return _fileManagerStrategy.OpenFile(currentFilename);
         }
 
         public Database LoadDatabase(Provider provider, string connectionString)

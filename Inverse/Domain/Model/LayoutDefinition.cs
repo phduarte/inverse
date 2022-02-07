@@ -5,6 +5,7 @@
         public static class Tables
         {
             public const int WIDTH = 100;
+            public const int MARGIN = 50;
         }
 
         public static class Columns
