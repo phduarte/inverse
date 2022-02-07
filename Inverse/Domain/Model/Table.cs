@@ -20,10 +20,11 @@ namespace Inverse.Domain.Model
         public int Middle => Top + (Height / 2);
         public int ForeignKeysCount => ForeignKeys.Count();
         public int PrimaryKeysCount => PrimaryKeys.Count();
-        public IEnumerable<PrimaryKey> PrimaryKeys => Columns.OfType<PrimaryKey>();
-        public IEnumerable<ForeignKey> ForeignKeys => Columns.OfType<ForeignKey>();
+        public IEnumerable<PrimaryKey> PrimaryKeys => Columns.Where(_ => _.IsPrimaryKey).OfType<PrimaryKey>();
+        public IEnumerable<ForeignKey> ForeignKeys => Columns.Where(_ => _.IsForeignKey).OfType<ForeignKey>();
         public bool IsHidden { get; set; }
         public Database Database { get; set; }
+        public int Index { get; set; }
 
         public void Add(Column column)
         {
@@ -36,7 +37,15 @@ namespace Inverse.Domain.Model
                     if (_columns[i].Id.Equals(column.Id))
                     {
                         column.Index = _columns[i].Index;
-                        _columns[i] = column;
+                        if (_columns[i] is PrimaryKey && column is ForeignKey fk)
+                        {
+                            _columns[i] = ForeignPrimaryKey.Parse(fk);
+                        }
+                        else
+                        {
+                            _columns[i] = column;
+                        }
+
                         break;
                     }
                 }
@@ -96,8 +105,8 @@ namespace Inverse.Domain.Model
 
         private void Resize()
         {
-            var max = Columns.Select(x => x.Name.Length).Max();
-            Width = System.Math.Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH;
+            var max = Columns.Max(x => x.Name.Length);
+            Width = System.Math.Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH + LayoutDefinition.Columns.PREFIX_WIDTH + LayoutDefinition.Columns.TYPE_WIDTH;
             Height = Columns.Sum(x => x.Height) + LayoutDefinition.Columns.HEIGHT;
         }
 

@@ -63,6 +63,8 @@ namespace Inverse.Domain.Services
                     var colType = xmlColumn.Attributes["type"].Value;
                     var colRequired = xmlColumn.Attributes["required"].Value;
                     var colClass = xmlColumn.Attributes["class"].Value;
+                    var colRelatedTable = xmlColumn.Attributes["relatedTable"]?.Value;
+                    var colRelatedColumn = xmlColumn.Attributes["relatedColumn"]?.Value;
 
                     if (colClass.Equals(nameof(Column)))
                     {
@@ -80,9 +82,6 @@ namespace Inverse.Domain.Services
                     }
                     else if (colClass.Equals(nameof(ForeignKey)))
                     {
-                        var colRelatedTable = xmlColumn.Attributes["relatedTable"].Value;
-                        var colRelatedColumn = xmlColumn.Attributes["relatedColumn"].Value;
-
                         var column = new ForeignKey
                         {
                             Id = colGuid,
@@ -107,6 +106,22 @@ namespace Inverse.Domain.Services
                             Table = table,
                             Index = int.Parse(colIndex),
                             Required = bool.Parse(colRequired)
+                        };
+
+                        table.Add(column);
+                    }
+                    else if (colClass.Equals(nameof(ForeignPrimaryKey)))
+                    {
+                        var column = new ForeignPrimaryKey
+                        {
+                            Id = colGuid,
+                            Name = colName,
+                            Type = colType,
+                            Table = table,
+                            Index = int.Parse(colIndex),
+                            Required = bool.Parse(colRequired),
+                            RelatedColumn = colRelatedColumn,
+                            RelatedTable = colRelatedTable
                         };
 
                         table.Add(column);
@@ -159,7 +174,7 @@ namespace Inverse.Domain.Services
             sw.Write(encoded);
         }
 
-        public static string EncryptString(string plainText)
+        private static string EncryptString(string plainText)
         {
             using RijndaelManaged rijAlg = new();
             rijAlg.Key = KEY;
@@ -177,10 +192,9 @@ namespace Inverse.Domain.Services
             return Convert.ToBase64String(encrypted);
         }
 
-        public static string DecryptString(string encodedText)
+        private static string DecryptString(string encodedText)
         {
             byte[] cipherText = Convert.FromBase64String(encodedText);
-
             using RijndaelManaged rijAlg = new();
 
             rijAlg.Key = KEY;

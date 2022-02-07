@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Inverse.Domain.Model
 {
     public class Database : Entity<Guid>
     {
-        private List<Table> _tables = new List<Table>();
+        private int cindex = 0;
+
+        private readonly List<Table> _tables = new();
 
         public string Name { get; set; }
         public string ConnectionString { get; set; }
@@ -25,6 +28,7 @@ namespace Inverse.Domain.Model
 
         public void Add(Table table)
         {
+            table.Index = cindex++;
             table.Database = this;
             _tables.Add(table);
         }
@@ -35,6 +39,30 @@ namespace Inverse.Domain.Model
             {
                 Add(t);
             }
+        }
+
+        public void BringToFront(Table table)
+        {
+            cindex = 1;
+
+            foreach (var t in _tables.Except(new[] { table }).OrderBy(x => x.Index))
+            {
+                t.Index = cindex++;
+            }
+
+            table.Index = 0;
+        }
+
+        public void SendToBack(Table table)
+        {
+            cindex = 0;
+
+            foreach (var t in _tables.Except(new[] { table }).OrderBy(x => x.Index))
+            {
+                t.Index = cindex++;
+            }
+
+            table.Index = _tables.Max(t => t.Index) + 1;
         }
     }
 }

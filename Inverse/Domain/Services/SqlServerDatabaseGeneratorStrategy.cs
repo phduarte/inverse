@@ -9,12 +9,7 @@ namespace Inverse.Domain.Services
 {
     internal class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
-        public Provider Provider { get; }
-
-        public SqlServerDatabaseGeneratorStrategy(Provider provider)
-        {
-            Provider = provider;
-        }
+        public Provider Provider { get; } = Provider.MSSQLServer;
 
         public Database LoadDatabase(string connectionString)
         {
@@ -56,7 +51,7 @@ namespace Inverse.Domain.Services
             return cnn.Database;
         }
 
-        private IEnumerable<ForeignKey> GetForeignKeys(string connectionString, Table table)
+        private static IEnumerable<ForeignKey> GetForeignKeys(string connectionString, Table table)
         {
             var tableId = new SqlParameter("tableId", table.Id);
             var commandText = $@"SELECT   
@@ -93,7 +88,7 @@ namespace Inverse.Domain.Services
             }
         }
 
-        private IEnumerable<Column> GetColumns(string connectionString, Table table)
+        private static IEnumerable<Column> GetColumns(string connectionString, Table table)
         {
             var tableId = new SqlParameter("tableId", table.Id);
             var commandText = $@"select	c.column_id,
@@ -105,7 +100,7 @@ namespace Inverse.Domain.Services
 		                                (
 			                                select distinct i.name as primarykey_name
 			                                from sys.indexes i 
-			                                join sys.index_columns ic on i.object_id = ic.object_id
+			                                join sys.index_columns ic on i.object_id = ic.object_id and i.index_id = ic.index_id
 			                                where i.object_id = c.object_id and ic.column_id = c.column_id and i.is_primary_key = 1
 		                                ) as primary_key_name
                                 from sys.all_columns c
@@ -157,7 +152,7 @@ namespace Inverse.Domain.Services
             }
         }
 
-        private IEnumerable<IDataReader> ExecuteReader(string connectionString, string commandText, params SqlParameter[] parameters)
+        private static IEnumerable<IDataReader> ExecuteReader(string connectionString, string commandText, params SqlParameter[] parameters)
         {
             using var cnn = new SqlConnection(connectionString);
             using var cmd = cnn.CreateCommand();
@@ -175,7 +170,7 @@ namespace Inverse.Domain.Services
 
         public static IDatabaseGeneratorStrategy Create()
         {
-            return new SqlServerDatabaseGeneratorStrategy(Provider.MSSQLServer);
+            return new SqlServerDatabaseGeneratorStrategy();
         }
     }
 }

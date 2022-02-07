@@ -10,16 +10,20 @@ namespace Inverse.Windows
     {
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
+            //var original = panel1.BackColor;
+
+            //panel1.BackColor = Color.FromArgb(0, 30, 30, 30);
+
             if (_database.IsEmpty)
                 return;
 
-            var g = e.Graphics;
-            var bordaTabela = new Pen(Brushes.Black, 2);
-            var bordaTabelaSelecionada = new Pen(Brushes.DarkOrange, 2);
-            const int COLUMN_HEIGHT = 30;
+            const int PK_SEP_PADDING = 8;
 
-            var linha = new Pen(Brushes.Black, 1);
-            var tables = _database.Tables.Where(x => showHiddenTablesToolStripMenuItem.Checked || !x.IsHidden);
+            var g = e.Graphics;
+            var tables = _database.Tables.Where(x => showHiddenTablesToolStripMenuItem.Checked || !x.IsHidden).OrderBy(_ => _.Index);
+            var x = g.SmoothingMode;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            var font = new Font(Font.FontFamily, 8);
 
             // desenhar relacionamentos
             foreach (var table in tables)
@@ -36,21 +40,21 @@ namespace Inverse.Windows
                     {
                         var midway = source.Right + ((target.Left - source.Right) / 2);
 
-                        g.DrawLine(bordaTabela, midway, source.Middle, midway, target.Middle);
-                        g.DrawLine(bordaTabela, source.Right, source.Middle, midway, source.Middle);
-                        g.DrawLine(bordaTabela, midway, target.Middle, target.Left, target.Middle);
+                        g.DrawLine(Theme.Table.Border, midway, source.Middle, midway, target.Middle);
+                        g.DrawLine(Theme.Table.Border, source.Right, source.Middle, midway, source.Middle);
+                        g.DrawLine(Theme.Table.Border, midway, target.Middle, target.Left, target.Middle);
                     }
                     else if (isGoingToLeft)
                     {
                         var meio = target.Right + ((source.Left - target.Right) / 2);
 
-                        g.DrawLine(bordaTabela, meio, source.Middle, meio, target.Middle);
-                        g.DrawLine(bordaTabela, target.Right, target.Middle, meio, target.Middle);
-                        g.DrawLine(bordaTabela, meio, source.Middle, source.Left, source.Middle);
+                        g.DrawLine(Theme.Table.Border, meio, source.Middle, meio, target.Middle);
+                        g.DrawLine(Theme.Table.Border, target.Right, target.Middle, meio, target.Middle);
+                        g.DrawLine(Theme.Table.Border, meio, source.Middle, source.Left, source.Middle);
                     }
                     else
                     {
-                        g.DrawLine(bordaTabela, source.Right, source.Top, target.Left, target.Middle);
+                        g.DrawLine(Theme.Table.Border, source.Right, source.Top, target.Left, target.Middle);
                     }
 
                     //if (target is PrimaryKey pk)
@@ -75,56 +79,98 @@ namespace Inverse.Windows
                 }
             }
 
-            foreach (var table in tables.OrderByDescending(x => x.Columns.OfType<ForeignKey>().Count()))
+            foreach (var table in tables.OrderBy(_ => _.Index))
             {
-                var x = g.SmoothingMode;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
                 var layout = new Rectangle(table.Left, table.Top, table.Width, table.Height);
 
-                g.FillRectangle(Brushes.White, layout);
-
+                // tabela selecionada
                 if (table.IsHover(_currentPoint.X, _currentPoint.Y))
                 {
-                    g.DrawRectangle(bordaTabelaSelecionada, layout);
+                    g.FillRectangle(Theme.Table.SelectedColumn, layout);
+                    g.DrawRectangle(Theme.Table.BorderSelected, layout);
                 }
                 else
                 {
-                    g.DrawRectangle(bordaTabela, layout);
+                    g.FillRectangle(Theme.Table.Column, layout);
+                    g.DrawRectangle(Theme.Table.Border, layout);
                 }
 
-
                 // título da tabela
-                var areaTitulo = new RectangleF(table.Left, table.Top, table.Width, COLUMN_HEIGHT);
-                g.FillRectangle(Brushes.Gray, areaTitulo);
-                g.DrawString(table.Name, Font, Brushes.White, areaTitulo, _textFormatTitle);
+                var areaTitulo = new RectangleF(table.Left + Theme.Table.Border.Size / 2, table.Top, table.Width - Theme.Table.Border.Size / 2, LayoutDefinition.Columns.HEIGHT);
+                g.FillRectangle(Theme.Table.Title, areaTitulo);
+                g.DrawString(table.Name, Font, Theme.Table.TitleFont, areaTitulo, _textAlignCenter);
 
-                const int MARGIN_COLUMN_NAME = 30;
+                var pks = table.Columns.Where(_ => _.IsPrimaryKey);
+                var separatorPksY = table.Top + LayoutDefinition.Columns.HEIGHT;
 
-                foreach (var col in table.Columns)
+                foreach (var col in pks)
                 {
-                    var areaNomeColuna = new RectangleF(col.Left + MARGIN_COLUMN_NAME, col.Top, col.Width - MARGIN_COLUMN_NAME, col.Height);
+                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
+                    var areaNomeColuna = new RectangleF(col.Left + LayoutDefinition.Columns.PREFIX_WIDTH, col.Top, col.Width - LayoutDefinition.Columns.TYPE_WIDTH - LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
+                    var areaTipoColuna = new RectangleF(col.Right - LayoutDefinition.Columns.TYPE_WIDTH, col.Top, LayoutDefinition.Columns.TYPE_WIDTH, col.Height);
 
-                    if (col is ForeignKey || col is PrimaryKey)
-                    {
-                        var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, MARGIN_COLUMN_NAME, col.Height);
-                        g.DrawString(col.Prefix, new Font(Font, FontStyle.Bold), Brushes.Black, areaChaveColuna, _textFormat);
-                    }
+                    g.DrawString(col.Prefix, font, Theme.Table.Font, areaChaveColuna, _textAlignLeft);
 
                     if (col.Required)
                     {
-                        g.DrawString(col.Name, new Font(Font, FontStyle.Bold), Brushes.Black, areaNomeColuna, _textFormat);
+                        g.DrawString(col.Name, new Font(font, FontStyle.Bold), Theme.Table.Font, areaNomeColuna, _textAlignLeft);
+                        g.DrawString(col.Type, font, Theme.Table.Font, areaTipoColuna, _textAlignLeft);
                     }
                     else
                     {
-                        g.DrawString(col.Name, Font, Brushes.Black, areaNomeColuna, _textFormat);
+                        g.DrawString(col.Name, font, Theme.Table.Font, areaNomeColuna, _textAlignLeft);
+                        g.DrawString(col.Type, font, Theme.Table.Font, areaTipoColuna, _textAlignLeft);
                     }
-
-                    g.DrawLine(linha, new Point(col.Left, col.Top), new Point(col.Left + col.Width, col.Top));
+                    separatorPksY += col.Height;
                 }
 
-                g.SmoothingMode = x;
+                // separador das chaves primárias
+                g.DrawLine(Theme.Table.Border, new Point(table.Left + PK_SEP_PADDING, separatorPksY), new Point(table.Right - PK_SEP_PADDING, separatorPksY));
+
+                foreach (var col in table.Columns.Except(pks))
+                {
+                    var areaNomeColuna = new RectangleF(col.Left + LayoutDefinition.Columns.PREFIX_WIDTH, col.Top, col.Width - LayoutDefinition.Columns.TYPE_WIDTH - LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
+                    var areaTipoColuna = new RectangleF(col.Right - LayoutDefinition.Columns.TYPE_WIDTH, col.Top, LayoutDefinition.Columns.TYPE_WIDTH, col.Height);
+
+                    //if (col.IsHover(_currentPoint.X, _currentPoint.Y))
+                    //{
+                    //    g.FillRectangle(Brushes.Yellow, areaNomeColuna);
+                    //}
+
+                    if (col is ForeignKey)
+                    {
+                        var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
+                        g.DrawString(col.Prefix, font, Theme.Table.ForeignKeyColor, areaChaveColuna, _textAlignLeft);
+
+                        if (col.Required)
+                        {
+                            g.DrawString(col.Name, new Font(font, FontStyle.Bold | FontStyle.Italic), Theme.Table.ForeignKeyColor, areaNomeColuna, _textAlignLeft);
+                            g.DrawString(col.Type, font, Theme.Table.ForeignKeyColor, areaTipoColuna, _textAlignLeft);
+                        }
+                        else
+                        {
+                            g.DrawString(col.Name, new Font(font, FontStyle.Italic), Theme.Table.ForeignKeyColor, areaNomeColuna, _textAlignLeft);
+                            g.DrawString(col.Type, font, Theme.Table.ForeignKeyColor, areaTipoColuna, _textAlignLeft);
+                        }
+                    }
+                    else
+                    {
+                        if (col.Required)
+                        {
+                            g.DrawString(col.Name, new Font(font, FontStyle.Bold), Theme.Table.Font, areaNomeColuna, _textAlignLeft);
+                            g.DrawString(col.Type, font, Theme.Table.Font, areaTipoColuna, _textAlignLeft);
+                        }
+                        else
+                        {
+                            g.DrawString(col.Name, font, Theme.Table.Font, areaNomeColuna, _textAlignLeft);
+                            g.DrawString(col.Type, font, Theme.Table.Font, areaTipoColuna, _textAlignLeft);
+                        }
+                    }
+
+                    //g.DrawLine(Theme.Table.ColumnSeparator, new Point(col.Left, col.Top), new Point(col.Left + col.Width, col.Top));
+                }
             }
+            g.SmoothingMode = x;
 
             panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Max(x => x.Right) + LayoutDefinition.Tables.MARGIN);
             panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Max(x => x.Bottom) + LayoutDefinition.Tables.MARGIN);
@@ -135,7 +181,7 @@ namespace Inverse.Windows
             if (e.Button == MouseButtons.Left)
             {
                 _pressedPoint = e.Location;
-                _currentTable = _database.Tables.FirstOrDefault(x => x.IsHover(e.X, e.Y));
+                _currentTable = GetActiveTable();
             }
         }
 

@@ -48,6 +48,7 @@ namespace Inverse.Windows
                     DefaultExt = Constants.FileManager.FILTER_EXTENSION
                 };
 
+                dialog.FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION;
                 dialog.ShowDialog();
 
                 _currentFilename = dialog.FileName;

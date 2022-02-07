@@ -5,28 +5,21 @@ namespace Inverse.Domain.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        IDictionary<Provider, IDatabaseGeneratorStrategy> _databaseGenetorStrategies = new Dictionary<Provider, IDatabaseGeneratorStrategy>()
+        private readonly IDictionary<Provider, IDatabaseGeneratorStrategy> _databaseGenetorStrategies = new Dictionary<Provider, IDatabaseGeneratorStrategy>()
         {
             { Provider.SQLite, SqliteDatabaseGeneratorStrategy.Create() },
             { Provider.MSSQLServer, SqlServerDatabaseGeneratorStrategy.Create() }
         };
 
-        IDictionary<Provider, IScriptingGeneratorStrategy> _scriptingGeneratorStrategies = new Dictionary<Provider, IScriptingGeneratorStrategy>()
+        private readonly IDictionary<Provider, IScriptingGeneratorStrategy> _scriptingGeneratorStrategies = new Dictionary<Provider, IScriptingGeneratorStrategy>()
         {
             { Provider.SQLite, new SqlServerScriptingGeneratorStrategy()},
             { Provider.MSSQLServer, new SqlServerScriptingGeneratorStrategy()}
         };
 
-        IDatabaseGeneratorStrategy _databaseGeneratorStrategy;
-        IScriptingGeneratorStrategy _scriptingGeneratorStrategy;
-        IFileManagerStrategy _fileManagerStrategy;
-
-        public DatabaseService()
-        {
-            _databaseGeneratorStrategy = null;
-            _scriptingGeneratorStrategy = null;
-            _fileManagerStrategy = new EncryptedXmlFileManagerStrategy();
-        }
+        private readonly IDatabaseGeneratorStrategy _databaseGeneratorStrategy;
+        private readonly IScriptingGeneratorStrategy _scriptingGeneratorStrategy;
+        private readonly IFileManagerStrategy _fileManagerStrategy;
 
         public DatabaseService(
             IDatabaseGeneratorStrategy databaseGenerator = null,
@@ -35,7 +28,7 @@ namespace Inverse.Domain.Services
         {
             _databaseGeneratorStrategy = databaseGenerator;
             _scriptingGeneratorStrategy = scriptingGenerator;
-            _fileManagerStrategy = fileManagerStrategy;
+            _fileManagerStrategy = fileManagerStrategy?? new EncryptedXmlFileManagerStrategy();
         }
 
         public void SaveFile(Database database, string fileName)
@@ -43,9 +36,9 @@ namespace Inverse.Domain.Services
             _fileManagerStrategy.SaveFile(database, fileName);
         }
 
-        public Database OpenFile(string currentFilename)
+        public Database OpenFile(string fileName)
         {
-            return _fileManagerStrategy.OpenFile(currentFilename);
+            return _fileManagerStrategy.OpenFile(fileName);
         }
 
         public Database LoadDatabase(Provider provider, string connectionString)
@@ -53,9 +46,9 @@ namespace Inverse.Domain.Services
             return CreateGeneratorStrategy(provider).LoadDatabase(connectionString);
         }
 
-        public void Export(Database database, string filename)
+        public void Export(Database database, string fileName)
         {
-            GetScriptingGeneratorStrategy(database.Provider).ExportToFile(database, filename);
+            GetScriptingGeneratorStrategy(database.Provider).ExportToFile(database, fileName);
         }
 
         private IDatabaseGeneratorStrategy CreateGeneratorStrategy(Provider provider)

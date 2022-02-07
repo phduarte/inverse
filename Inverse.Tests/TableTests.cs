@@ -6,11 +6,11 @@ namespace Inverse.Tests
 {
     public class TableTests
     {
-        private Table table;
+        private readonly Table _table;
 
         public TableTests()
         {
-            table = new Table
+            _table = new Table
             {
                 Name = "NOME_DA_TABELA"
             };
@@ -19,44 +19,44 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldCalculateWidth()
         {
-            Assert.Equal(LayoutDefinition.Tables.WIDTH, table.Width);
+            Assert.Equal(LayoutDefinition.Tables.WIDTH, _table.Width);
 
-            table.Add(new Column { Name = "NOME_DA_COLUNA" });
-            Assert.NotEqual(LayoutDefinition.Tables.WIDTH, table.Width);
+            _table.Add(new Column { Name = "NOME_DA_COLUNA" });
+            Assert.NotEqual(LayoutDefinition.Tables.WIDTH, _table.Width);
         }
 
         [Fact]
         public void ShouldCalculateHeight()
         {
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT, table.Height);
+            Assert.Equal(LayoutDefinition.Columns.HEIGHT, _table.Height);
 
-            table.Add(new Column { Name = "NOME_DA_COLUNA" });
+            _table.Add(new Column { Name = "NOME_DA_COLUNA" });
 
-            var expectedHeight = LayoutDefinition.Columns.HEIGHT * (table.Columns.Count + 1);
+            var expectedHeight = LayoutDefinition.Columns.HEIGHT * (_table.Columns.Count + 1);
 
-            Assert.Equal(expectedHeight, table.Height);
+            Assert.Equal(expectedHeight, _table.Height);
         }
 
         [Fact]
         public void ShouldCalculateCenter()
         {
-            Assert.Equal(LayoutDefinition.Tables.WIDTH / 2, table.Center);
+            Assert.Equal(LayoutDefinition.Tables.WIDTH / 2, _table.Center);
         }
 
         [Fact]
         public void ShouldCalculateMiddle()
         {
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT / 2, table.Middle);
+            Assert.Equal(LayoutDefinition.Columns.HEIGHT / 2, _table.Middle);
         }
 
         [Fact]
         public void ShouldMoveToLeft()
         {
-            Assert.Equal(0, table.Left);
-            table.MoveOffset(1, 0);
-            Assert.Equal(1, table.Left);
-            table.MoveOffset(-1, 0);
-            Assert.Equal(0, table.Left);
+            Assert.Equal(0, _table.Left);
+            _table.MoveOffset(1, 0);
+            Assert.Equal(1, _table.Left);
+            _table.MoveOffset(-1, 0);
+            Assert.Equal(0, _table.Left);
         }
 
         [Theory]
@@ -71,9 +71,9 @@ namespace Inverse.Tests
         [InlineData(1000)]
         public void ShouldMoveToRight(int pxToRight)
         {
-            Assert.Equal(LayoutDefinition.Tables.WIDTH, table.Right);
-            table.MoveOffset(pxToRight, 0);
-            Assert.Equal(LayoutDefinition.Tables.WIDTH + pxToRight, table.Right);
+            Assert.Equal(LayoutDefinition.Tables.WIDTH, _table.Right);
+            _table.MoveOffset(pxToRight, 0);
+            Assert.Equal(LayoutDefinition.Tables.WIDTH + pxToRight, _table.Right);
         }
 
         [Theory]
@@ -88,9 +88,9 @@ namespace Inverse.Tests
         [InlineData(1000)]
         public void ShouldMoveDown(int pxToDown)
         {
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT, table.Bottom);
-            table.MoveOffset(0, pxToDown);
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT + pxToDown, table.Bottom);
+            Assert.Equal(LayoutDefinition.Columns.HEIGHT, _table.Bottom);
+            _table.MoveOffset(0, pxToDown);
+            Assert.Equal(LayoutDefinition.Columns.HEIGHT + pxToDown, _table.Bottom);
         }
 
         [Theory]
@@ -105,11 +105,11 @@ namespace Inverse.Tests
         [InlineData(1000)]
         public void ShouldMoveUp(int pxToUp)
         {
-            Assert.Equal(0, table.Top);
-            table.MoveOffset(0, pxToUp);
-            Assert.Equal(pxToUp, table.Top);
-            table.MoveOffset(0, -pxToUp);
-            Assert.Equal(0, table.Top);
+            Assert.Equal(0, _table.Top);
+            _table.MoveOffset(0, pxToUp);
+            Assert.Equal(pxToUp, _table.Top);
+            _table.MoveOffset(0, -pxToUp);
+            Assert.Equal(0, _table.Top);
         }
 
         [Theory]
@@ -119,65 +119,65 @@ namespace Inverse.Tests
         [InlineData(50, 50)]
         public void ShouldMoveToDefinedPosition(int x, int y)
         {
-            Assert.Equal(0, table.Left);
-            table.MoveTo(x, y);
-            Assert.Equal(x, table.Left);
-            Assert.Equal(y, table.Top);
+            Assert.Equal(0, _table.Left);
+            _table.MoveTo(x, y);
+            Assert.Equal(x, _table.Left);
+            Assert.Equal(y, _table.Top);
         }
 
         [Fact]
         public void ShouldNotAllowMoveOutOfTheBoard()
         {
             // is starting at 0 left position
-            Assert.Equal(0, table.Left);
+            Assert.Equal(0, _table.Left);
 
             // when it tries to move 1px to left out of board
-            table.MoveTo(-1, 0);
+            _table.MoveTo(-1, 0);
 
             // should keep in same place
-            Assert.Equal(0, table.Left);
+            Assert.Equal(0, _table.Left);
 
             // even to up
-            table.MoveTo(0, -1);
+            _table.MoveTo(0, -1);
 
             // nothing happens
-            Assert.Equal(0, table.Top);
+            Assert.Equal(0, _table.Top);
 
             // the samething when using offset to left
-            table.MoveOffset(-1, 0);
-            Assert.Equal(0, table.Left);
+            _table.MoveOffset(-1, 0);
+            Assert.Equal(0, _table.Left);
 
             // and the samething when using offset to up
-            table.MoveOffset(0, -1);
-            Assert.Equal(0, table.Top);
+            _table.MoveOffset(0, -1);
+            Assert.Equal(0, _table.Top);
         }
 
         [Fact]
         public void ShouldRecognizeWhenItsHover()
         {
-            Assert.True(table.IsHover(LayoutDefinition.Tables.WIDTH / 2, LayoutDefinition.Columns.HEIGHT / 2));
+            Assert.True(_table.IsHover(LayoutDefinition.Tables.WIDTH / 2, LayoutDefinition.Columns.HEIGHT / 2));
         }
 
         [Fact]
         public void ShouldRecognizeWhenItsNotHover()
         {
-            Assert.False(table.IsHover(LayoutDefinition.Tables.WIDTH + 1, LayoutDefinition.Columns.HEIGHT / 2));
+            Assert.False(_table.IsHover(LayoutDefinition.Tables.WIDTH + 1, LayoutDefinition.Columns.HEIGHT / 2));
         }
 
         [Fact]
         public void ShouldCalculateForeignKeysCount()
         {
-            Assert.Equal(0, table.ForeignKeysCount);
-            table.Add(new ForeignKey { Name = "FK_NAME" });
-            Assert.Equal(1, table.ForeignKeysCount);
+            Assert.Equal(0, _table.ForeignKeysCount);
+            _table.Add(new ForeignKey { Name = "FK_NAME" });
+            Assert.Equal(1, _table.ForeignKeysCount);
         }
 
         [Fact]
         public void ShouldCalculatePrimaryKeysCount()
         {
-            Assert.Equal(0, table.PrimaryKeysCount);
-            table.Add(new PrimaryKey { Name = "FK_NAME" });
-            Assert.Equal(1, table.PrimaryKeysCount);
+            Assert.Equal(0, _table.PrimaryKeysCount);
+            _table.Add(new PrimaryKey { Name = "FK_NAME" });
+            Assert.Equal(1, _table.PrimaryKeysCount);
         }
 
         [Fact]
@@ -185,83 +185,83 @@ namespace Inverse.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                table.Add(new Column { Id = "1" });
+                _table.Add(new Column { Id = "1" });
             });
         }
 
         [Fact]
         public void ShouldAddColumns()
         {
-            table.Add(new Column { Id = "1", Name = "ID" });
-            table.Add(new Column { Id = "2", Name = "NAME" });
-            Assert.Equal(2, table.Columns.Count);
+            _table.Add(new Column { Id = "1", Name = "ID" });
+            _table.Add(new Column { Id = "2", Name = "NAME" });
+            Assert.Equal(2, _table.Columns.Count);
         }
 
         [Fact]
         public void ShouldAddRangeColumns()
         {
-            table.AddRange((System.Collections.Generic.IEnumerable<Column>)(new[]
+            _table.AddRange((System.Collections.Generic.IEnumerable<Column>)(new[]
             {
                 new Column { Id = "1", Name = "ID" },
                 new Column { Id = "2", Name = "NAME" }
             }));
 
-            Assert.Equal(2, table.Columns.Count);
+            Assert.Equal(2, _table.Columns.Count);
         }
 
         [Fact]
         public void ShouldAddRangeColumnsWithDifferentTypes()
         {
-            table.AddRange((System.Collections.Generic.IEnumerable<Column>)(new[]
+            _table.AddRange((System.Collections.Generic.IEnumerable<Column>)(new[]
             {
                 new PrimaryKey { Id = "1", Name = "ID" },
                 new Column { Id = "2", Name = "NAME" },
                 new ForeignKey { Id = "3", Name = "ADDRESS_ID" }
             }));
 
-            Assert.Equal(3, table.Columns.Count);
-            Assert.Equal(1, table.PrimaryKeysCount);
-            Assert.Equal(1, table.ForeignKeysCount);
+            Assert.Equal(3, _table.Columns.Count);
+            Assert.Equal(1, _table.PrimaryKeysCount);
+            Assert.Equal(1, _table.ForeignKeysCount);
         }
 
         [Fact]
         public void ShouldNotAllowDuplicatedColumns()
         {
-            table.Add(new ForeignKey { Id = "1", Name = "ID" });
-            table.Add(new ForeignKey { Id = "1", Name = "ID" });
-            Assert.Equal(1, table.Columns.Count);
+            _table.Add(new ForeignKey { Id = "1", Name = "ID" });
+            _table.Add(new ForeignKey { Id = "1", Name = "ID" });
+            Assert.Equal(1, _table.Columns.Count);
         }
 
         [Fact]
         public void ShouldReplaceColumnInfoWhenColumnAlreadyExists()
         {
-            table.Add(new ForeignKey { Id = "1", Name = "ID" });
-            table.Add(new ForeignKey { Id = "1", Name = "NAME" });
-            Assert.Equal("NAME", table.Columns[0].Name);
+            _table.Add(new ForeignKey { Id = "1", Name = "ID" });
+            _table.Add(new ForeignKey { Id = "1", Name = "NAME" });
+            Assert.Equal("NAME", _table.Columns[0].Name);
         }
 
         [Fact]
         public void ShouldBeHidden()
         {
-            Assert.False(table.IsHidden);
-            table.Hide();
-            Assert.True(table.IsHidden);
+            Assert.False(_table.IsHidden);
+            _table.Hide();
+            Assert.True(_table.IsHidden);
         }
 
         [Fact]
         public void ShouldBeShowed()
         {
-            Assert.False(table.IsHidden);
-            table.Hide();
-            Assert.True(table.IsHidden);
-            table.Show();
-            Assert.False(table.IsHidden);
+            Assert.False(_table.IsHidden);
+            _table.Hide();
+            Assert.True(_table.IsHidden);
+            _table.Show();
+            Assert.False(_table.IsHidden);
         }
 
         [Fact]
         public void ShouldDisplayNameOnToStringMethod()
         {
-            Assert.Equal("NOME_DA_TABELA", table.ToString());
+            Assert.Equal("NOME_DA_TABELA", _table.ToString());
         }
     }
 }

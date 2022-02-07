@@ -32,6 +32,10 @@ namespace Inverse.Windows
                 {
                     connectionString += $"User ID={_username = txtUsername.Text};Password={_password = txtPassword.Text };";
                 }
+                else
+                {
+                    connectionString += "Trusted_Connection=True;";
+                }
 
                 _parentForm.UseDatabase(Provider.MSSQLServer, connectionString);
                 Close();

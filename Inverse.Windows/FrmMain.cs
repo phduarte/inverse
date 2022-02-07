@@ -13,24 +13,34 @@ namespace Inverse.Windows
     public partial class FrmMain : Form
     {
         private readonly IDatabaseService _databaseService;
-
-        private string _connectionString;
-        private Provider _provider;
-        private Database _database = new Database(Provider.MSSQLServer);
-        private StringFormat _textFormat = new StringFormat(StringFormatFlags.NoClip)
+        private readonly StringFormat _textAlignLeft = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Near
         };
-
-        private StringFormat _textFormatTitle = new StringFormat(StringFormatFlags.NoClip)
+        private readonly StringFormat _textAlignRight = new(StringFormatFlags.NoClip)
+        {
+            LineAlignment = StringAlignment.Center,
+            Alignment = StringAlignment.Far
+        };
+        private readonly StringFormat _textAlignLeftTop = new(StringFormatFlags.NoClip)
+        {
+            LineAlignment = StringAlignment.Near,
+            Alignment = StringAlignment.Near
+        };
+        private readonly StringFormat _textAlignCenter = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Center
         };
+
+        private string _connectionString;
+        private Provider _provider;
+        private Database _database = new(Provider.MSSQLServer);
         private Point _pressedPoint = Point.Empty;
-        private Table _currentTable = null;
+        private Table _currentTable;
         private Point _currentPoint = Point.Empty;
+        //private readonly IList<Table> _selectedTables = new List<Table>();
 
         public FrmMain()
         {
@@ -51,17 +61,16 @@ namespace Inverse.Windows
         public void UseDatabase(Provider provider, string connectionString)
         {
             var database = _databaseService.LoadDatabase(provider, connectionString);
+            _currentFilename = string.Empty;
             UseDatabase(database);
         }
-
-        private const int COLUMN_HEIGHT = 30;
 
         private async Task Arrange()
         {
             var left = LayoutDefinition.Tables.MARGIN;
             var top = LayoutDefinition.Tables.MARGIN;
             var tabelas = new List<Table>();
-            const int DELAY = 200;
+            const int DELAY = 100;
 
             panel1.SuspendLayout();
 
@@ -73,33 +82,16 @@ namespace Inverse.Windows
 
             panel1.ResumeLayout();
 
-            var dic = new Dictionary<string, int>();
+            var mainTable = _database.Tables.OrderByDescending(_ => _.Columns.Count(_ => _.IsForeignKey && !_.IsPrimaryKey)).FirstOrDefault();
 
-            foreach (var r in _database.Tables.SelectMany(c => c.ForeignKeys.Select(x => x.RelatedTable)))
+            if (mainTable != null)
             {
-                if (dic.ContainsKey(r))
-                {
-                    dic[r]++;
-                }
-                else
-                {
-                    dic.Add(r, 1);
-                }
-            }
+                var center = Width / 2;
+                var middle = Height / 2;
 
-            // coloca a que tem mais relacionamentos no centro da tela.
-            var maior = dic.OrderByDescending(x => x.Value).First();
+                SetPosition(mainTable, ref center, ref middle);
 
-            var temMais = _database.Tables.FirstOrDefault(x => x.Name.Equals(maior.Key));
-
-            if (temMais != null)
-            {
-                var centro = Width / 2;
-                var meio = Height / 2;
-
-                SetPosition(temMais, ref centro, ref meio);
-
-                tabelas.Add(temMais);
+                tabelas.Add(mainTable);
             }
 
             foreach (var t in _database.Tables)
@@ -144,8 +136,8 @@ namespace Inverse.Windows
 
             do
             {
-                var width = table.Columns.Select(x => x.Name.Length).Max() * 10;
-                var height = (table.Columns.Count + 1) * COLUMN_HEIGHT;
+                var width = table.Columns.Select(x => x.Name.Length).Max() * LayoutDefinition.Chars.WIDTH;
+                var height = (table.Columns.Count + 1) * LayoutDefinition.Columns.HEIGHT;
                 var layout = new Rectangle(left, top, width, height);
 
                 if (layout.Right > panel1.Width)
@@ -203,7 +195,76 @@ namespace Inverse.Windows
 
         private Table GetActiveTable()
         {
-            return _database.Tables.FirstOrDefault(f => f.IsHover(_currentPoint.X, _currentPoint.Y));
+            return _database.Tables.LastOrDefault(f => f.IsHover(_currentPoint.X, _currentPoint.Y));
+        }
+
+        private void bringToFrontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (GetActiveTable() is Table table)
+            {
+                _database.BringToFront(table);
+            }
+        }
+
+        private void sendToBackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (GetActiveTable() is Table table)
+            {
+                _database.SendToBack(table);
+            }
+        }
+
+        private void regularToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetBorderSize(1);
+            panel1.Invalidate();
+        }
+
+        private void blackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetForegroundColor(Brushes.Black);
+            panel1.Invalidate();
+        }
+
+        private void boldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetBorderSize(2);
+            panel1.Invalidate();
+        }
+
+        private void orangeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetSelectedBorderColor(Brushes.DarkOrange);
+        }
+
+        private void blueToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetSelectedBorderColor(Brushes.DarkBlue);
+        }
+
+        private void lightYellowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetSelectedColor(Brushes.LightYellow);
+        }
+
+        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetSelectedColor(Brushes.AliceBlue);
+        }
+
+        private void grayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetTitle(Brushes.White, Brushes.Gray);
+        }
+
+        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetTitle(Brushes.Black, Brushes.White);
+        }
+
+        private void blueToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetTitle(Brushes.Black, Brushes.SteelBlue);
         }
     }
 }
