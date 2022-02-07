@@ -63,10 +63,15 @@ namespace Inverse.Windows
             var tabelas = new List<Table>();
             const int DELAY = 200;
 
+            panel1.SuspendLayout();
+
             foreach (var t in _database.Tables)
             {
+                t.Hide();
                 t.MoveTo(0, 0);
             }
+
+            panel1.ResumeLayout();
 
             var dic = new Dictionary<string, int>();
 
@@ -159,6 +164,8 @@ namespace Inverse.Windows
                 intersect = overridenTable is not null;
 
             } while (intersect);
+
+            table.Show();
         }
 
         private void ResetPanelSize()
