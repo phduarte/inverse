@@ -1,4 +1,5 @@
 ﻿using Xunit;
+using Inverse.Extensions;
 
 namespace Inverse.Tests
 {

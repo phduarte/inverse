@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Inverse
+namespace Inverse.Extensions
 {
     public static class IsBetweenExtensions
     {

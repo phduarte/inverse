@@ -1,4 +1,6 @@
-﻿namespace Inverse.Domain.Model
+﻿using Inverse.Extensions;
+
+namespace Inverse.Domain.Model
 {
     public class Column : Entity<string>, IVisualElement
     {
