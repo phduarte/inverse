@@ -1,4 +1,5 @@
 ﻿using Inverse.Extensions;
+using System;
 
 namespace Inverse.Domain.Model
 {
@@ -28,6 +29,11 @@ namespace Inverse.Domain.Model
         public int Center => Table.Center;
 
         public int Middle => Top + (Height / 2);
+
+        public Column()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
 
         public bool IsHover(int x, int y)
         {

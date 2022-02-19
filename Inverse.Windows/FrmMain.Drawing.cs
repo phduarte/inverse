@@ -187,7 +187,7 @@ namespace Inverse.Windows
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (_pressedPoint != Point.Empty && _currentTable != null)
+            if (e.Button == MouseButtons.Left && _pressedPoint != Point.Empty && _currentTable != null)
             {
                 _currentTable.MoveTo(e.X, e.Y);
                 panel1.Invalidate();

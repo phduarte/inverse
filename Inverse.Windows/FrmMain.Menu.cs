@@ -124,6 +124,13 @@ namespace Inverse.Windows
             Arrange().GetAwaiter();
         }
 
+        private void addColumnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var activeTable = GetActiveTable();
+            var frm = new FrmAddColumn();
+            frm.AddColumn(activeTable);
+        }
+
         private void ToggleMenuButtons()
         {
             saveAsToolStripMenuItem.Enabled
