@@ -4,8 +4,6 @@
 
 Sistema de Engenharia Reversa de Banco de Dados compatível com SQLite e SQL Server
 
-**importante**: *não é objetivo desse sistema até o momento, a modelagem de banco de dados, por isso não terá funcionalidades para inclusão de colunas ou relacionamentos. O propósito original é fornecer recursos de engenharia reversa de bancos de dados para facilitar a análise de sistemas legados.*
-
 ## Uso
 
 Escolha qual o tipo de provedor de banco de dados o banco está sendo executado:
