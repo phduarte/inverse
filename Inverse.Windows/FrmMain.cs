@@ -220,57 +220,46 @@ namespace Inverse.Windows
             }
         }
 
-        private void regularToolStripMenuItem_Click(object sender, EventArgs e)
+        private void grayToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderSize(1);
+            Theme.Table.SetBorderColor(Brushes.Gray);
+            panel1.Invalidate();
+        }
+
+        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetBorderColor(Brushes.White);
             panel1.Invalidate();
         }
 
         private void blackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetForegroundColor(Brushes.Black);
+            Theme.Table.SetBorderColor(Brushes.Transparent);
             panel1.Invalidate();
         }
 
-        private void boldToolStripMenuItem_Click(object sender, EventArgs e)
+        private void noneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderSize(2);
+            Theme.Table.SetBorderColor(Brushes.Transparent);
+            panel1.Invalidate();
+        }
+
+        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Theme.Table.SetBorderColor(Brushes.Blue);
             panel1.Invalidate();
         }
 
         private void orangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetSelectedBorderColor(Brushes.DarkOrange);
+            Theme.Table.SetBorderColor(Brushes.Orange);
+            panel1.Invalidate();
         }
 
-        private void blueToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void redToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetSelectedBorderColor(Brushes.DarkBlue);
-        }
-
-        private void lightYellowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Theme.Table.SetSelectedColor(Brushes.LightYellow);
-        }
-
-        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Theme.Table.SetSelectedColor(Brushes.AliceBlue);
-        }
-
-        private void grayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Theme.Table.SetTitle(Brushes.White, Brushes.Gray);
-        }
-
-        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Theme.Table.SetTitle(Brushes.Black, Brushes.White);
-        }
-
-        private void blueToolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            Theme.Table.SetTitle(Brushes.Black, Brushes.SteelBlue);
+            Theme.Table.SetBorderColor(Brushes.Red);
+            panel1.Invalidate();
         }
     }
 }

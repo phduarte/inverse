@@ -10,5 +10,7 @@
         int Bottom { get; }
         int Center { get; }
         int Middle { get; }
+
+        bool IsHover(int x, int y);
     }
 }

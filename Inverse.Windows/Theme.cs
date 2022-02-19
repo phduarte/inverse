@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Inverse.Windows
 {
@@ -6,42 +7,70 @@ namespace Inverse.Windows
     {
         public static class Table
         {
-            public static Line Border { get; } = new Line();
-            public static Line Line { get; } = new Line();
-            public static Line ColumnSeparator { get; } = new Line();
-            public static Line BorderSelected { get; } = new Line();
-            public static Background Column { get; } = new Background();
-            public static Background Title { get; } = new Background(Brushes.Gray);
-            public static Background SelectedColumn { get; } = new Background(Brushes.LightYellow);
-            public static Text TitleFont { get; } = new Text(Brushes.White);
-            public static Text Font { get; } = new Text(Brushes.Black);
-            public static Text ForeignKeyColor { get; } = new Text(Brushes.Black);
+            public static Text Text { get; } = new Text(Brushes.Black);
+            public static Background Background { get; set; } = new Background(Brushes.White);
+            public static Text ForeignKeyText { get; } = new Text { Color = Brushes.Black, SelectedColor = Brushes.Blue };
+            public static Line Border { get; } = new Line(Brushes.Black);
+            public static Line Separator { get; } = new Line(Brushes.Transparent);
+
+            public static void SetTextColor(Brush brush)
+            {
+                Text.Color = brush;
+                Column.Text.Color = brush;
+            }
+
+            public static void SetTextColorSelected(Brush brush)
+            {
+                Column.Text.SelectedColor = brush;
+            }
+
+            public static void SetBackgroundColor(Brush color)
+            {
+                Background.Color = color;
+            }
+
+            public static void SetBackgroundColorSelected(Brush color)
+            {
+                Background.SelectedColor = color;
+            }
 
             public static void SetBorderSize(int size)
             {
                 Border.Size = size;
-                BorderSelected.Size = size;
             }
 
-            public static void SetForegroundColor(Brush brush)
+            public static void SetBorderColor(Brush brush)
             {
                 Border.Color = brush;
             }
 
-            public static void SetSelectedColor(Brush brush)
+            public static void SetBorderColorSelected(Brush brush)
             {
-                SelectedColumn.Color = brush;
+                Border.SelectedColor = brush;
             }
 
-            public static void SetSelectedBorderColor(Brush brush)
+            public static void SetTitle(Brush fontColor, Brush backgroundColor)
             {
-                BorderSelected.Color = brush;
+                Title.SetTheme(backgroundColor, fontColor);
             }
 
-            public static void SetTitle(Brush color, Brush backgroundColor)
+            public static class Title
             {
-                TitleFont.Color = color;
-                Title.Color = backgroundColor;
+                public static Text Text { get; set; } = new Text(Brushes.Black);
+                public static Background Background { get; set; } = new Background(Brushes.White);
+                public static Background Activated { get; set; } = new Background(Brushes.LightYellow);
+
+                public static void SetTheme(Brush backgroundColor, Brush fontColor)
+                {
+                    Background.Color = backgroundColor;
+                    Text.Color = fontColor;
+                }
+            }
+
+            public static class Column
+            {
+                public static Text Text { get; set; } = new Text(Brushes.Black);
+                public static Background Background { set; get; } = new Background(Brushes.Transparent);
             }
         }
     }
@@ -49,62 +78,80 @@ namespace Inverse.Windows
     public class Text
     {
         public int Size { get; set; } = 10;
-        public Brush Color { get; set; }
+        public Color Color { get; set; } = Brushes.Black;
+        public Color SelectedColor { get; set; } = Brushes.Red;
 
-        public Text()
-        {
-            Color = Brushes.Black;
-        }
+        public Text() { }
 
         public Text(Brush brush)
         {
             Color = brush;
         }
 
-        public static implicit operator Brush(Text text)
-        {
-            return text.Color;
-        }
+        //public static implicit operator Brush(Text text)
+        //{
+        //    return text.Color;
+        //}
     }
 
     public class Background
     {
-        public Brush Color { get; set; } = Brushes.White;
+        public Color Color { get; set; } = Brushes.Transparent;
+        public Color SelectedColor { get; set; } = Brushes.Transparent;
 
-        public Background()
-        {
-
-        }
+        public Background() { }
 
         public Background(Brush brush)
         {
             Color = brush;
         }
 
-        public static implicit operator Brush(Background border)
+        public void SetColor(Brush color, Brush selectedColor)
         {
-            return border.Color;
-        }
-
-        public static implicit operator Background(Brush brush)
-        {
-            return new Background(brush);
+            Color = color;
+            SelectedColor = selectedColor;
         }
     }
 
     public class Line
     {
         public int Size { get; set; } = 1;
-        public Brush Color { get; set; } = Brushes.Black;
+        public Color Color { get; set; } = Brushes.Black;
+        public Color SelectedColor { get; set; } = Brushes.Red;
 
-        public static implicit operator Pen(Line border)
+        public Line(Brush color)
         {
-            return new(border.Color, border.Size);
+            Color = color;
         }
 
-        public static implicit operator Brush(Line border)
+        public Pen GetPen(bool isSelected = false)
         {
-            return border.Color;
+            return new Pen(isSelected ? SelectedColor : Color, Size);
+        }
+    }
+
+    public class Color
+    {
+        public Brush Brush { get; set; }
+
+        public static implicit operator Pen(Color color)
+        {
+            return new(color.Brush);
+        }
+
+        public static implicit operator Brush(Color color)
+        {
+            return color.Brush;
+        }
+
+        public static implicit operator Color(Brush brush)
+        {
+            return new Color { Brush = brush };
+        }
+
+        public override string ToString()
+        {
+            return Brush.ToString();
         }
     }
 }
