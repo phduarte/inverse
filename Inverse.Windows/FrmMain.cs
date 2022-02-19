@@ -40,13 +40,19 @@ namespace Inverse.Windows
         private Point _pressedPoint = Point.Empty;
         private Table _currentTable;
         private Point _currentPoint = Point.Empty;
+        private Point _pressedPointCorrection = Point.Empty;
         //private readonly IList<Table> _selectedTables = new List<Table>();
+        //private readonly Control tempControl = new Button();
 
         public FrmMain()
         {
             InitializeComponent();
-            panel1.SetDoubleBuffered();
             _databaseService = new DatabaseService();
+
+            panel1.SetDoubleBuffered();
+            //flowLayoutPanel1.Controls.Add(tempControl);
+            //flowLayoutPanel1.ScrollControlIntoView(tempControl);
+            //flowLayoutPanel1.Controls.Remove(tempControl);
         }
 
         public void UseDatabase(Database database)

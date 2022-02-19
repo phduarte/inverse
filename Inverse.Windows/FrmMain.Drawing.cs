@@ -182,6 +182,9 @@ namespace Inverse.Windows
             {
                 _pressedPoint = e.Location;
                 _currentTable = GetActiveTable();
+                var x = _pressedPoint.X - _currentTable.Left;
+                var y = _pressedPoint.Y - _currentTable.Top;
+                _pressedPointCorrection = new Point(x, y);
             }
         }
 
@@ -189,7 +192,7 @@ namespace Inverse.Windows
         {
             if (e.Button == MouseButtons.Left && _pressedPoint != Point.Empty && _currentTable != null)
             {
-                _currentTable.MoveTo(e.X, e.Y);
+                _currentTable.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
                 panel1.Invalidate();
             }
 
@@ -203,10 +206,28 @@ namespace Inverse.Windows
 
             if (_currentTable is not null)
             {
-                _currentTable.MoveTo(e.X, e.Y);
+                _currentTable.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
+
+                //var scrollY = flowLayoutPanel1.AutoScrollPosition.Y;
+                //var scrollX = flowLayoutPanel1.AutoScrollPosition.X;
+
+                //if (scrollX > e.X)
+                //{
+                //}
+
+                //SetTempControl();
+                //ScrollFlowPanel();
             }
 
             panel1.Invalidate();
         }
+
+        //private void SetTempControl()
+        //{
+        //    tempControl.Left = _currentTable.Left;
+        //    tempControl.Width = _currentTable.Width;
+        //    tempControl.Height = _currentTable.Height;
+        //    tempControl.Top = _currentTable.Top;
+        //}
     }
 }
