@@ -1,13 +1,14 @@
 ﻿using Inverse.Domain.Model;
+using Inverse.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace Inverse.Domain.Services
+namespace Inverse.Plugin.MsSqlServer.DatabaseGenerator
 {
-    internal class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
+    public class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
         public Provider Provider { get; } = Provider.MSSQLServer;
 

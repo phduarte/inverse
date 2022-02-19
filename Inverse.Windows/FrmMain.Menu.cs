@@ -17,11 +17,9 @@ namespace Inverse.Windows
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var dialog = new OpenFileDialog
-            {
-                Filter = Constants.FileManager.FILTER_DESCRIPTION,
-            };
-
+            var dialog = new OpenFileDialog();
+            var exportables = _databaseService.GetCompatiblesFileTypes();
+            dialog.Filter = string.Join(",", exportables);
             dialog.ShowDialog();
 
             if (!string.IsNullOrEmpty(dialog.FileName))
@@ -42,11 +40,7 @@ namespace Inverse.Windows
 
             if (string.IsNullOrEmpty(_currentFilename))
             {
-                var dialog = new SaveFileDialog
-                {
-                    Filter = Constants.FileManager.FILTER_DESCRIPTION,
-                    DefaultExt = Constants.FileManager.FILTER_EXTENSION
-                };
+                var dialog = new SaveFileDialog();
 
                 dialog.FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION;
                 dialog.ShowDialog();
@@ -83,18 +77,19 @@ namespace Inverse.Windows
             if (_database.IsEmpty)
                 return;
 
-            var dialog = new SaveFileDialog
-            {
-                Filter = Constants.Scripting.FILTER_DESCRIPTION,
-                DefaultExt = Constants.Scripting.FILTER_EXTENSION
-            };
+            var dialog = new SaveFileDialog();
 
+            var exportables = _databaseService.GetCompatiblesScriptings();
+
+            dialog.Filter = string.Join(",", exportables);
             dialog.ShowDialog();
 
             if (string.IsNullOrEmpty(dialog.FileName))
                 return;
 
-            _databaseService.Export(_database, dialog.FileName);
+            var strategyName = exportables[dialog.FilterIndex - 1];
+
+            _databaseService.Export(_database, strategyName, dialog.FileName);
 
             MessageBox.Show("Script exportado com sucesso.");
         }

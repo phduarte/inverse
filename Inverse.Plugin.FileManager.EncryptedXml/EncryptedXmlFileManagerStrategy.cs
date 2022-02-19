@@ -4,13 +4,20 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Security.Cryptography;
+using Inverse.Domain.Services;
 
-namespace Inverse.Domain.Services
+namespace Inverse.Plugin.FileManager.EncryptedXml
 {
-    internal class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
+    public class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
     {
         private readonly static byte[] KEY = new byte[] { 105, 110, 118, 101, 114, 115, 101, 95, 100, 98, 95, 118, 49, 48, 48, 33 };
         private readonly static byte[] INIT_VECTOR = new byte[16];
+
+        public string Name => nameof(EncryptedXmlFileManagerStrategy);
+
+        public string Description => "Arquivo de Modelo de dados";
+
+        public string Extension => ".idb";
 
         public Database OpenFile(string fileName)
         {

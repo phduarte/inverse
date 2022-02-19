@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Inverse.Plugin;
 
 namespace Inverse.Windows
 {
@@ -48,6 +49,7 @@ namespace Inverse.Windows
         {
             InitializeComponent();
             _databaseService = new DatabaseService();
+            _databaseService.AddPlugins();
 
             panel1.SetDoubleBuffered();
             //flowLayoutPanel1.Controls.Add(tempControl);

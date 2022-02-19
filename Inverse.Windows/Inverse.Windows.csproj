@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Inverse.Plugin\Inverse.Plugin.csproj" />
     <ProjectReference Include="..\Inverse\Inverse.csproj" />
   </ItemGroup>
 

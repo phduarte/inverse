@@ -1,13 +1,14 @@
 ﻿using Inverse.Domain.Model;
+using Inverse.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 
-namespace Inverse.Domain.Services
+namespace Inverse.Plugin.DatabaseGenerator.Sqlite
 {
-    internal class SqliteDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
+    public class SqliteDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
         public Provider Provider => Provider.SQLite;
 
@@ -24,7 +25,7 @@ namespace Inverse.Domain.Services
                 database.Name = cnn.Database;
 
                 using var cmd = cnn.CreateCommand();
-                cmd.CommandText = @"SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1";
+                cmd.CommandText = @"SELECT name FROM sqlite_master WHERE type = 'table' and name not in ('sqlite_sequence') ORDER BY 1";
                 cnn.Open();
 
                 using var rdr = cmd.ExecuteReader();

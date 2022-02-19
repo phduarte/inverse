@@ -5,8 +5,13 @@ namespace Inverse.Domain.Services
     public interface IDatabaseService
     {
         Database LoadDatabase(Provider provider, string connectionString);
-        void Export(Database database, string fileName);
+        void Export(Database database, string strategyName, string fileName);
         Database OpenFile(string fileName);
         void SaveFile(Database database, string fileName);
+        void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy);
+        void Install(IScriptingGeneratorStrategy scriptingGeneratorStrategy);
+        void Install(IFileManagerStrategy fileManagerStrategy);
+        string[] GetCompatiblesFileTypes();
+        string[] GetCompatiblesScriptings();
     }
 }

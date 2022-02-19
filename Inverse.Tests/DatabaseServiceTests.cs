@@ -75,7 +75,7 @@ namespace Inverse.Tests
 
             var svc = new DatabaseService(scriptingGenerator: fake);
 
-            svc.Export(db, "test6.sql");
+            svc.Export(db, null, "test6.sql");
 
             A.CallTo(() => fake.ExportToFile(A<Database>.Ignored, A<string>.Ignored))
                 .MustHaveHappenedOnceExactly();
@@ -159,7 +159,7 @@ namespace Inverse.Tests
                 File.Delete(temp_file);
             }
 
-            svc.Export(db, temp_file);
+            svc.Export(db, null, temp_file);
 
             return ReadContent(temp_file);
         }

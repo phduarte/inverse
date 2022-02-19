@@ -1,21 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Inverse.Domain.Model;
 
 namespace Inverse.Domain.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        private readonly IDictionary<Provider, IDatabaseGeneratorStrategy> _databaseGenetorStrategies = new Dictionary<Provider, IDatabaseGeneratorStrategy>()
-        {
-            { Provider.SQLite, SqliteDatabaseGeneratorStrategy.Create() },
-            { Provider.MSSQLServer, SqlServerDatabaseGeneratorStrategy.Create() }
-        };
-
-        private readonly IDictionary<Provider, IScriptingGeneratorStrategy> _scriptingGeneratorStrategies = new Dictionary<Provider, IScriptingGeneratorStrategy>()
-        {
-            { Provider.SQLite, new SqlServerScriptingGeneratorStrategy()},
-            { Provider.MSSQLServer, new SqlServerScriptingGeneratorStrategy()}
-        };
+        private readonly IDictionary<Provider, IDatabaseGeneratorStrategy> _databaseGenetorStrategies = new Dictionary<Provider, IDatabaseGeneratorStrategy>();
+        private readonly IDictionary<string, IScriptingGeneratorStrategy> _scriptingGeneratorStrategies = new Dictionary<string, IScriptingGeneratorStrategy>();
+        private readonly IDictionary<string, IFileManagerStrategy> _fileManagerStrategies = new Dictionary<string, IFileManagerStrategy>();
 
         private readonly IDatabaseGeneratorStrategy _databaseGeneratorStrategy;
         private readonly IScriptingGeneratorStrategy _scriptingGeneratorStrategy;
@@ -28,17 +21,43 @@ namespace Inverse.Domain.Services
         {
             _databaseGeneratorStrategy = databaseGenerator;
             _scriptingGeneratorStrategy = scriptingGenerator;
-            _fileManagerStrategy = fileManagerStrategy?? new EncryptedXmlFileManagerStrategy();
+            _fileManagerStrategy = fileManagerStrategy;
+        }
+
+        public void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy)
+        {
+            if (!_databaseGenetorStrategies.ContainsKey(databaseGeneratorStrategy.Provider))
+            {
+                _databaseGenetorStrategies.Add(databaseGeneratorStrategy.Provider, databaseGeneratorStrategy);
+            }
+        }
+
+        public void Install(IScriptingGeneratorStrategy scriptingGeneratorStrategy)
+        {
+            if (!_scriptingGeneratorStrategies.ContainsKey(scriptingGeneratorStrategy.Name))
+            {
+                _scriptingGeneratorStrategies.Add(scriptingGeneratorStrategy.Name, scriptingGeneratorStrategy);
+            }
+        }
+
+        public void Install(IFileManagerStrategy fileManagerStrategy)
+        {
+            if (!_fileManagerStrategies.ContainsKey(fileManagerStrategy.Name))
+            {
+                _fileManagerStrategies.Add(fileManagerStrategy.Name, fileManagerStrategy);
+            }
         }
 
         public void SaveFile(Database database, string fileName)
         {
-            _fileManagerStrategy.SaveFile(database, fileName);
+            var strategy = GetStrategyByFile(fileName);
+            strategy.SaveFile(database, fileName);
         }
 
         public Database OpenFile(string fileName)
         {
-            return _fileManagerStrategy.OpenFile(fileName);
+            var strategy = GetStrategyByFile(fileName);
+            return strategy.OpenFile(fileName);
         }
 
         public Database LoadDatabase(Provider provider, string connectionString)
@@ -46,9 +65,10 @@ namespace Inverse.Domain.Services
             return CreateGeneratorStrategy(provider).LoadDatabase(connectionString);
         }
 
-        public void Export(Database database, string fileName)
+        public void Export(Database database, string strategyName, string fileName)
         {
-            GetScriptingGeneratorStrategy(database.Provider).ExportToFile(database, fileName);
+            var st = _scriptingGeneratorStrategies.Values.FirstOrDefault(r => $"{r.Name}|*{r.Extension}".Equals(strategyName)).Name;
+            GetScriptingGeneratorStrategy(st).ExportToFile(database, fileName);
         }
 
         private IDatabaseGeneratorStrategy CreateGeneratorStrategy(Provider provider)
@@ -56,9 +76,26 @@ namespace Inverse.Domain.Services
             return _databaseGeneratorStrategy ?? _databaseGenetorStrategies[provider];
         }
 
-        private IScriptingGeneratorStrategy GetScriptingGeneratorStrategy(Provider provider)
+        private IScriptingGeneratorStrategy GetScriptingGeneratorStrategy(string strategyName)
         {
-            return _scriptingGeneratorStrategy ?? _scriptingGeneratorStrategies[provider];
+            return _scriptingGeneratorStrategy ?? _scriptingGeneratorStrategies[strategyName];
+        }
+
+        public string[] GetCompatiblesFileTypes()
+        {
+            return _fileManagerStrategies.Values.Select(r => $"{r.Description}|*{r.Extension}").ToArray();
+        }
+
+        private IFileManagerStrategy GetStrategyByFile(string filename)
+        {
+            var fi = new System.IO.FileInfo(filename);
+            var ext = fi.Extension;
+            return _fileManagerStrategies.FirstOrDefault(x => x.Value.Extension == ext).Value;
+        }
+
+        public string[] GetCompatiblesScriptings()
+        {
+            return _scriptingGeneratorStrategies.Values.Select(r => $"{r.Name}|*{r.Extension}").ToArray();
         }
     }
 }

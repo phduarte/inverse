@@ -1,12 +1,17 @@
 ﻿using Inverse.Domain.Model;
+using Inverse.Domain.Services;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace Inverse.Domain.Services
+namespace Inverse.Plugin.MsSqlServer.ScriptGenerator
 {
-    internal class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
+    public class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
     {
+        public string Name => "SQL Server Scripting";
+
+        public string Extension => ".sql";
+
         public void ExportToFile(Database database, string filename)
         {
             var nomeTabelasRelacionadas = database.Tables.OrderBy(t => t.ForeignKeysCount).SelectMany(t => t.ForeignKeys.Select(s => s.RelatedTable)).Distinct();

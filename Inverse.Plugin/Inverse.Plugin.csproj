@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Inverse.Plugin.DatabaseGenerator.MsSqlServer\Inverse.Plugin.DatabaseGenerator.MsSqlServer.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.DatabaseGenerator.Sqlite\Inverse.Plugin.DatabaseGenerator.Sqlite.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.FileManager.EncryptedXml\Inverse.Plugin.FileManager.EncryptedXml.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.MsSqlServer.ScriptGenerator\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj" />
+  </ItemGroup>
+
+</Project>
