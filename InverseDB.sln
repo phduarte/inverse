@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Tests", "Inverse.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.DatabaseGenerator.MsSqlServer", "Inverse.Plugin.DatabaseGenerator.MsSqlServer\Inverse.Plugin.DatabaseGenerator.MsSqlServer.csproj", "{9316CD09-BE38-4147-9451-172D57986CF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.ScriptGenerator.MsSqlServer", "Inverse.Plugin.MsSqlServer.ScriptGenerator\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj", "{99E0FB1C-9DC6-4B3D-8188-B7D5C37440FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.ScriptGenerator.MsSqlServer", "Inverse.Plugin.ScriptGenerator.MsSqlServer\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj", "{99E0FB1C-9DC6-4B3D-8188-B7D5C37440FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.DatabaseGenerator.Sqlite", "Inverse.Plugin.DatabaseGenerator.Sqlite\Inverse.Plugin.DatabaseGenerator.Sqlite.csproj", "{19A7AD7D-FA33-43A4-87B2-FB5945BA4AF8}"
 EndProject

@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Inverse.Plugin.MsSqlServer.ScriptGenerator
+namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
 {
     public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
     {

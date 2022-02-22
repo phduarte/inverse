@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace Inverse.Plugin.MsSqlServer.DatabaseGenerator
+namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
 {
     public sealed class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {

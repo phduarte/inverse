@@ -167,7 +167,7 @@ namespace Inverse.Tests
         private static string ExportAndReadScript(Database db, string temp_file)
         {
             var svc = new DatabaseService()
-                .With(new Inverse.Plugin.MsSqlServer.ScriptGenerator.SqlServerScriptingGeneratorStrategy());
+                .With(new Inverse.Plugin.ScriptGenerator.MsSqlServer.SqlServerScriptingGeneratorStrategy());
 
             if (File.Exists(temp_file))
             {
