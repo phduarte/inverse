@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using Xunit;
 using FakeItEasy;
+using Inverse.Plugin.FileManager.EncryptedXml;
 
 namespace Inverse.Tests
 {
@@ -56,9 +57,11 @@ namespace Inverse.Tests
         {
             var fake = A.Fake<IDatabaseGeneratorStrategy>();
             var db = CreateDatabaseWithOneTable();
+
+            A.CallTo(() => fake.Provider).Returns(Provider.SQLite);
             A.CallTo(() => fake.LoadDatabase(A<string>.Ignored)).Returns(db);
 
-            var svc = new DatabaseService(databaseGenerator: fake);
+            var svc = new DatabaseService().With(fake);
 
             svc.LoadDatabase(Provider.SQLite, "connectionString");
 
@@ -71,11 +74,13 @@ namespace Inverse.Tests
         {
             var fake = A.Fake<IScriptingGeneratorStrategy>();
             var db = CreateDatabaseWithOneTable();
+
+            A.CallTo(() => fake.Extension).Returns(".sql");
             A.CallTo(() => fake.ExportToFile(A<Database>.Ignored, A<string>.Ignored)).DoesNothing();
 
-            var svc = new DatabaseService(scriptingGenerator: fake);
+            var svc = new DatabaseService().With(fake);
 
-            svc.Export(db, null, "test6.sql");
+            svc.Export(db, "test6.sql");
 
             A.CallTo(() => fake.ExportToFile(A<Database>.Ignored, A<string>.Ignored))
                 .MustHaveHappenedOnceExactly();
@@ -86,9 +91,11 @@ namespace Inverse.Tests
         {
             var fake = A.Fake<IFileManagerStrategy>();
             var db = CreateDatabaseWithOneTable();
+
+            A.CallTo(() => fake.Extension).Returns(".idb");
             A.CallTo(() => fake.SaveFile(A<Database>.Ignored, A<string>.Ignored)).DoesNothing();
 
-            var svc = new DatabaseService(fileManagerStrategy: fake);
+            var svc = new DatabaseService().With(fake);
 
             svc.SaveFile(db, "test1.idb");
 
@@ -101,9 +108,12 @@ namespace Inverse.Tests
         {
             var fake = A.Fake<IFileManagerStrategy>();
             var db = CreateDatabaseWithOneTable();
+
+            A.CallTo(() => fake.Extension).Returns(".idb");
             A.CallTo(() => fake.OpenFile(A<string>.Ignored)).Returns(db);
 
-            var svc = new DatabaseService(fileManagerStrategy: fake);
+            var svc = new DatabaseService()
+                .With(fake);
 
             svc.OpenFile("test1.idb");
 
@@ -114,10 +124,13 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldSaveToFile()
         {
-            var svc = new DatabaseService();
             var fileName = "test3.idb";
             var db = CreateDatabaseWithTwoTables();
+            var svc = new DatabaseService()
+                .With(new EncryptedXmlFileManagerStrategy());
+
             svc.SaveFile(db, fileName);
+
             var expected = _encodedContent;
             var actual = ReadContent(fileName, true);
             Assert.Equal(expected, actual);
@@ -126,10 +139,11 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldOpenFile()
         {
-            var svc = new DatabaseService();
             var fileName = "test4.idb";
             var expected = CreateDatabaseWithTwoTables();
             var actual = new Database(Provider.MSSQLServer);
+            var svc = new DatabaseService()
+                .With(new EncryptedXmlFileManagerStrategy());
 
             try
             {
@@ -152,14 +166,15 @@ namespace Inverse.Tests
 
         private static string ExportAndReadScript(Database db, string temp_file)
         {
-            var svc = new DatabaseService();
+            var svc = new DatabaseService()
+                .With(new Inverse.Plugin.MsSqlServer.ScriptGenerator.SqlServerScriptingGeneratorStrategy());
 
             if (File.Exists(temp_file))
             {
                 File.Delete(temp_file);
             }
 
-            svc.Export(db, null, temp_file);
+            svc.Export(db, temp_file);
 
             return ReadContent(temp_file);
         }

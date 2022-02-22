@@ -5,7 +5,7 @@ namespace Inverse.Domain.Services
     public interface IDatabaseService
     {
         Database LoadDatabase(Provider provider, string connectionString);
-        void Export(Database database, string strategyName, string fileName);
+        void Export(Database database, string fileName);
         Database OpenFile(string fileName);
         void SaveFile(Database database, string fileName);
         void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy);
@@ -13,5 +13,6 @@ namespace Inverse.Domain.Services
         void Install(IFileManagerStrategy fileManagerStrategy);
         string[] GetCompatiblesFileTypes();
         string[] GetCompatiblesScriptings();
+        DatabaseService With<T>(T strategy);
     }
 }

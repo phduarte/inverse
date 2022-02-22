@@ -92,9 +92,7 @@ namespace Inverse.Windows
             if (string.IsNullOrEmpty(dialog.FileName))
                 return;
 
-            var strategyName = exportables[dialog.FilterIndex - 1];
-
-            _databaseService.Export(_database, strategyName, dialog.FileName);
+            _databaseService.Export(_database, dialog.FileName);
 
             MessageBox.Show("Script exportado com sucesso.");
         }
