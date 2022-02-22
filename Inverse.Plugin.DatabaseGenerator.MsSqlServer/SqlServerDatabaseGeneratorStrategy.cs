@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Inverse.Plugin.MsSqlServer.DatabaseGenerator
 {
-    public class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
+    public sealed class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
         public Provider Provider { get; } = Provider.MSSQLServer;
 

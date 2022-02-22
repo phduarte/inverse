@@ -8,7 +8,7 @@ namespace Inverse.Plugin
 {
     public static class Setup
     {
-        public static void AddPlugins(this IDatabaseService service)
+        public static void InstallPlugins(this IDatabaseService service)
         {
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
@@ -18,7 +18,7 @@ namespace Inverse.Plugin
 
             toLoad.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
 
-            var asm = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("Inverse.Plugin."));
+            var asm = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name.StartsWith("Inverse.Plugin."));
             foreach (var a in asm)
             {
                 foreach (var t in a.ExportedTypes)

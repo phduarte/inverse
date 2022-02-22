@@ -8,7 +8,7 @@ using Inverse.Domain.Services;
 
 namespace Inverse.Plugin.FileManager.EncryptedXml
 {
-    public class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
+    public sealed class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
     {
         private readonly static byte[] KEY = new byte[] { 105, 110, 118, 101, 114, 115, 101, 95, 100, 98, 95, 118, 49, 48, 48, 33 };
         private readonly static byte[] INIT_VECTOR = new byte[16];

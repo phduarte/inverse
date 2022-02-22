@@ -49,7 +49,7 @@ namespace Inverse.Windows
         {
             InitializeComponent();
             _databaseService = new DatabaseService();
-            _databaseService.AddPlugins();
+            _databaseService.InstallPlugins();
 
             panel1.SetDoubleBuffered();
             //flowLayoutPanel1.Controls.Add(tempControl);

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Inverse.Plugin.MsSqlServer.ScriptGenerator
 {
-    public class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
+    public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStrategy
     {
         public string Name => "SQL Server Scripting";
 

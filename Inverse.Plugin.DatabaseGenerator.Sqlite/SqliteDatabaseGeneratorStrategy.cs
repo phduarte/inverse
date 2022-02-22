@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Inverse.Plugin.DatabaseGenerator.Sqlite
 {
-    public class SqliteDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
+    public sealed class SqliteDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
     {
         public Provider Provider => Provider.SQLite;
 

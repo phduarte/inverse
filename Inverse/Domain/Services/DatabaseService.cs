@@ -42,9 +42,9 @@ namespace Inverse.Domain.Services
 
         public void Install(IFileManagerStrategy fileManagerStrategy)
         {
-            if (!_fileManagerStrategies.ContainsKey(fileManagerStrategy.Name))
+            if (!_fileManagerStrategies.ContainsKey(fileManagerStrategy.Extension))
             {
-                _fileManagerStrategies.Add(fileManagerStrategy.Name, fileManagerStrategy);
+                _fileManagerStrategies.Add(fileManagerStrategy.Extension, fileManagerStrategy);
             }
         }
 

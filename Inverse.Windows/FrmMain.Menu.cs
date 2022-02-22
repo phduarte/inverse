@@ -17,9 +17,11 @@ namespace Inverse.Windows
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var dialog = new OpenFileDialog();
             var exportables = _databaseService.GetCompatiblesFileTypes();
-            dialog.Filter = string.Join(",", exportables);
+            var dialog = new OpenFileDialog
+            {
+                Filter = string.Join("|", exportables)
+            };
             dialog.ShowDialog();
 
             if (!string.IsNullOrEmpty(dialog.FileName))
@@ -40,9 +42,12 @@ namespace Inverse.Windows
 
             if (string.IsNullOrEmpty(_currentFilename))
             {
-                var dialog = new SaveFileDialog();
-
-                dialog.FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION;
+                var exportables = _databaseService.GetCompatiblesFileTypes();
+                var dialog = new SaveFileDialog
+                {
+                    Filter = string.Join("|", exportables),
+                    FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION
+                };
                 dialog.ShowDialog();
 
                 _currentFilename = dialog.FileName;
@@ -81,7 +86,7 @@ namespace Inverse.Windows
 
             var exportables = _databaseService.GetCompatiblesScriptings();
 
-            dialog.Filter = string.Join(",", exportables);
+            dialog.Filter = string.Join("|", exportables);
             dialog.ShowDialog();
 
             if (string.IsNullOrEmpty(dialog.FileName))
