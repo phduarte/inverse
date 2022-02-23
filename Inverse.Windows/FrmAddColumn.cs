@@ -1,15 +1,15 @@
-﻿using Inverse.Domain.Model;
+﻿using Inverse.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Inverse.Windows
 {
-    delegate Inverse.Domain.Model.Column MapEventHandler();
+    delegate Column MapEventHandler();
 
     public partial class FrmAddColumn : Form
     {
-        private IDictionary<string, MapEventHandler> _mappers = new Dictionary<string, MapEventHandler>();
+        private readonly IDictionary<string, MapEventHandler> _mappers = new Dictionary<string, MapEventHandler>();
 
         public FrmAddColumn()
         {

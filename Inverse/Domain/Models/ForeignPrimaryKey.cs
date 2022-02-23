@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Model
+﻿namespace Inverse.Domain.Models
 {
     public class ForeignPrimaryKey : ForeignKey
     {

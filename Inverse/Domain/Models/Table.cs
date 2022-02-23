@@ -2,7 +2,7 @@
 using System.Linq;
 using Inverse.Extensions;
 
-namespace Inverse.Domain.Model
+namespace Inverse.Domain.Models
 {
     public class Table : Entity<string>, IDraggableElement
     {

@@ -1,4 +1,4 @@
-﻿using Inverse.Domain.Model;
+﻿using Inverse.Domain.Models;
 using Inverse.Domain.Services;
 using System;
 using System.Collections.Generic;

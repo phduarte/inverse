@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Inverse.Domain.Model
+namespace Inverse.Domain.Models
 {
     public class Database : Entity<Guid>
     {

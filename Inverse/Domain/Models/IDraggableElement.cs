@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Model
+﻿namespace Inverse.Domain.Models
 {
     public interface IDraggableElement : IVisualElement
     {

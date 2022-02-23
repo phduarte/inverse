@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Inverse.Domain.Model;
+using Inverse.Domain.Models;
 
 namespace Inverse.Domain.Services
 {

@@ -1,7 +1,7 @@
 ﻿using Inverse.Extensions;
 using System;
 
-namespace Inverse.Domain.Model
+namespace Inverse.Domain.Models
 {
     public class Column : Entity<string>, IVisualElement
     {

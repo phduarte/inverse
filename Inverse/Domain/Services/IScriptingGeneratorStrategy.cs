@@ -1,4 +1,4 @@
-﻿using Inverse.Domain.Model;
+﻿using Inverse.Domain.Models;
 
 namespace Inverse.Domain.Services
 {
