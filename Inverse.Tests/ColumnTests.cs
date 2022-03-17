@@ -73,5 +73,51 @@ namespace Inverse.Tests
             var fk = new ForeignKey();
             Assert.Equal(LayoutDefinition.Columns.FOREIGN_KEY_PREFIX, fk.Prefix);
         }
+
+        [Fact]
+        public void ShouldRecognizeForeignPrimaryKey()
+        {
+            var fpk = new ForeignPrimaryKey();
+            Assert.True(fpk.IsForeignKey);
+            Assert.True(fpk.IsPrimaryKey);
+        }
+
+        [Fact]
+        public void ShouldRecognizeForeignPrimaryKeyPrefix()
+        {
+            var fpk = new ForeignPrimaryKey();
+            Assert.Equal(LayoutDefinition.Columns.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
+        }
+
+        [Fact]
+        public void ShouldParseForeignPrimaryKeyFromForeignKey()
+        {
+            var fk = new ForeignKey
+            {
+                Id = "1",
+                Name = "CustomerId",
+                Type = "INT",
+                Index = 1,
+                RelatedTable = "Customers",
+                RelatedColumn = "CustomerId",
+                Required = true,
+                Table = new Table
+                {
+                    Name = "Sales"
+                }
+            };
+
+            var fpk = ForeignPrimaryKey.Parse(fk);
+
+            Assert.Equal(fk.Id, fpk.Id);
+            Assert.Equal(fk.Name, fpk.Name);
+            Assert.Equal(fk.Type, fpk.Type);
+            Assert.Equal(fk.Index, fpk.Index);
+            Assert.Equal(fk.RelatedTable, fpk.RelatedTable);
+            Assert.Equal(fk.RelatedColumn, fpk.RelatedColumn);
+            Assert.Equal(fk.Required, fpk.Required);
+            Assert.Equal(fk.Table.Name, fpk.Table.Name);
+            Assert.Equal(LayoutDefinition.Columns.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
+        }
     }
 }
