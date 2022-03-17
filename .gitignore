@@ -26,3 +26,12 @@
 /Inverse.Plugin.MsSqlServer.ScriptGenerator/bin/Debug/net5.0
 /Inverse.Plugin.ScriptGenerator.MsSqlServer/bin/Debug/net5.0
 /Inverse.Plugin.ScriptGenerator.MsSqlServer/obj
+/Inverse.Plugin/bin/Release/net5.0
+/Inverse.Plugin.DatabaseGenerator.MsSqlServer/bin/Release/net5.0/ref
+/Inverse.Plugin.DatabaseGenerator.Sqlite/bin/Release/net5.0/ref
+/Inverse.Plugin.FileManager.EncryptedXml/bin/Release/net5.0/ref
+/Inverse.Plugin.ScriptGenerator.MsSqlServer/bin/Release/net5.0/ref
+/Inverse.Plugin.DatabaseGenerator.MsSqlServer/bin/Release/net5.0
+/Inverse.Plugin.DatabaseGenerator.Sqlite/bin/Release/net5.0
+/Inverse.Plugin.FileManager.EncryptedXml/bin/Release/net5.0
+/Inverse.Plugin.ScriptGenerator.MsSqlServer/bin/Release/net5.0
