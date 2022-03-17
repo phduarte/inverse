@@ -1,5 +1,6 @@
 ﻿using Inverse.Domain.Models;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Inverse.Windows
@@ -17,10 +18,9 @@ namespace Inverse.Windows
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var exportables = _databaseService.GetCompatiblesFileTypes();
             var dialog = new OpenFileDialog
             {
-                Filter = string.Join("|", exportables)
+                Filter = GetCompatibleFilesFilter()
             };
             dialog.ShowDialog();
 
@@ -42,10 +42,9 @@ namespace Inverse.Windows
 
             if (string.IsNullOrEmpty(_currentFilename))
             {
-                var exportables = _databaseService.GetCompatiblesFileTypes();
                 var dialog = new SaveFileDialog
                 {
-                    Filter = string.Join("|", exportables),
+                    Filter = GetCompatibleFilesFilter(),
                     FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION
                 };
 
@@ -139,6 +138,15 @@ namespace Inverse.Windows
                 = closeToolStripMenuItem.Enabled
                 = exportToolStripMenuItem.Enabled
                 = arrangeToolStripMenuItem.Enabled = !_database.IsEmpty;
+        }
+
+        private string GetCompatibleFilesFilter()
+        {
+            var exportables = _databaseService.GetCompatiblesFileTypes().ToList();
+            var extensions = exportables.Select(x => x.Split("|")[1]);
+            var todos = "All files|" + string.Join(";", extensions);
+            exportables.Insert(0, todos);
+            return string.Join("|", exportables);
         }
     }
 }
