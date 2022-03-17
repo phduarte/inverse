@@ -48,9 +48,10 @@ namespace Inverse.Windows
                     Filter = string.Join("|", exportables),
                     FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION
                 };
-                dialog.ShowDialog();
 
-                _currentFilename = dialog.FileName;
+                var res = dialog.ShowDialog();
+
+                _currentFilename = res != DialogResult.Cancel ? dialog.FileName : null;
             }
 
             if (string.IsNullOrEmpty(_currentFilename))
