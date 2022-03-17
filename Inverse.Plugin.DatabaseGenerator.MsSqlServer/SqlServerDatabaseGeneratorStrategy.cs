@@ -114,13 +114,15 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
                 var id = rdr["column_id"].ToString();
                 var name = rdr["column_name"].ToString();
                 var type = rdr["type_name"].ToString();
-                var required = rdr["is_nullable"].ToString().Equals("False");
+                var required = rdr["is_nullable"].ToString()?.Equals("False") ?? false;
                 var pk = rdr["primary_key_name"].ToString();
                 var size = rdr["max_length"].ToString();
                 var precision = rdr["precision"].ToString();
 
-                if (type == "varchar" || type == "char")
+                if (type == "varchar" || type == "nvarchar" || type == "char")
                 {
+                    size = size == "-1" ? "max" : size;
+
                     type = $"{type}({size})";
                 }
                 else if (type == "numeric" || type == "decimal")
