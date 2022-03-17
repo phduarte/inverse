@@ -14,6 +14,7 @@
             public const int TITLE_MARGIN = 30;
             public const string PRIMARY_KEY_PREFIX = "PK";
             public const string FOREIGN_KEY_PREFIX = "FK";
+            public const string FOREIGN_PRIMART_KEY_PREFIX = "PK FK";
             public const int PREFIX_WIDTH = 40;
             public const int TYPE_WIDTH = 90;
         }
