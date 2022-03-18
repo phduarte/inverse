@@ -38,12 +38,14 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.MaskedTextBox();
             this.chkWindowsAuth = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 11);
+            this.label1.Location = new System.Drawing.Point(29, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 15);
             this.label1.TabIndex = 0;
@@ -51,22 +53,23 @@
             // 
             // txtServer
             // 
-            this.txtServer.Location = new System.Drawing.Point(12, 29);
+            this.txtServer.Location = new System.Drawing.Point(29, 29);
             this.txtServer.Name = "txtServer";
-            this.txtServer.Size = new System.Drawing.Size(333, 23);
+            this.txtServer.Size = new System.Drawing.Size(316, 23);
             this.txtServer.TabIndex = 0;
+            this.txtServer.Leave += new System.EventHandler(this.txtServer_Leave);
             // 
             // txtDatabase
             // 
-            this.txtDatabase.Location = new System.Drawing.Point(12, 80);
+            this.txtDatabase.Location = new System.Drawing.Point(29, 80);
             this.txtDatabase.Name = "txtDatabase";
-            this.txtDatabase.Size = new System.Drawing.Size(333, 23);
+            this.txtDatabase.Size = new System.Drawing.Size(316, 23);
             this.txtDatabase.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 62);
+            this.label2.Location = new System.Drawing.Point(29, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 15);
             this.label2.TabIndex = 2;
@@ -85,7 +88,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 203);
+            this.label3.Location = new System.Drawing.Point(29, 203);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 15);
             this.label3.TabIndex = 7;
@@ -94,15 +97,15 @@
             // txtUsername
             // 
             this.txtUsername.Enabled = false;
-            this.txtUsername.Location = new System.Drawing.Point(12, 170);
+            this.txtUsername.Location = new System.Drawing.Point(29, 170);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(333, 23);
+            this.txtUsername.Size = new System.Drawing.Size(316, 23);
             this.txtUsername.TabIndex = 3;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 152);
+            this.label4.Location = new System.Drawing.Point(29, 152);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 15);
             this.label4.TabIndex = 5;
@@ -111,10 +114,10 @@
             // txtPassword
             // 
             this.txtPassword.Enabled = false;
-            this.txtPassword.Location = new System.Drawing.Point(12, 221);
+            this.txtPassword.Location = new System.Drawing.Point(29, 221);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PromptChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(333, 23);
+            this.txtPassword.Size = new System.Drawing.Size(316, 23);
             this.txtPassword.TabIndex = 4;
             // 
             // chkWindowsAuth
@@ -122,7 +125,7 @@
             this.chkWindowsAuth.AutoSize = true;
             this.chkWindowsAuth.Checked = true;
             this.chkWindowsAuth.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkWindowsAuth.Location = new System.Drawing.Point(12, 119);
+            this.chkWindowsAuth.Location = new System.Drawing.Point(29, 119);
             this.chkWindowsAuth.Name = "chkWindowsAuth";
             this.chkWindowsAuth.Size = new System.Drawing.Size(157, 19);
             this.chkWindowsAuth.TabIndex = 2;
@@ -130,12 +133,38 @@
             this.chkWindowsAuth.UseVisualStyleBackColor = true;
             this.chkWindowsAuth.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Lime;
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(351, 32);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(14, 15);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "V";
+            this.label5.Visible = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Lime;
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(351, 88);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(14, 15);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "V";
+            this.label6.Visible = false;
+            // 
             // FrmNewConnectionSqlServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(361, 314);
+            this.ClientSize = new System.Drawing.Size(378, 314);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.chkWindowsAuth);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label3);
@@ -167,5 +196,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.MaskedTextBox txtPassword;
         private System.Windows.Forms.CheckBox chkWindowsAuth;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

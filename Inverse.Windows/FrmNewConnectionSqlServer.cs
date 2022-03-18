@@ -50,5 +50,10 @@ namespace Inverse.Windows
         {
             txtUsername.Enabled = txtPassword.Enabled = !chkWindowsAuth.Checked;
         }
+
+        private void txtServer_Leave(object sender, EventArgs e)
+        {
+            // TODO validar se o servidor existe
+        }
     }
 }

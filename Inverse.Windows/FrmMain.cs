@@ -36,6 +36,13 @@ namespace Inverse.Windows
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Center
         };
+        private readonly StringFormat _imageTextAlignCenter = new(StringFormatFlags.NoClip)
+        {
+            LineAlignment = StringAlignment.Center,
+            Alignment = StringAlignment.Center
+        };
+
+        private readonly StringFormat _imageTextSignature = new StringFormat(StringFormatFlags.DirectionRightToLeft);
 
         private string _connectionString;
         private Provider _provider;
@@ -289,13 +296,14 @@ namespace Inverse.Windows
                     panel1.BorderStyle = BorderStyle.None;
                     panel1.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-                    var fonte = new Font("Arial", 8);
+                    var fonte = new Font("Arial", 10);
                     var g = Graphics.FromImage(bmp);
 
                     g.SmoothingMode = SmoothingMode.HighQuality;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    g.DrawString($"InverseDB Studio - {DateTime.Today:dd/MM/yyyy}", fonte, Brushes.Black, new Rectangle(0, bmp.Height - 20, bmp.Width, 20), new StringFormat(StringFormatFlags.DirectionRightToLeft));
+                    g.DrawString(_database.Name, fonte, Brushes.Black, new Rectangle(0, 0, panel1.Width, 30), _imageTextAlignCenter);
+                    g.DrawString($"InverseDB Studio - {DateTime.Today:dd/MM/yyyy}", fonte, Brushes.Black, new Rectangle(0, bmp.Height - 20, bmp.Width, 20), _imageTextSignature);
                     g.Flush();
 
                     bmp.Save(filename, format);
