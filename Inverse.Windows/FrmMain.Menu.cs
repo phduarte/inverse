@@ -148,5 +148,28 @@ namespace Inverse.Windows
             exportables.Insert(0, todos);
             return string.Join("|", exportables);
         }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var t in _database.Tables)
+            {
+                _selectedTables.Add(t);
+            }
+            panel1.Invalidate();
+        }
+
+        private void releaseTablesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _selectedTables.Clear();
+            panel1.Invalidate();
+        }
+
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                releaseTablesToolStripMenuItem_Click(sender, e);
+            }
+        }
     }
 }

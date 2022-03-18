@@ -44,7 +44,7 @@ namespace Inverse.Windows
         private Table _currentTable;
         private Point _currentPoint = Point.Empty;
         private Point _pressedPointCorrection = Point.Empty;
-        //private readonly IList<Table> _selectedTables = new List<Table>();
+        private readonly IList<Table> _selectedTables = new List<Table>();
         //private readonly Control tempControl = new Button();
 
         public FrmMain()
@@ -57,6 +57,7 @@ namespace Inverse.Windows
             //flowLayoutPanel1.Controls.Add(tempControl);
             //flowLayoutPanel1.ScrollControlIntoView(tempControl);
             //flowLayoutPanel1.Controls.Remove(tempControl);
+            panelBackgroundColorLightToolStripMenuItem_Click(null, null);
         }
 
         public void UseDatabase(Database database)

@@ -102,7 +102,8 @@ namespace Inverse.Windows
             {
                 var layout = new Rectangle(table.Left, table.Top, table.Width, table.Height);
                 var isTableHover = table.IsHover(_currentPoint.X, _currentPoint.Y);
-                var tableBackgroundColor = isTableHover ? Theme.Table.Background.SelectedColor : Theme.Table.Background.Color;
+                var isTabSelected = _selectedTables.Contains(table);
+                var tableBackgroundColor = isTableHover || isTabSelected ? Theme.Table.Background.SelectedColor : Theme.Table.Background.Color;
                 var tableBorderColor = isTableHover ? Theme.Table.Border.SelectedColor : Theme.Table.Border.Color;
 
                 g.FillRectangle(tableBackgroundColor, layout);
