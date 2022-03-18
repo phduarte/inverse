@@ -27,19 +27,20 @@ namespace Inverse.Windows
             var fontBold = new Font(fontRegular, FontStyle.Bold);
             var fontItalic = new Font(fontRegular, FontStyle.Italic);
             var fontBoldItalic = new Font(fontRegular, FontStyle.Bold | FontStyle.Italic);
+            var relationBorder = Theme.Table.Border.GetPen();
 
             // desenhar relacionamentos
             foreach (var table in tables)
             {
                 foreach (var source in table.Columns.OfType<ForeignKey>())
                 {
-                    var table2 = _database.Tables.First(x => x.Name.Equals(source.RelatedTable));
-                    var target = table2.Columns.First(x => x.Name.Equals(source.RelatedColumn));
+                    var destTable = _database.Tables.First(x => x.Name.Equals(source.RelatedTable));
+                    var target = destTable.Columns.First(x => x.Name.Equals(source.RelatedColumn));
 
-                    var isGoingToRight = table.Center < table2.Center;
-                    var isGoingToLeft = table2.Center < table.Center;
-
-                    var relationBorder = Theme.Table.Border.GetPen();
+                    var isGoingToRight = source.Right < target.Left;
+                    var isGoingToLeft = source.Left > target.Right;
+                    var isGoingToDown = source.Bottom < target.Top;
+                    var isGoingToUp = source.Top > target.Bottom;
 
                     if (isGoingToRight)
                     {
@@ -51,15 +52,27 @@ namespace Inverse.Windows
                     }
                     else if (isGoingToLeft)
                     {
-                        var meio = target.Right + ((source.Left - target.Right) / 2);
+                        var midway = target.Right + ((source.Left - target.Right) / 2);
 
-                        g.DrawLine(relationBorder, meio, source.Middle, meio, target.Middle);
-                        g.DrawLine(relationBorder, target.Right, target.Middle, meio, target.Middle);
-                        g.DrawLine(relationBorder, meio, source.Middle, source.Left, source.Middle);
+                        g.DrawLine(relationBorder, midway, source.Middle, midway, target.Middle);
+                        g.DrawLine(relationBorder, target.Right, target.Middle, midway, target.Middle);
+                        g.DrawLine(relationBorder, midway, source.Middle, source.Left, source.Middle);
                     }
-                    else
+                    else if (isGoingToUp)
                     {
-                        g.DrawLine(relationBorder, source.Right, source.Top, target.Left, target.Middle);
+                        var midway = table.Top + ((destTable.Bottom - table.Top) / 2);
+
+                        g.DrawLine(relationBorder, table.Center, table.Top, table.Center, midway);
+                        g.DrawLine(relationBorder, table.Center, midway, destTable.Center, midway);
+                        g.DrawLine(relationBorder, destTable.Center, midway, destTable.Center, destTable.Bottom);
+                    }
+                    else if (isGoingToDown)
+                    {
+                        var midway = table.Bottom + ((destTable.Top - table.Bottom) / 2);
+
+                        g.DrawLine(relationBorder, table.Center, table.Bottom, table.Center, midway);
+                        g.DrawLine(relationBorder, table.Center, midway, destTable.Center, midway);
+                        g.DrawLine(relationBorder, destTable.Center, midway, destTable.Center, destTable.Top);
                     }
 
                     //if (target is PrimaryKey pk)
