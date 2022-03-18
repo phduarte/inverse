@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Inverse.Domain.Columns;
+using Inverse.Domain.Databases;
 using Inverse.Extensions;
 
-namespace Inverse.Domain.Models
+namespace Inverse.Domain.Tables
 {
-    public class Table : Entity<string>, IDraggableElement
+    public class Table : Entity<string>, IDraggableElement, IAggregateRoot
     {
         readonly List<Column> _columns = new();
 

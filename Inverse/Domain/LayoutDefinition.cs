@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Models
+﻿namespace Inverse.Domain
 {
     public static class LayoutDefinition
     {

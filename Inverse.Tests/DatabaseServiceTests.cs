@@ -1,10 +1,11 @@
-﻿using Inverse.Domain.Models;
-using Inverse.Domain.Services;
-using System;
+﻿using System;
 using System.IO;
 using Xunit;
 using FakeItEasy;
 using Inverse.Plugin.FileManager.EncryptedXml;
+using Inverse.Domain.Databases;
+using Inverse.Domain.Tables;
+using Inverse.Domain.Columns;
 
 namespace Inverse.Tests
 {

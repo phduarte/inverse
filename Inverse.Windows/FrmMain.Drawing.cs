@@ -1,4 +1,5 @@
-﻿using Inverse.Domain.Models;
+﻿using Inverse.Domain;
+using Inverse.Domain.Columns;
 using System;
 using System.Drawing;
 using System.Linq;

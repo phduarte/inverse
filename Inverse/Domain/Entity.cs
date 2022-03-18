@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Models
+﻿namespace Inverse.Domain
 {
     public abstract class Entity<T>
     {

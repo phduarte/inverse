@@ -1,4 +1,5 @@
-﻿using Inverse.Domain.Models;
+﻿using Inverse.Domain.Columns;
+using Inverse.Domain.Tables;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;

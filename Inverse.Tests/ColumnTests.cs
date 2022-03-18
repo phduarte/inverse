@@ -1,4 +1,6 @@
-﻿using Inverse.Domain.Models;
+﻿using Inverse.Domain;
+using Inverse.Domain.Columns;
+using Inverse.Domain.Tables;
 using Xunit;
 
 namespace Inverse.Tests

@@ -1,6 +1,4 @@
-﻿using Inverse.Domain.Models;
-using Inverse.Domain.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -9,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inverse.Plugin;
 using System.Drawing.Drawing2D;
+using Inverse.Domain.Tables;
+using Inverse.Domain.Databases;
+using Inverse.Domain;
 
 namespace Inverse.Windows
 {

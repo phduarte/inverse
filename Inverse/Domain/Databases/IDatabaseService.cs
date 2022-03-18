@@ -1,6 +1,4 @@
-﻿using Inverse.Domain.Models;
-
-namespace Inverse.Domain.Services
+﻿namespace Inverse.Domain.Databases
 {
     public interface IDatabaseService
     {

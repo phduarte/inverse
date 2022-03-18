@@ -9,15 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Windows", "Inverse.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Tests", "Inverse.Tests\Inverse.Tests.csproj", "{E85988AC-858E-4FEA-A6EA-72FE762CCA33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.DatabaseGenerator.MsSqlServer", "Inverse.Plugin.DatabaseGenerator.MsSqlServer\Inverse.Plugin.DatabaseGenerator.MsSqlServer.csproj", "{9316CD09-BE38-4147-9451-172D57986CF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin.DatabaseGenerator.MsSqlServer", "Inverse.Plugin.DatabaseGenerator.MsSqlServer\Inverse.Plugin.DatabaseGenerator.MsSqlServer.csproj", "{9316CD09-BE38-4147-9451-172D57986CF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.ScriptGenerator.MsSqlServer", "Inverse.Plugin.ScriptGenerator.MsSqlServer\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj", "{99E0FB1C-9DC6-4B3D-8188-B7D5C37440FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin.ScriptGenerator.MsSqlServer", "Inverse.Plugin.ScriptGenerator.MsSqlServer\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj", "{99E0FB1C-9DC6-4B3D-8188-B7D5C37440FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.DatabaseGenerator.Sqlite", "Inverse.Plugin.DatabaseGenerator.Sqlite\Inverse.Plugin.DatabaseGenerator.Sqlite.csproj", "{19A7AD7D-FA33-43A4-87B2-FB5945BA4AF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin.DatabaseGenerator.Sqlite", "Inverse.Plugin.DatabaseGenerator.Sqlite\Inverse.Plugin.DatabaseGenerator.Sqlite.csproj", "{19A7AD7D-FA33-43A4-87B2-FB5945BA4AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.FileManager.EncryptedXml", "Inverse.Plugin.FileManager.EncryptedXml\Inverse.Plugin.FileManager.EncryptedXml.csproj", "{81E9C5EA-21ED-4612-87C3-035197C078D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin.FileManager.EncryptedXml", "Inverse.Plugin.FileManager.EncryptedXml\Inverse.Plugin.FileManager.EncryptedXml.csproj", "{81E9C5EA-21ED-4612-87C3-035197C078D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin", "Inverse.Plugin\Inverse.Plugin.csproj", "{E09C4AFD-56A6-496C-A098-2D7BD10497DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin", "Inverse.Plugin\Inverse.Plugin.csproj", "{E09C4AFD-56A6-496C-A098-2D7BD10497DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Core", "0. Core", "{CC129F39-76ED-41CC-9EA1-6107E9955D72}"
 EndProject

@@ -1,9 +1,10 @@
-﻿using Inverse.Extensions;
+﻿using Inverse.Domain.Tables;
+using Inverse.Extensions;
 using System;
 
-namespace Inverse.Domain.Models
+namespace Inverse.Domain.Columns
 {
-    public class Column : Entity<string>, IVisualElement
+    public class Column : Entity<string>, IVisualElement, IAggregateRoot
     {
         public int Index { get; set; }
         public string Name { get; set; }

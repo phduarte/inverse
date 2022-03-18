@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Inverse.Domain.Tables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Inverse.Domain.Models
+namespace Inverse.Domain.Databases
 {
-    public class Database : Entity<Guid>
+    public class Database : Entity<Guid>, IAggregateRoot
     {
         private int cindex = 0;
 

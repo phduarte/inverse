@@ -1,5 +1,5 @@
-﻿using Inverse.Domain.Models;
-using Inverse.Domain.Services;
+﻿using Inverse.Domain.Columns;
+using Inverse.Domain.Databases;
 using System;
 using System.IO;
 using System.Linq;

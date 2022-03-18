@@ -1,5 +1,6 @@
-﻿using Inverse.Domain.Models;
-using Inverse.Domain.Services;
+﻿using Inverse.Domain.Columns;
+using Inverse.Domain.Databases;
+using Inverse.Domain.Tables;
 using System;
 using System.Collections.Generic;
 using System.Data;

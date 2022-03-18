@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Models
+﻿namespace Inverse.Domain.Databases
 {
     public enum Provider
     {
