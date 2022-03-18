@@ -46,6 +46,7 @@ namespace Inverse.Windows
         private Point _pressedPointCorrection = Point.Empty;
         private readonly IList<Table> _selectedTables = new List<Table>();
         //private readonly Control tempControl = new Button();
+        private readonly IList<TableViewStatus> _tablePositions = new List<TableViewStatus>();
 
         public FrmMain()
         {
@@ -81,7 +82,7 @@ namespace Inverse.Windows
             var left = LayoutDefinition.Tables.MARGIN;
             var top = LayoutDefinition.Tables.MARGIN;
             var tabelas = new List<Table>();
-            const int DELAY = 100;
+            const int DELAY = 0;
 
             panel1.SuspendLayout();
 

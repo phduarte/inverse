@@ -61,12 +61,40 @@ namespace Inverse.Windows
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_connectionString))
+            if (string.IsNullOrEmpty(_connectionString) || _database.IsEmpty)
                 return;
+
+            _tablePositions.Clear();
+
+            foreach (var t in _database.Tables)
+            {
+                _tablePositions.Add(new TableViewStatus
+                {
+                    Table = t.Name,
+                    Left = t.Left,
+                    Top = t.Top,
+                    Visible = !t.IsHidden
+                });
+            }
 
             var database = _databaseService.LoadDatabase(_provider, _connectionString);
 
             UseDatabase(database);
+
+            foreach (var t in _database.Tables)
+            {
+                if (_tablePositions.FirstOrDefault(a => a.Table.Equals(t.Name)) is TableViewStatus view)
+                {
+                    if (!view.Visible)
+                    {
+                        t.Hide();
+                    }
+
+                    t.MoveTo(view.Left, view.Top);
+                }
+            }
+
+            _tablePositions.Clear();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
