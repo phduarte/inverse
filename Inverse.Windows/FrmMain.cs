@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inverse.Plugin;
+using System.Drawing.Drawing2D;
 
 namespace Inverse.Windows
 {
@@ -262,6 +263,45 @@ namespace Inverse.Windows
         {
             Theme.Table.SetBorderColor(Brushes.Red);
             panel1.Invalidate();
+        }
+
+        private void imageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Portable Network Graphics|*.Png"
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var filename = dialog.FileName;
+                var format = System.Drawing.Imaging.ImageFormat.Png;
+                var bmp = new Bitmap(panel1.Width, panel1.Height);
+
+                panel1.SuspendLayout();
+
+                try
+                {
+                    panel1.BorderStyle = BorderStyle.FixedSingle;
+                    panel1.BorderStyle = BorderStyle.None;
+                    panel1.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+
+                    var fonte = new Font("Arial", 8);
+                    var g = Graphics.FromImage(bmp);
+
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    g.DrawString($"InverseDB Studio - {DateTime.Today:dd/MM/yyyy}", fonte, Brushes.Black, new Rectangle(0, bmp.Height - 20, bmp.Width, 20), new StringFormat(StringFormatFlags.DirectionRightToLeft));
+                    g.Flush();
+
+                    bmp.Save(filename, format);
+                }
+                finally
+                {
+                    panel1.ResumeLayout();
+                }
+            }
         }
     }
 }
