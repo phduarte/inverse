@@ -8,7 +8,6 @@ namespace Inverse.Windows
 {
     public partial class FrmMain
     {
-        bool isControlPressed = false;
         bool isDragging = false;
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -84,11 +83,13 @@ namespace Inverse.Windows
                         {
                             s.MoveOffset(offsetX, offsetY);
                         }
+                        isSavePending = true;
                     }
                 }
                 else
                 {
                     _currentTable.MoveTo(endPointX, endPointY);
+                    isSavePending = true;
                 }
 
                 //var scrollY = flowLayoutPanel1.AutoScrollPosition.Y;
@@ -124,6 +125,7 @@ namespace Inverse.Windows
                         var y = isVerticalMove ? (39 - e.KeyValue) * -1 : 0;
 
                         _currentTable.MoveOffset(x, y);
+                        isSavePending = true;
                         panel1.Invalidate();
                     }
                     break;

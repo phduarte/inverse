@@ -8,12 +8,14 @@ namespace Inverse.Windows
     public partial class FrmMain
     {
         private string _currentFilename = string.Empty;
+        private bool isSavePending = false;
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new FrmNewConnection(this);
             form.ShowDialog();
             ToggleMenuButtons();
+            isSavePending = true;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -58,6 +60,7 @@ namespace Inverse.Windows
                 return;
 
             _databaseService.SaveFile(_database, _currentFilename);
+            isSavePending = false;
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -96,14 +99,18 @@ namespace Inverse.Windows
             }
 
             _tablePositions.Clear();
+            isSavePending = true;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _database = new Database(_provider);
-            _currentFilename = null;
-            ResetPanelSize();
-            ToggleMenuButtons();
+            if (!isSavePending || UserWantsClose())
+            {
+                _database = new Database(_provider);
+                _currentFilename = null;
+                ResetPanelSize();
+                ToggleMenuButtons();
+            }
         }
 
         private void scriptToolStripMenuItem_Click(object sender, EventArgs e)

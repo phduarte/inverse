@@ -314,5 +314,15 @@ namespace Inverse.Windows
                 }
             }
         }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !(isSavePending && UserWantsClose());
+        }
+
+        private bool UserWantsClose()
+        {
+            return MessageBox.Show("Unsaved changes will be lost. Are you sure?","",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes;
+        }
     }
 }
