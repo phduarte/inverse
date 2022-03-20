@@ -29,6 +29,7 @@ namespace Inverse.Windows
                 _currentFilename = dialog.FileName;
 
                 _database = _databaseService.OpenFile(_currentFilename);
+                _connectionString = _database.ConnectionString;
                 panel1.Invalidate();
             }
 
