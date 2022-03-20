@@ -3,6 +3,7 @@ using System.Linq;
 using Inverse.Domain.Columns;
 using Inverse.Domain.Databases;
 using Inverse.Extensions;
+using static System.Math;
 
 namespace Inverse.Domain.Tables
 {
@@ -76,18 +77,14 @@ namespace Inverse.Domain.Tables
 
         public void MoveTo(int x, int y)
         {
-            if (x < 0 || y < 0) return;
-
-            Left = x;
-            Top = y;
+            Left = Max(0, x);
+            Top = Max(0, y);
         }
+        public bool CanMoveOffset(int offsetX, int offsetY) => (Left + offsetX) > -1 && (Top + offsetY) > -1;
 
         public virtual void MoveOffset(int x, int y)
         {
-            if (Left + x < 0 || Top + y < 0) return;
-
-            Left += x;
-            Top += y;
+            MoveTo(Left + x, Top + y);
         }
 
         public bool IsHover(int x, int y)
@@ -108,7 +105,7 @@ namespace Inverse.Domain.Tables
         private void Resize()
         {
             var max = Columns.Max(x => x.Name.Length);
-            Width = System.Math.Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH + LayoutDefinition.Columns.PREFIX_WIDTH + LayoutDefinition.Columns.TYPE_WIDTH;
+            Width = Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH + LayoutDefinition.Columns.PREFIX_WIDTH + LayoutDefinition.Columns.TYPE_WIDTH;
             Height = Columns.Sum(x => x.Height) + LayoutDefinition.Columns.HEIGHT;
         }
 

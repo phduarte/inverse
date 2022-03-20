@@ -182,7 +182,7 @@ namespace Inverse.Windows
             }
             g.SmoothingMode = x;
 
-            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Where(t =>  showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Right) + LayoutDefinition.Tables.MARGIN);
+            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Right) + LayoutDefinition.Tables.MARGIN);
             panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Bottom) + LayoutDefinition.Tables.MARGIN);
         }
 
@@ -199,6 +199,10 @@ namespace Inverse.Windows
                     var y = _pressedPoint.Y - _currentTable.Top;
                     _pressedPointCorrection = new Point(x, y);
                 }
+                else
+                {
+                    _selectedTables.Clear();
+                }
             }
         }
 
@@ -206,8 +210,11 @@ namespace Inverse.Windows
         {
             if (e.Button == MouseButtons.Left && _pressedPoint != Point.Empty && _currentTable != null)
             {
-                _currentTable.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
-                panel1.Invalidate();
+                if (!_selectedTables.Any())
+                {
+                    _currentTable.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
+                    panel1.Invalidate();
+                }
             }
 
             _currentTable = null;
@@ -220,7 +227,28 @@ namespace Inverse.Windows
 
             if (_currentTable is not null)
             {
-                _currentTable.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
+                var startPointX = _currentTable.Left;
+                var startPointY = _currentTable.Top;
+                var endPointX = e.X - _pressedPointCorrection.X;
+                var endPointY = e.Y - _pressedPointCorrection.Y;
+                var offsetX = endPointX - startPointX;
+                var offsetY = endPointY - startPointY;
+                var wasMoved = offsetX != 0 || offsetY != 0;
+
+                if (_selectedTables.Any())
+                {
+                    if (wasMoved && _selectedTables.All(x => x.CanMoveOffset(offsetX, offsetY)))
+                    {
+                        foreach (var s in _selectedTables)
+                        {
+                            s.MoveOffset(offsetX, offsetY);
+                        }
+                    }
+                }
+                else
+                {
+                    _currentTable.MoveTo(endPointX, endPointY);
+                }
 
                 //var scrollY = flowLayoutPanel1.AutoScrollPosition.Y;
                 //var scrollX = flowLayoutPanel1.AutoScrollPosition.X;
