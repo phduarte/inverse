@@ -117,14 +117,28 @@ namespace Inverse.Windows
                 case Keys.Right:
                 case Keys.Up:
                 case Keys.Down:
-                    if (e.Alt && _currentTable is not null)
+                    if (e.Alt)
                     {
                         var isHorizontalMove = e.KeyCode == Keys.Left || e.KeyCode == Keys.Right;
                         var isVerticalMove = e.KeyCode == Keys.Up || e.KeyCode == Keys.Down;
                         var x = isHorizontalMove ? (38 - e.KeyValue) * -1 : 0;
                         var y = isVerticalMove ? (39 - e.KeyValue) * -1 : 0;
 
-                        _currentTable.MoveOffset(x, y);
+                        if (_selectedTables.Any())
+                        {
+                            if (_selectedTables.All(c => c.CanMoveOffset(x, y)))
+                            {
+                                foreach (var t in _selectedTables)
+                                {
+                                    t.MoveOffset(x, y);
+                                }
+                            }
+                        }
+                        else if (_currentTable is not null)
+                        {
+                            _currentTable.MoveOffset(x, y);
+                        }
+
                         isSavePending = true;
                         panel1.Invalidate();
                     }
