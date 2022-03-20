@@ -189,16 +189,9 @@ namespace Inverse.Windows
 
         private void releaseTablesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            _currentTable = null;
             _selectedTables.Clear();
             panel1.Invalidate();
-        }
-
-        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                releaseTablesToolStripMenuItem_Click(sender, e);
-            }
         }
     }
 }
