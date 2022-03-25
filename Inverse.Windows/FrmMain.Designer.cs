@@ -63,6 +63,10 @@ namespace Inverse.Windows
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showHiddenTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.releaseTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cardinalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noneToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.numberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crowsFeetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panelBackgroundColorLightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -334,7 +338,8 @@ namespace Inverse.Windows
             this.arrangeToolStripMenuItem,
             this.refreshToolStripMenuItem,
             this.showHiddenTablesToolStripMenuItem,
-            this.releaseTablesToolStripMenuItem});
+            this.releaseTablesToolStripMenuItem,
+            this.cardinalityToolStripMenuItem});
             this.diagramToolStripMenuItem.Name = "diagramToolStripMenuItem";
             this.diagramToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.diagramToolStripMenuItem.Text = "Diagram";
@@ -377,6 +382,42 @@ namespace Inverse.Windows
             this.releaseTablesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.releaseTablesToolStripMenuItem.Text = "Release Tables";
             this.releaseTablesToolStripMenuItem.Click += new System.EventHandler(this.releaseTablesToolStripMenuItem_Click);
+            // 
+            // cardinalityToolStripMenuItem
+            // 
+            this.cardinalityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.noneToolStripMenuItem1,
+            this.numberToolStripMenuItem,
+            this.crowsFeetToolStripMenuItem});
+            this.cardinalityToolStripMenuItem.Name = "cardinalityToolStripMenuItem";
+            this.cardinalityToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cardinalityToolStripMenuItem.Text = "Cardinality";
+            // 
+            // noneToolStripMenuItem1
+            // 
+            this.noneToolStripMenuItem1.Checked = true;
+            this.noneToolStripMenuItem1.CheckOnClick = true;
+            this.noneToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.noneToolStripMenuItem1.Name = "noneToolStripMenuItem1";
+            this.noneToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.noneToolStripMenuItem1.Text = "None";
+            this.noneToolStripMenuItem1.Click += new System.EventHandler(this.noneToolStripMenuItem1_Click);
+            // 
+            // numberToolStripMenuItem
+            // 
+            this.numberToolStripMenuItem.CheckOnClick = true;
+            this.numberToolStripMenuItem.Name = "numberToolStripMenuItem";
+            this.numberToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.numberToolStripMenuItem.Text = "Number";
+            this.numberToolStripMenuItem.Click += new System.EventHandler(this.numberToolStripMenuItem_Click);
+            // 
+            // crowsFeetToolStripMenuItem
+            // 
+            this.crowsFeetToolStripMenuItem.CheckOnClick = true;
+            this.crowsFeetToolStripMenuItem.Name = "crowsFeetToolStripMenuItem";
+            this.crowsFeetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.crowsFeetToolStripMenuItem.Text = "Crow\'s Feet";
+            this.crowsFeetToolStripMenuItem.Click += new System.EventHandler(this.crowsFeetToolStripMenuItem_Click);
             // 
             // themeToolStripMenuItem
             // 
@@ -735,6 +776,10 @@ namespace Inverse.Windows
         private System.Windows.Forms.ToolStripMenuItem imageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem releaseTablesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cardinalityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem numberToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem crowsFeetToolStripMenuItem;
     }
 }
 

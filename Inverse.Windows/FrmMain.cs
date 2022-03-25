@@ -317,12 +317,33 @@ namespace Inverse.Windows
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = !(isSavePending && UserWantsClose());
+            e.Cancel = !(!isSavePending || (isSavePending && UserWantsClose()));
         }
 
         private bool UserWantsClose()
         {
             return MessageBox.Show("Unsaved changes will be lost. Are you sure?","",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        private void noneToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            noneToolStripMenuItem1.Checked = true;
+            numberToolStripMenuItem.Checked = false;
+            crowsFeetToolStripMenuItem.Checked = false;
+        }
+
+        private void numberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            noneToolStripMenuItem1.Checked = false;
+            numberToolStripMenuItem.Checked = true;
+            crowsFeetToolStripMenuItem.Checked = false;
+        }
+
+        private void crowsFeetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            noneToolStripMenuItem1.Checked = false;
+            numberToolStripMenuItem.Checked = false;
+            crowsFeetToolStripMenuItem.Checked = true;
         }
     }
 }

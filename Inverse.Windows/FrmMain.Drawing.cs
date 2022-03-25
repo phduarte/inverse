@@ -14,7 +14,7 @@ namespace Inverse.Windows
             var tables = _database.Tables.Where(x => showHiddenTablesToolStripMenuItem.Checked || !x.IsHidden).OrderBy(_ => _.Index);
             var x = g.SmoothingMode;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            
+
             DrawRelationships(g, tables);
             DrawTables(g, tables);
 
@@ -45,7 +45,7 @@ namespace Inverse.Windows
                 // título da tabela
                 var titlePadding = (int)Math.Ceiling(Theme.Table.Border.Size / 2.0);
                 var areaTitulo = new RectangleF(table.Left + titlePadding, table.Top + titlePadding, table.Width - titlePadding, LayoutDefinition.Columns.HEIGHT - titlePadding);
-                
+
                 g.FillRectangle(Theme.Table.Title.Background.Color, areaTitulo);
                 g.DrawString(table.Name, Font, Theme.Table.Title.Text.Color, areaTitulo, _textAlignCenter); ;
                 g.DrawLine(tableBorderPen, new Point((int)areaTitulo.Left, (int)areaTitulo.Bottom), new Point((int)areaTitulo.Right, (int)areaTitulo.Bottom));
@@ -122,6 +122,12 @@ namespace Inverse.Windows
         private void DrawRelationships(Graphics g, IOrderedEnumerable<Domain.Tables.Table> tables)
         {
             var relationBorder = Theme.Table.Border.GetPen();
+            var temp = new Pen(Brushes.Red, 2);
+            const int VINTE = 20;
+            const int DOZE = 12;
+            const int SETE = 7;
+            const int DEZ = 10;
+            const int CINCO = 5;
 
             foreach (var table in tables)
             {
@@ -142,6 +148,36 @@ namespace Inverse.Windows
                         g.DrawLine(relationBorder, midway, source.Middle, midway, target.Middle);
                         g.DrawLine(relationBorder, source.Right, source.Middle, midway, source.Middle);
                         g.DrawLine(relationBorder, midway, target.Middle, target.Left, target.Middle);
+
+                        if (target.IsPrimaryKey)
+                        {
+                            if (crowsFeetToolStripMenuItem.Checked)
+                            {
+                                // One
+                                g.DrawLine(relationBorder, target.Left - DOZE, target.Middle - CINCO, target.Left - DOZE, target.Middle + CINCO);
+
+                                // Many
+                                g.DrawLine(relationBorder, source.Right, source.Middle + SETE, source.Right + DEZ, source.Middle);
+                                g.DrawLine(relationBorder, source.Right, source.Middle - SETE, source.Right + DEZ, source.Middle);
+
+                                if (source.Required)
+                                {
+                                    g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
+                                }
+                            }
+                            else if (numberToolStripMenuItem.Checked)
+                            {
+                                // one
+                                g.DrawString("1", DefaultFont, Brushes.Black, new PointF(target.Left - VINTE, target.Middle));
+
+                                // many
+                                g.DrawString("N", DefaultFont, Brushes.Black, new PointF(source.Right + DEZ, source.Middle));
+                            }
+                        }
+                        else
+                        {
+                            g.DrawLine(temp, source.Right - 5, source.Middle - 5, source.Right - 5, source.Middle + 5);
+                        }
                     }
                     else if (isGoingToLeft)
                     {
@@ -150,6 +186,36 @@ namespace Inverse.Windows
                         g.DrawLine(relationBorder, midway, source.Middle, midway, target.Middle);
                         g.DrawLine(relationBorder, target.Right, target.Middle, midway, target.Middle);
                         g.DrawLine(relationBorder, midway, source.Middle, source.Left, source.Middle);
+
+                        if (target.IsPrimaryKey)
+                        {
+                            if (crowsFeetToolStripMenuItem.Checked)
+                            {
+                                // One
+                                g.DrawLine(relationBorder, target.Right + DOZE, target.Middle - CINCO, target.Right + DOZE, target.Middle + CINCO);
+
+                                // Many
+                                g.DrawLine(relationBorder, source.Left, source.Middle - SETE, source.Left - DEZ, source.Middle);
+                                g.DrawLine(relationBorder, source.Left, source.Middle + SETE, source.Left - DEZ, source.Middle);
+
+                                if (source.Required)
+                                {
+                                    g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
+                                }
+                            }
+                            else if (numberToolStripMenuItem.Checked)
+                            {
+                                // One
+                                g.DrawString("1", DefaultFont, Brushes.Black, new PointF(target.Right + DEZ, target.Top - DefaultFont.Size));
+
+                                // Many
+                                g.DrawString("N", DefaultFont, Brushes.Black, new PointF(source.Left - VINTE, source.Top - DefaultFont.Size));
+                            }
+                        }
+                        else
+                        {
+                            g.DrawLine(temp, midway, source.Middle, source.Left, source.Middle);
+                        }
                     }
                     else if (isGoingToUp)
                     {
@@ -158,6 +224,40 @@ namespace Inverse.Windows
                         g.DrawLine(relationBorder, table.Center, table.Top, table.Center, midway);
                         g.DrawLine(relationBorder, table.Center, midway, destTable.Center, midway);
                         g.DrawLine(relationBorder, destTable.Center, midway, destTable.Center, destTable.Bottom);
+
+                        if (table.Top > destTable.Bottom)
+                        {
+                            if (target.IsPrimaryKey)
+                            {
+                                if (crowsFeetToolStripMenuItem.Checked)
+                                {
+                                    // One
+                                    g.DrawLine(relationBorder, destTable.Center - CINCO, destTable.Bottom + DOZE, destTable.Center + CINCO, destTable.Bottom + DOZE);
+
+                                    // Many
+                                    g.DrawLine(relationBorder, table.Center - SETE, table.Top, table.Center, table.Top - DEZ);
+                                    g.DrawLine(relationBorder, table.Center + SETE, table.Top, table.Center, table.Top - DEZ);
+
+                                    if (source.Required)
+                                    {
+                                        g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
+                                    }
+                                }
+                                else if (numberToolStripMenuItem.Checked)
+                                {
+                                    // One
+                                    g.DrawString("1", DefaultFont, Brushes.Black, new PointF(destTable.Center, destTable.Bottom));
+
+                                    // Many
+                                    g.DrawString("N", DefaultFont, Brushes.Black, new PointF(table.Center, table.Top - VINTE));
+                                }
+                            }
+                            else
+                            {
+                                g.DrawLine(temp, table.Center - 10, table.Bottom + 10, table.Center, table.Bottom);
+                                g.DrawLine(temp, table.Center + 10, table.Bottom + 10, table.Center, table.Bottom);
+                            }
+                        }
                     }
                     else if (isGoingToDown)
                     {
@@ -166,27 +266,41 @@ namespace Inverse.Windows
                         g.DrawLine(relationBorder, table.Center, table.Bottom, table.Center, midway);
                         g.DrawLine(relationBorder, table.Center, midway, destTable.Center, midway);
                         g.DrawLine(relationBorder, destTable.Center, midway, destTable.Center, destTable.Top);
+
+                        if (destTable.Top > table.Bottom)
+                        {
+                            if (target.IsPrimaryKey)
+                            {
+                                if (crowsFeetToolStripMenuItem.Checked)
+                                {
+                                    // One
+                                    g.DrawLine(relationBorder, destTable.Center - CINCO, destTable.Top - DOZE, destTable.Center + CINCO, destTable.Top - DOZE);
+                                    
+                                    // Many
+                                    g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center - SETE, table.Bottom);
+                                    g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center + SETE, table.Bottom);
+
+                                    if (source.Required)
+                                    {
+                                        g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
+                                    }
+                                }
+                                else if (numberToolStripMenuItem.Checked)
+                                {
+                                    // One
+                                    g.DrawString("1", DefaultFont, Brushes.Black, new PointF(destTable.Center, destTable.Top - VINTE));
+
+                                    // Many
+                                    g.DrawString("N", DefaultFont, Brushes.Black, new PointF(table.Center, table.Bottom + DefaultFont.Size));
+                                }
+                            }
+                            else
+                            {
+                                g.DrawLine(temp, table.Center - 10, table.Bottom + 10, table.Center, table.Bottom);
+                                g.DrawLine(temp, table.Center + 10, table.Bottom + 10, table.Center, table.Bottom);
+                            }
+                        }
                     }
-
-                    //if (target is PrimaryKey pk)
-                    //{
-                    //    if (isGoingToRight)
-                    //    {
-                    //        var areaNomeColunaPk = new RectangleF(target.Left - 20, target.Top, 50, 50);
-                    //        g.DrawString("1", Font, Brushes.Black, areaNomeColunaPk, _textFormat);
-
-                    //        var areaNomeColunaFk = new RectangleF(source.Right + 10, source.Top, 50, 50);
-                    //        g.DrawString("N", Font, Brushes.Black, areaNomeColunaFk, _textFormat);
-                    //    }
-                    //    else
-                    //    {
-                    //        var areaNomeColunaPK = new RectangleF(target.Left - 20, target.Top, 50, 50);
-                    //        g.DrawString("U", Font, Brushes.Black, areaNomeColunaPK, _textFormat);
-
-                    //        var areaNomeColunaFk = new RectangleF(source.Right + 10, source.Top, 50, 50);
-                    //        g.DrawString("0:N", Font, Brushes.Black, areaNomeColunaFk, _textFormat);
-                    //    }
-                    //}
                 }
             }
         }
