@@ -157,12 +157,22 @@ namespace Inverse.Windows
                                 g.DrawLine(relationBorder, target.Left - DOZE, target.Middle - CINCO, target.Left - DOZE, target.Middle + CINCO);
 
                                 // Many
-                                g.DrawLine(relationBorder, source.Right, source.Middle + SETE, source.Right + DEZ, source.Middle);
-                                g.DrawLine(relationBorder, source.Right, source.Middle - SETE, source.Right + DEZ, source.Middle);
-
-                                if (source.Required)
+                                if (source.IsPrimaryKey && source.IsForeignKey)
                                 {
+                                    var circleArea = new Rectangle(source.Right + DOZE + CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
+                                    g.FillEllipse(Brushes.White, circleArea);
+                                    g.DrawEllipse(relationBorder, circleArea);
+                                }
+                                else
+                                {
+                                    g.DrawLine(relationBorder, source.Right, source.Middle + SETE, source.Right + DEZ, source.Middle);
+                                    g.DrawLine(relationBorder, source.Right, source.Middle - SETE, source.Right + DEZ, source.Middle);
+
+                                    if (source.Required)
+                                    {
+                                        g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
+                                    }
                                 }
                             }
                             else if (numberToolStripMenuItem.Checked)
@@ -195,12 +205,22 @@ namespace Inverse.Windows
                                 g.DrawLine(relationBorder, target.Right + DOZE, target.Middle - CINCO, target.Right + DOZE, target.Middle + CINCO);
 
                                 // Many
-                                g.DrawLine(relationBorder, source.Left, source.Middle - SETE, source.Left - DEZ, source.Middle);
-                                g.DrawLine(relationBorder, source.Left, source.Middle + SETE, source.Left - DEZ, source.Middle);
-
-                                if (source.Required)
+                                if (source.IsPrimaryKey && source.IsForeignKey)
                                 {
+                                    var circleArea = new Rectangle(source.Left - DOZE - DEZ - CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
+                                    g.FillEllipse(Brushes.White, circleArea);
+                                    g.DrawEllipse(relationBorder, circleArea);
+                                }
+                                else
+                                {
+                                    g.DrawLine(relationBorder, source.Left, source.Middle - SETE, source.Left - DEZ, source.Middle);
+                                    g.DrawLine(relationBorder, source.Left, source.Middle + SETE, source.Left - DEZ, source.Middle);
+
+                                    if (source.Required)
+                                    {
+                                        g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
+                                    }
                                 }
                             }
                             else if (numberToolStripMenuItem.Checked)
@@ -235,12 +255,22 @@ namespace Inverse.Windows
                                     g.DrawLine(relationBorder, destTable.Center - CINCO, destTable.Bottom + DOZE, destTable.Center + CINCO, destTable.Bottom + DOZE);
 
                                     // Many
-                                    g.DrawLine(relationBorder, table.Center - SETE, table.Top, table.Center, table.Top - DEZ);
-                                    g.DrawLine(relationBorder, table.Center + SETE, table.Top, table.Center, table.Top - DEZ);
-
-                                    if (source.Required)
+                                    if (source.IsPrimaryKey && source.IsForeignKey)
                                     {
+                                        var circleArea = new Rectangle(table.Center - CINCO, table.Top - DOZE - DEZ - CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
+                                        g.FillEllipse(Brushes.White, circleArea);
+                                        g.DrawEllipse(relationBorder, circleArea);
+                                    }
+                                    else
+                                    {
+                                        g.DrawLine(relationBorder, table.Center - SETE, table.Top, table.Center, table.Top - DEZ);
+                                        g.DrawLine(relationBorder, table.Center + SETE, table.Top, table.Center, table.Top - DEZ);
+
+                                        if (source.Required)
+                                        {
+                                            g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
+                                        }
                                     }
                                 }
                                 else if (numberToolStripMenuItem.Checked)
@@ -275,14 +305,24 @@ namespace Inverse.Windows
                                 {
                                     // One
                                     g.DrawLine(relationBorder, destTable.Center - CINCO, destTable.Top - DOZE, destTable.Center + CINCO, destTable.Top - DOZE);
-                                    
-                                    // Many
-                                    g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center - SETE, table.Bottom);
-                                    g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center + SETE, table.Bottom);
 
-                                    if (source.Required)
+                                    // Many
+                                    if (source.IsPrimaryKey && source.IsForeignKey)
                                     {
+                                        var circleArea = new Rectangle(table.Center - CINCO, table.Bottom + DOZE + CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
+                                        g.FillEllipse(Brushes.White, circleArea);
+                                        g.DrawEllipse(relationBorder, circleArea);
+                                    }
+                                    else
+                                    {
+                                        g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center - SETE, table.Bottom);
+                                        g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center + SETE, table.Bottom);
+
+                                        if (source.Required)
+                                        {
+                                            g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
+                                        }
                                     }
                                 }
                                 else if (numberToolStripMenuItem.Checked)
