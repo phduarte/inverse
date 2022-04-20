@@ -169,10 +169,10 @@ namespace Inverse.Windows
                                     g.DrawLine(relationBorder, source.Right, source.Middle + SETE, source.Right + DEZ, source.Middle);
                                     g.DrawLine(relationBorder, source.Right, source.Middle - SETE, source.Right + DEZ, source.Middle);
 
-                                    if (source.Required)
-                                    {
-                                        g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
-                                    }
+                                    //if (source.Required)
+                                    //{
+                                    //    g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
+                                    //}
                                 }
                             }
                             else if (numberToolStripMenuItem.Checked)
@@ -217,10 +217,10 @@ namespace Inverse.Windows
                                     g.DrawLine(relationBorder, source.Left, source.Middle - SETE, source.Left - DEZ, source.Middle);
                                     g.DrawLine(relationBorder, source.Left, source.Middle + SETE, source.Left - DEZ, source.Middle);
 
-                                    if (source.Required)
-                                    {
-                                        g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
-                                    }
+                                    //if (source.Required)
+                                    //{
+                                    //    g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
+                                    //}
                                 }
                             }
                             else if (numberToolStripMenuItem.Checked)
@@ -267,10 +267,10 @@ namespace Inverse.Windows
                                         g.DrawLine(relationBorder, table.Center - SETE, table.Top, table.Center, table.Top - DEZ);
                                         g.DrawLine(relationBorder, table.Center + SETE, table.Top, table.Center, table.Top - DEZ);
 
-                                        if (source.Required)
-                                        {
-                                            g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
-                                        }
+                                        //if (source.Required)
+                                        //{
+                                        //    g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
+                                        //}
                                     }
                                 }
                                 else if (numberToolStripMenuItem.Checked)
@@ -319,10 +319,10 @@ namespace Inverse.Windows
                                         g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center - SETE, table.Bottom);
                                         g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center + SETE, table.Bottom);
 
-                                        if (source.Required)
-                                        {
-                                            g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
-                                        }
+                                        //if (source.Required)
+                                        //{
+                                        //    g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
+                                        //}
                                     }
                                 }
                                 else if (numberToolStripMenuItem.Checked)
