@@ -23,8 +23,8 @@ namespace Inverse.Domain.Tables
         public int Middle => Top + (Height / 2);
         public int ForeignKeysCount => ForeignKeys.Count();
         public int PrimaryKeysCount => PrimaryKeys.Count();
-        public IEnumerable<PrimaryKey> PrimaryKeys => Columns.Where(_ => _.IsPrimaryKey).OfType<PrimaryKey>();
-        public IEnumerable<ForeignKey> ForeignKeys => Columns.Where(_ => _.IsForeignKey).OfType<ForeignKey>();
+        public IEnumerable<IPrimaryKey> PrimaryKeys => Columns.Where(_ => _.IsPrimaryKey).Cast<IPrimaryKey>();
+        public IEnumerable<IForeignKey> ForeignKeys => Columns.Where(_ => _.IsForeignKey).Cast<IForeignKey>();
         public bool IsHidden { get; set; }
         public Database Database { get; set; }
         public int Index { get; set; }

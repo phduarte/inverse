@@ -1,6 +1,6 @@
 ﻿namespace Inverse.Domain.Columns
 {
-    public class ForeignPrimaryKey : ForeignKey
+    public class ForeignPrimaryKey : ForeignKey, IForeignPrimaryKey
     {
         public override bool IsPrimaryKey => true;
         public override bool IsForeignKey => true;

@@ -131,7 +131,7 @@ namespace Inverse.Windows
 
             foreach (var table in tables)
             {
-                foreach (var source in table.Columns.OfType<ForeignKey>())
+                foreach (var source in table.ForeignKeys)
                 {
                     var destTable = _database.Tables.First(x => x.Name.Equals(source.RelatedTable));
                     var target = destTable.Columns.First(x => x.Name.Equals(source.RelatedColumn));
@@ -153,11 +153,11 @@ namespace Inverse.Windows
                         {
                             if (crowsFeetToolStripMenuItem.Checked)
                             {
-                                // One
+                                // dest
                                 g.DrawLine(relationBorder, target.Left - DOZE, target.Middle - CINCO, target.Left - DOZE, target.Middle + CINCO);
 
-                                // Many
-                                if (source.IsPrimaryKey && source.IsForeignKey)
+                                // source
+                                if (source.IsOneOrNone)
                                 {
                                     var circleArea = new Rectangle(source.Right + DOZE + CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
@@ -201,11 +201,11 @@ namespace Inverse.Windows
                         {
                             if (crowsFeetToolStripMenuItem.Checked)
                             {
-                                // One
+                                // dest
                                 g.DrawLine(relationBorder, target.Right + DOZE, target.Middle - CINCO, target.Right + DOZE, target.Middle + CINCO);
 
-                                // Many
-                                if (source.IsPrimaryKey && source.IsForeignKey)
+                                // source
+                                if (source.IsOneOrNone)
                                 {
                                     var circleArea = new Rectangle(source.Left - DOZE - DEZ - CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
@@ -225,10 +225,10 @@ namespace Inverse.Windows
                             }
                             else if (numberToolStripMenuItem.Checked)
                             {
-                                // One
+                                // dest
                                 g.DrawString("1", DefaultFont, Brushes.Black, new PointF(target.Right + DEZ, target.Top - DefaultFont.Size));
 
-                                // Many
+                                // source
                                 g.DrawString("N", DefaultFont, Brushes.Black, new PointF(source.Left - VINTE, source.Top - DefaultFont.Size));
                             }
                         }
@@ -251,11 +251,11 @@ namespace Inverse.Windows
                             {
                                 if (crowsFeetToolStripMenuItem.Checked)
                                 {
-                                    // One
+                                    // dest
                                     g.DrawLine(relationBorder, destTable.Center - CINCO, destTable.Bottom + DOZE, destTable.Center + CINCO, destTable.Bottom + DOZE);
 
-                                    // Many
-                                    if (source.IsPrimaryKey && source.IsForeignKey)
+                                    // source
+                                    if (source.IsOneOrNone)
                                     {
                                         var circleArea = new Rectangle(table.Center - CINCO, table.Top - DOZE - DEZ - CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
@@ -275,10 +275,10 @@ namespace Inverse.Windows
                                 }
                                 else if (numberToolStripMenuItem.Checked)
                                 {
-                                    // One
+                                    // dest
                                     g.DrawString("1", DefaultFont, Brushes.Black, new PointF(destTable.Center, destTable.Bottom));
 
-                                    // Many
+                                    // source
                                     g.DrawString("N", DefaultFont, Brushes.Black, new PointF(table.Center, table.Top - VINTE));
                                 }
                             }
@@ -303,11 +303,11 @@ namespace Inverse.Windows
                             {
                                 if (crowsFeetToolStripMenuItem.Checked)
                                 {
-                                    // One
+                                    // dest
                                     g.DrawLine(relationBorder, destTable.Center - CINCO, destTable.Top - DOZE, destTable.Center + CINCO, destTable.Top - DOZE);
 
-                                    // Many
-                                    if (source.IsPrimaryKey && source.IsForeignKey)
+                                    // source
+                                    if (source.IsOneOrNone)
                                     {
                                         var circleArea = new Rectangle(table.Center - CINCO, table.Bottom + DOZE + CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
@@ -327,10 +327,10 @@ namespace Inverse.Windows
                                 }
                                 else if (numberToolStripMenuItem.Checked)
                                 {
-                                    // One
+                                    // dest
                                     g.DrawString("1", DefaultFont, Brushes.Black, new PointF(destTable.Center, destTable.Top - VINTE));
 
-                                    // Many
+                                    // source
                                     g.DrawString("N", DefaultFont, Brushes.Black, new PointF(table.Center, table.Bottom + DefaultFont.Size));
                                 }
                             }

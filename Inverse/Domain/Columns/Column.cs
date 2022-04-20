@@ -4,7 +4,7 @@ using System;
 
 namespace Inverse.Domain.Columns
 {
-    public class Column : Entity<string>, IVisualElement, IAggregateRoot
+    public class Column : Entity<string>, IColumn, IVisualElement, IAggregateRoot
     {
         public int Index { get; set; }
         public string Name { get; set; }
