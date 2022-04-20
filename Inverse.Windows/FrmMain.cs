@@ -54,6 +54,8 @@ namespace Inverse.Windows
         private readonly IList<Table> _selectedTables = new List<Table>();
         //private readonly Control tempControl = new Button();
         private readonly IList<TableViewStatus> _tablePositions = new List<TableViewStatus>();
+        DateTime _lastUpdate = DateTime.MinValue;
+        protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
 
         public FrmMain()
         {
@@ -344,6 +346,12 @@ namespace Inverse.Windows
             noneToolStripMenuItem1.Checked = false;
             numberToolStripMenuItem.Checked = false;
             crowsFeetToolStripMenuItem.Checked = true;
+        }
+
+        private void UpdateStatus(string message)
+        {
+            toolStripStatusLabel1.Text = message;
+            _lastUpdate = DateTime.Now;
         }
     }
 }

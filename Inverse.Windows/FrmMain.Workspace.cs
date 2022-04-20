@@ -63,7 +63,11 @@ namespace Inverse.Windows
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
             _currentPoint = e.Location;
-            toolStripStatusLabel1.Text = $"X={_currentPoint.X},Y={_currentPoint.Y}";
+
+            if (!HasStateChange)
+            {
+                toolStripStatusLabel1.Text = $"X={_currentPoint.X},Y={_currentPoint.Y}";
+            }
 
             if (isDragging)
             {

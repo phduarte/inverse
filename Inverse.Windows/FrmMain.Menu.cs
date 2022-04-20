@@ -130,7 +130,7 @@ namespace Inverse.Windows
 
             _databaseService.Export(_database, dialog.FileName);
 
-            MessageBox.Show("Script exportado com sucesso.");
+            UpdateStatus("Script exportado com sucesso.");
         }
 
         private void showHiddenTablesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
