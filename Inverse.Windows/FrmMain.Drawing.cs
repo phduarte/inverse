@@ -47,7 +47,7 @@ namespace Inverse.Windows
                 var areaTitulo = new RectangleF(table.Left + titlePadding, table.Top + titlePadding, table.Width - titlePadding, LayoutDefinition.Columns.HEIGHT - titlePadding);
 
                 g.FillRectangle(Theme.Table.Title.Background.Color, areaTitulo);
-                g.DrawString(table.Name, Font, Theme.Table.Title.Text.Color, areaTitulo, _textAlignCenter); ;
+                g.DrawString(table.Name, Font, Theme.Table.Title.Text.Color, areaTitulo, _textAlignCenter);
                 g.DrawLine(tableBorderPen, new Point((int)areaTitulo.Left, (int)areaTitulo.Bottom), new Point((int)areaTitulo.Right, (int)areaTitulo.Bottom));
 
                 var pks = table.Columns.Where(_ => _.IsPrimaryKey);
@@ -344,13 +344,5 @@ namespace Inverse.Windows
                 }
             }
         }
-
-        //private void SetTempControl()
-        //{
-        //    tempControl.Left = _currentTable.Left;
-        //    tempControl.Width = _currentTable.Width;
-        //    tempControl.Height = _currentTable.Height;
-        //    tempControl.Top = _currentTable.Top;
-        //}
     }
 }

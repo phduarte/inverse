@@ -42,7 +42,7 @@ namespace Inverse.Windows
             Alignment = StringAlignment.Center
         };
 
-        private readonly StringFormat _imageTextSignature = new StringFormat(StringFormatFlags.DirectionRightToLeft);
+        private readonly StringFormat _imageTextSignature = new(StringFormatFlags.DirectionRightToLeft);
 
         private string _connectionString;
         private Provider _provider;
@@ -52,7 +52,7 @@ namespace Inverse.Windows
         private Point _currentPoint = Point.Empty;
         private Point _pressedPointCorrection = Point.Empty;
         private readonly IList<Table> _selectedTables = new List<Table>();
-        //private readonly Control tempControl = new Button();
+
         private readonly IList<TableViewStatus> _tablePositions = new List<TableViewStatus>();
         DateTime _lastUpdate = DateTime.MinValue;
         protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
@@ -64,9 +64,6 @@ namespace Inverse.Windows
             _databaseService.InstallPlugins();
 
             panel1.SetDoubleBuffered();
-            //flowLayoutPanel1.Controls.Add(tempControl);
-            //flowLayoutPanel1.ScrollControlIntoView(tempControl);
-            //flowLayoutPanel1.Controls.Remove(tempControl);
             panelBackgroundColorLightToolStripMenuItem_Click(null, null);
         }
 
@@ -249,7 +246,7 @@ namespace Inverse.Windows
 
         private void blackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Transparent);
+            Theme.Table.SetBorderColor(Brushes.Black);
             panel1.Invalidate();
         }
 

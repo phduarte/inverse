@@ -12,10 +12,6 @@ namespace Inverse.Windows
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            //var original = panel1.BackColor;
-
-            //panel1.BackColor = Color.FromArgb(0, 30, 30, 30);
-
             if (_database.IsEmpty)
                 return;
 
@@ -95,16 +91,6 @@ namespace Inverse.Windows
                     _currentTable.MoveTo(endPointX, endPointY);
                     isSavePending = true;
                 }
-
-                //var scrollY = flowLayoutPanel1.AutoScrollPosition.Y;
-                //var scrollX = flowLayoutPanel1.AutoScrollPosition.X;
-
-                //if (scrollX > e.X)
-                //{
-                //}
-
-                //SetTempControl();
-                //ScrollFlowPanel();
             }
 
             panel1.Invalidate();
@@ -150,10 +136,6 @@ namespace Inverse.Windows
                 default:
                     break;
             }
-        }
-
-        private void FrmMain_KeyUp(object sender, KeyEventArgs e)
-        {
         }
     }
 }
