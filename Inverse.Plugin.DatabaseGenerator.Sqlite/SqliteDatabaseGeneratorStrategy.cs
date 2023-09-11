@@ -70,7 +70,6 @@ namespace Inverse.Plugin.DatabaseGenerator.Sqlite
                 {
                     Id = col.Id,
                     Name = col.Name,
-                    //Name = $"FK_{table.Name}_{rdr.GetString(2)}",
                     Type = col.Type,
                     RelatedTable = relatedTable,
                     RelatedColumn = to,

@@ -5,6 +5,8 @@ namespace Inverse.Windows
 {
     static class Program
     {
+        public const string Name = "Database Studio Designer";
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>

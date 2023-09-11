@@ -44,7 +44,7 @@ namespace Inverse.Windows
 
                 // título da tabela
                 var titlePadding = (int)Math.Ceiling(Theme.Table.Border.Size / 2.0);
-                var areaTitulo = new RectangleF(table.Left + titlePadding, table.Top + titlePadding, table.Width - titlePadding, LayoutDefinition.Columns.HEIGHT - titlePadding);
+                var areaTitulo = new RectangleF(table.Left + titlePadding, table.Top + titlePadding, table.Width - titlePadding, Column.HEIGHT - titlePadding);
 
                 g.FillRectangle(Theme.Table.Title.Background.Color, areaTitulo);
                 g.DrawString(table.Name, Font, Theme.Table.Title.Text.Color, areaTitulo, _textAlignCenter);
@@ -57,15 +57,15 @@ namespace Inverse.Windows
 
         private void DrawColumns(Graphics g, int PK_SEP_PADDING, Font fontRegular, Font fontBold, Font fontItalic, Font fontBoldItalic, Domain.Tables.Table table, Color tableBorderColor, IEnumerable<Column> pks)
         {
-            var separatorPksY = table.Top + LayoutDefinition.Columns.HEIGHT;
+            var separatorPksY = table.Top + Column.HEIGHT;
 
             if (pks.Any())
             {
                 foreach (var col in pks)
                 {
-                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
-                    var areaNomeColuna = new RectangleF(col.Left + LayoutDefinition.Columns.PREFIX_WIDTH, col.Top, col.Width - LayoutDefinition.Columns.TYPE_WIDTH - LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
-                    var areaTipoColuna = new RectangleF(col.Right - LayoutDefinition.Columns.TYPE_WIDTH, col.Top, LayoutDefinition.Columns.TYPE_WIDTH, col.Height);
+                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, Column.PREFIX_WIDTH, col.Height);
+                    var areaNomeColuna = new RectangleF(col.Left + Column.PREFIX_WIDTH, col.Top, col.Width - Column.TYPE_WIDTH - Column.PREFIX_WIDTH, col.Height);
+                    var areaTipoColuna = new RectangleF(col.Right - Column.TYPE_WIDTH, col.Top, Column.TYPE_WIDTH, col.Height);
                     var columnIsHover = col.IsHover(_currentPoint.X, _currentPoint.Y);
                     var fontColor = columnIsHover ?
                         Theme.Table.Text.SelectedColor :
@@ -87,8 +87,8 @@ namespace Inverse.Windows
 
             foreach (var col in table.Columns.Except(pks))
             {
-                var areaNomeColuna = new RectangleF(col.Left + LayoutDefinition.Columns.PREFIX_WIDTH, col.Top, col.Width - LayoutDefinition.Columns.TYPE_WIDTH - LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
-                var areaTipoColuna = new RectangleF(col.Right - LayoutDefinition.Columns.TYPE_WIDTH, col.Top, LayoutDefinition.Columns.TYPE_WIDTH, col.Height);
+                var areaNomeColuna = new RectangleF(col.Left + Column.PREFIX_WIDTH, col.Top, col.Width - Column.TYPE_WIDTH - Column.PREFIX_WIDTH, col.Height);
+                var areaTipoColuna = new RectangleF(col.Right - Column.TYPE_WIDTH, col.Top, Column.TYPE_WIDTH, col.Height);
                 var columnIsHover = col.IsHover(_currentPoint.X, _currentPoint.Y);
                 var backgroundColor = columnIsHover ?
                     Theme.Table.Column.Background.SelectedColor :
@@ -99,7 +99,7 @@ namespace Inverse.Windows
                 if (col is ForeignKey)
                 {
                     var fontColor = columnIsHover ? Theme.Table.ForeignKeyText.SelectedColor : Theme.Table.ForeignKeyText.Color;
-                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, LayoutDefinition.Columns.PREFIX_WIDTH, col.Height);
+                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, Column.PREFIX_WIDTH, col.Height);
                     var nameFontStyle = col.Required ? fontBoldItalic : fontItalic;
 
                     g.DrawString(col.Prefix, fontRegular, fontColor, areaChaveColuna, _textAlignLeft);

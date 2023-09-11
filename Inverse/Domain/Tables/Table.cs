@@ -11,10 +11,16 @@ namespace Inverse.Domain.Tables
     {
         readonly List<Column> _columns = new();
 
+        public const int HEIGHT = 30;
+        public const int WIDTH = 100;
+        public const int MARGIN = 50;
+        public const int PREFIX_WIDTH = 40;
+        public const int TYPE_WIDTH = 90;
+
         public string Name { get; set; }
         public IReadOnlyList<Column> Columns => _columns;
-        public int Width { get; private set; } = LayoutDefinition.Tables.WIDTH;
-        public int Height { get; private set; } = LayoutDefinition.Columns.HEIGHT;
+        public int Width { get; private set; } = WIDTH;
+        public int Height { get; private set; } = HEIGHT;
         public int Left { get; set; }
         public int Right => Left + Width;
         public int Top { get; set; }
@@ -105,8 +111,8 @@ namespace Inverse.Domain.Tables
         private void Resize()
         {
             var max = Columns.Max(x => x.Name.Length);
-            Width = Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH + LayoutDefinition.Columns.PREFIX_WIDTH + LayoutDefinition.Columns.TYPE_WIDTH;
-            Height = Columns.Sum(x => x.Height) + LayoutDefinition.Columns.HEIGHT;
+            Width = Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH + PREFIX_WIDTH + TYPE_WIDTH;
+            Height = Columns.Sum(x => x.Height) + HEIGHT;
         }
 
         public override string ToString()

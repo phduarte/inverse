@@ -22,9 +22,16 @@ Também é possível exportar o diagrama para arquivo de script `.SQL`. Isso fac
 
 ![exportação de script](tela4.png)
 
-## Requisitos:
+## Requisitos Mínimos:
 
-- Plataforma Windows Forms .NET 5
-- Linguagem C# versão 9.0
-- xUnit 2.4.1+
-- FakeItEasy 7.3+
+- Windows 7+, Linux
+- Processador 1 GHz
+- RAM 512MB
+
+## Requisitos (DEV):
+
+- VS Code ou Visual Studio 2022 versão 17.0 ou superior
+- SDK Windows Forms .NET 6
+- Linguagem C# versão 10.0
+- xUnit 2.5.0+
+- FakeItEasy 7.4+

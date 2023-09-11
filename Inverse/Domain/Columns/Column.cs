@@ -6,6 +6,14 @@ namespace Inverse.Domain.Columns
 {
     public class Column : Entity<string>, IColumn, IVisualElement, IAggregateRoot
     {
+        public const int HEIGHT = 30;
+        public const int TITLE_MARGIN = 30;
+        public const string PRIMARY_KEY_PREFIX = "PK";
+        public const string FOREIGN_KEY_PREFIX = "FK";
+        public const string FOREIGN_PRIMART_KEY_PREFIX = "PK FK";
+        public const int PREFIX_WIDTH = 40;
+        public const int TYPE_WIDTH = 90;
+
         public int Index { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -17,7 +25,7 @@ namespace Inverse.Domain.Columns
 
         public int Width => Table.Width;
 
-        public int Height => LayoutDefinition.Columns.HEIGHT;
+        public int Height => HEIGHT;
 
         public int Left => Table.Left;
 

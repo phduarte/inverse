@@ -4,7 +4,7 @@
     {
         public override bool IsPrimaryKey => true;
         public override bool IsForeignKey => true;
-        public override string Prefix => LayoutDefinition.Columns.FOREIGN_PRIMART_KEY_PREFIX;
+        public override string Prefix => FOREIGN_PRIMART_KEY_PREFIX;
 
         public static ForeignPrimaryKey Parse(ForeignKey foreignKey)
         {

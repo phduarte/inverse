@@ -19,13 +19,13 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldRecognizeWhenItsHover()
         {
-            Assert.True(column.IsHover(LayoutDefinition.Tables.WIDTH / 2, LayoutDefinition.Columns.HEIGHT / 2));
+            Assert.True(column.IsHover(Table.WIDTH / 2, Table.HEIGHT / 2));
         }
 
         [Fact]
         public void ShouldRecognizeWhenItsNotHover()
         {
-            Assert.False(column.IsHover(LayoutDefinition.Tables.WIDTH + 1, LayoutDefinition.Columns.HEIGHT / 2));
+            Assert.False(column.IsHover(Table.WIDTH + 1, Table.HEIGHT / 2));
         }
 
         [Fact]
@@ -66,14 +66,14 @@ namespace Inverse.Tests
         public void ShouldRecognizePrimaryKeyPrefix()
         {
             var pk = new PrimaryKey();
-            Assert.Equal(LayoutDefinition.Columns.PRIMARY_KEY_PREFIX, pk.Prefix);
+            Assert.Equal(Column.PRIMARY_KEY_PREFIX, pk.Prefix);
         }
 
         [Fact]
         public void ShouldRecognizeForeignKeyPrefix()
         {
             var fk = new ForeignKey();
-            Assert.Equal(LayoutDefinition.Columns.FOREIGN_KEY_PREFIX, fk.Prefix);
+            Assert.Equal(Column.FOREIGN_KEY_PREFIX, fk.Prefix);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace Inverse.Tests
         public void ShouldRecognizeForeignPrimaryKeyPrefix()
         {
             var fpk = new ForeignPrimaryKey();
-            Assert.Equal(LayoutDefinition.Columns.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
+            Assert.Equal(Column.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace Inverse.Tests
             Assert.Equal(fk.RelatedColumn, fpk.RelatedColumn);
             Assert.Equal(fk.Required, fpk.Required);
             Assert.Equal(fk.Table.Name, fpk.Table.Name);
-            Assert.Equal(LayoutDefinition.Columns.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
+            Assert.Equal(Column.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
         }
     }
 }

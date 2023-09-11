@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>DatabaseStudioDesigner</AssemblyName>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
@@ -17,6 +17,11 @@
     <ProjectReference Include="..\Inverse\Inverse.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Include="FrmMain.*.cs">
+			<DependentUpon>FrmMain.cs</DependentUpon>
+		</None>
+	</ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>

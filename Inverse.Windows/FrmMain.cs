@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Inverse.Domain;
+using Inverse.Domain.Databases;
+using Inverse.Domain.Tables;
+using Inverse.Plugin;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inverse.Plugin;
-using System.Drawing.Drawing2D;
-using Inverse.Domain.Tables;
-using Inverse.Domain.Databases;
-using Inverse.Domain;
 
 namespace Inverse.Windows
 {
@@ -85,8 +85,8 @@ namespace Inverse.Windows
 
         private async Task Arrange()
         {
-            var left = LayoutDefinition.Tables.MARGIN;
-            var top = LayoutDefinition.Tables.MARGIN;
+            var left = Table.MARGIN;
+            var top = Table.MARGIN;
             var tabelas = new List<Table>();
             const int DELAY = 0;
 
@@ -155,19 +155,19 @@ namespace Inverse.Windows
             do
             {
                 var width = table.Columns.Select(x => x.Name.Length).Max() * LayoutDefinition.Chars.WIDTH;
-                var height = (table.Columns.Count + 1) * LayoutDefinition.Columns.HEIGHT;
+                var height = (table.Columns.Count + 1) * Table.HEIGHT;
                 var layout = new Rectangle(left, top, width, height);
 
                 if (layout.Right > panel1.Width)
                 {
-                    left = LayoutDefinition.Tables.MARGIN;
-                    top = _database.Tables.Max(_ => _.Bottom) + LayoutDefinition.Tables.MARGIN;
+                    left = Table.MARGIN;
+                    top = _database.Tables.Max(_ => _.Bottom) + Table.MARGIN;
                 }
 
                 table.Left = layout.Left;
                 table.Top = layout.Top;
 
-                left += layout.Width + LayoutDefinition.Tables.MARGIN;
+                left += layout.Width + Table.MARGIN;
 
                 var overridenTable = _database.Tables.Except(new List<Table> { table }).FirstOrDefault(x => x.IsHover(table.Left, table.Top));
 
@@ -278,7 +278,7 @@ namespace Inverse.Windows
         {
             var dialog = new SaveFileDialog
             {
-                Filter = "Portable Network Graphics|*.Png"
+                Filter = "Portable Network Graphics|*.png"
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -302,7 +302,7 @@ namespace Inverse.Windows
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                     g.DrawString(_database.Name, fonte, Brushes.Black, new Rectangle(0, 0, panel1.Width, 30), _imageTextAlignCenter);
-                    g.DrawString($"InverseDB Studio - {DateTime.Today:dd/MM/yyyy}", fonte, Brushes.Black, new Rectangle(0, bmp.Height - 20, bmp.Width, 20), _imageTextSignature);
+                    g.DrawString($"{Program.Name} - {DateTime.Today:dd/MM/yyyy}", fonte, Brushes.Black, new Rectangle(0, bmp.Height - 20, bmp.Width, 20), _imageTextSignature);
                     g.Flush();
 
                     bmp.Save(filename, format);
@@ -321,7 +321,7 @@ namespace Inverse.Windows
 
         private bool UserWantsClose()
         {
-            return MessageBox.Show("Unsaved changes will be lost. Are you sure?","",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes;
+            return MessageBox.Show("Unsaved changes will be lost. Are you sure?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         private void noneToolStripMenuItem1_Click(object sender, EventArgs e)

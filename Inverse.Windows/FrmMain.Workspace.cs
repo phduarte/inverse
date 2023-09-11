@@ -1,4 +1,4 @@
-﻿using Inverse.Domain;
+﻿using Inverse.Domain.Tables;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -17,8 +17,8 @@ namespace Inverse.Windows
 
             Draw(e.Graphics);
 
-            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Right) + LayoutDefinition.Tables.MARGIN);
-            panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Bottom) + LayoutDefinition.Tables.MARGIN);
+            panel1.Width = Math.Max(flowLayoutPanel1.Width, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Right) + Table.MARGIN);
+            panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Bottom) + Table.MARGIN);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)

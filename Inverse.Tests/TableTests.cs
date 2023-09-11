@@ -21,20 +21,20 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldCalculateWidth()
         {
-            Assert.Equal(LayoutDefinition.Tables.WIDTH, _table.Width);
+            Assert.Equal(Table.WIDTH, _table.Width);
 
             _table.Add(new Column { Name = "NOME_DA_COLUNA" });
-            Assert.NotEqual(LayoutDefinition.Tables.WIDTH, _table.Width);
+            Assert.NotEqual(Table.WIDTH, _table.Width);
         }
 
         [Fact]
         public void ShouldCalculateHeight()
         {
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT, _table.Height);
+            Assert.Equal(Table.HEIGHT, _table.Height);
 
             _table.Add(new Column { Name = "NOME_DA_COLUNA" });
 
-            var expectedHeight = LayoutDefinition.Columns.HEIGHT * (_table.Columns.Count + 1);
+            var expectedHeight = Table.HEIGHT * (_table.Columns.Count + 1);
 
             Assert.Equal(expectedHeight, _table.Height);
         }
@@ -42,13 +42,13 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldCalculateCenter()
         {
-            Assert.Equal(LayoutDefinition.Tables.WIDTH / 2, _table.Center);
+            Assert.Equal(Table.WIDTH / 2, _table.Center);
         }
 
         [Fact]
         public void ShouldCalculateMiddle()
         {
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT / 2, _table.Middle);
+            Assert.Equal(Table.HEIGHT / 2, _table.Middle);
         }
 
         [Fact]
@@ -73,9 +73,9 @@ namespace Inverse.Tests
         [InlineData(1000)]
         public void ShouldMoveToRight(int pxToRight)
         {
-            Assert.Equal(LayoutDefinition.Tables.WIDTH, _table.Right);
+            Assert.Equal(Table.WIDTH, _table.Right);
             _table.MoveOffset(pxToRight, 0);
-            Assert.Equal(LayoutDefinition.Tables.WIDTH + pxToRight, _table.Right);
+            Assert.Equal(Table.WIDTH + pxToRight, _table.Right);
         }
 
         [Theory]
@@ -90,9 +90,9 @@ namespace Inverse.Tests
         [InlineData(1000)]
         public void ShouldMoveDown(int pxToDown)
         {
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT, _table.Bottom);
+            Assert.Equal(Table.HEIGHT, _table.Bottom);
             _table.MoveOffset(0, pxToDown);
-            Assert.Equal(LayoutDefinition.Columns.HEIGHT + pxToDown, _table.Bottom);
+            Assert.Equal(Table.HEIGHT + pxToDown, _table.Bottom);
         }
 
         [Theory]
@@ -157,13 +157,13 @@ namespace Inverse.Tests
         [Fact]
         public void ShouldRecognizeWhenItsHover()
         {
-            Assert.True(_table.IsHover(LayoutDefinition.Tables.WIDTH / 2, LayoutDefinition.Columns.HEIGHT / 2));
+            Assert.True(_table.IsHover(Table.WIDTH / 2, Table.HEIGHT / 2));
         }
 
         [Fact]
         public void ShouldRecognizeWhenItsNotHover()
         {
-            Assert.False(_table.IsHover(LayoutDefinition.Tables.WIDTH + 1, LayoutDefinition.Columns.HEIGHT / 2));
+            Assert.False(_table.IsHover(Table.WIDTH + 1, Table.HEIGHT / 2));
         }
 
         [Fact]
