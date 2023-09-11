@@ -12,15 +12,14 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Inverse.Plugin\Inverse.Plugin.csproj" />
-    <ProjectReference Include="..\Inverse\Inverse.csproj" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<None Include="FrmMain.*.cs">
 			<DependentUpon>FrmMain.cs</DependentUpon>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Inverse.Application\Inverse.Application.csproj" />
 	</ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

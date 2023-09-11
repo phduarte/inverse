@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Inverse\Inverse.csproj" />
+    <ProjectReference Include="..\Inverse.Domain\Inverse.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,8 @@
-﻿using Inverse.Domain.Tables;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Inverse.Domain.Databases
+namespace Inverse.Domain
 {
     public class Database : Entity<Guid>, IAggregateRoot
     {

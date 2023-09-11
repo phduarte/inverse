@@ -1,11 +1,9 @@
-﻿using System;
+﻿using FakeItEasy;
+using Inverse.Application;
+using Inverse.Domain;
+using System;
 using System.IO;
 using Xunit;
-using FakeItEasy;
-using Inverse.Plugin.FileManager.EncryptedXml;
-using Inverse.Domain.Databases;
-using Inverse.Domain.Tables;
-using Inverse.Domain.Columns;
 
 namespace Inverse.Tests
 {
@@ -127,8 +125,9 @@ namespace Inverse.Tests
         {
             var fileName = "test3.idb";
             var db = CreateDatabaseWithTwoTables();
-            var svc = new DatabaseService()
-                .With(new EncryptedXmlFileManagerStrategy());
+            var svc = new DatabaseService();
+
+            svc.InstallPlugins();
 
             svc.SaveFile(db, fileName);
 
@@ -143,8 +142,9 @@ namespace Inverse.Tests
             var fileName = "test4.idb";
             var expected = CreateDatabaseWithTwoTables();
             var actual = new Database(Provider.MSSQLServer);
-            var svc = new DatabaseService()
-                .With(new EncryptedXmlFileManagerStrategy());
+            var svc = new DatabaseService();
+
+            svc.InstallPlugins();
 
             try
             {

@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Inverse\Inverse.csproj" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
+    <ProjectReference Include="..\Inverse.Domain\Inverse.Domain.csproj" />
   </ItemGroup>
   
 </Project>

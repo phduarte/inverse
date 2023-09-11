@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Databases
+﻿namespace Inverse.Domain
 {
     public interface IFileManagerStrategy
     {

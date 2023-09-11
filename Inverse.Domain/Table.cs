@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Inverse.Domain.Columns;
-using Inverse.Domain.Databases;
 using Inverse.Extensions;
 using static System.Math;
 
-namespace Inverse.Domain.Tables
+namespace Inverse.Domain
 {
     public class Table : Entity<string>, IDraggableElement, IAggregateRoot
     {
@@ -25,8 +23,8 @@ namespace Inverse.Domain.Tables
         public int Right => Left + Width;
         public int Top { get; set; }
         public int Bottom => Top + Height;
-        public int Center => Left + (Width / 2);
-        public int Middle => Top + (Height / 2);
+        public int Center => Left + Width / 2;
+        public int Middle => Top + Height / 2;
         public int ForeignKeysCount => ForeignKeys.Count();
         public int PrimaryKeysCount => PrimaryKeys.Count();
         public IEnumerable<IPrimaryKey> PrimaryKeys => Columns.Where(_ => _.IsPrimaryKey).Cast<IPrimaryKey>();
@@ -86,7 +84,7 @@ namespace Inverse.Domain.Tables
             Left = Max(0, x);
             Top = Max(0, y);
         }
-        public bool CanMoveOffset(int offsetX, int offsetY) => (Left + offsetX) > -1 && (Top + offsetY) > -1;
+        public bool CanMoveOffset(int offsetX, int offsetY) => Left + offsetX > -1 && Top + offsetY > -1;
 
         public virtual void MoveOffset(int x, int y)
         {

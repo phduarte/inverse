@@ -1,6 +1,4 @@
-﻿using Inverse.Domain.Columns;
-using Inverse.Domain.Databases;
-using Inverse.Domain.Tables;
+﻿using Inverse.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data;

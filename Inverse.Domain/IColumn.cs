@@ -1,6 +1,4 @@
-﻿using Inverse.Domain.Tables;
-
-namespace Inverse.Domain.Columns
+﻿namespace Inverse.Domain
 {
     public interface IColumn
     {

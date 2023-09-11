@@ -1,8 +1,7 @@
-﻿using Inverse.Domain.Tables;
-using Inverse.Extensions;
+﻿using Inverse.Extensions;
 using System;
 
-namespace Inverse.Domain.Columns
+namespace Inverse.Domain
 {
     public class Column : Entity<string>, IColumn, IVisualElement, IAggregateRoot
     {
@@ -31,13 +30,13 @@ namespace Inverse.Domain.Columns
 
         public int Right => Table.Right;
 
-        public int Top => Table.Top + (Index * 30);
+        public int Top => Table.Top + Index * 30;
 
         public int Bottom => Top + Height;
 
         public int Center => Table.Center;
 
-        public int Middle => Top + (Height / 2);
+        public int Middle => Top + Height / 2;
 
         public Column()
         {

@@ -1,4 +1,4 @@
-﻿using Inverse.Domain.Databases;
+﻿using Inverse.Domain;
 
 namespace Inverse.Plugin.FileManager.EncryptedXml
 {

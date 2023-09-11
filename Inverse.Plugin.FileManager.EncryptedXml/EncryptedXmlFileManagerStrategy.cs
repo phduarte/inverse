@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Inverse.Domain;
+using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
-using System.Security.Cryptography;
-using Inverse.Domain.Databases;
-using Inverse.Domain.Tables;
-using Inverse.Domain.Columns;
 
 namespace Inverse.Plugin.FileManager.EncryptedXml
 {

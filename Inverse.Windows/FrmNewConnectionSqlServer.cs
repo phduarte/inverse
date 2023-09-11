@@ -1,4 +1,4 @@
-﻿using Inverse.Domain.Databases;
+﻿using Inverse.Domain;
 using System;
 using System.Windows.Forms;
 

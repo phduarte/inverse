@@ -30,52 +30,51 @@ namespace Inverse.Windows
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmNewConnection));
-            this.picSqlite = new System.Windows.Forms.PictureBox();
-            this.picMssqlServer = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.picSqlite)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picMssqlServer)).BeginInit();
-            this.SuspendLayout();
+            picSqlite = new System.Windows.Forms.PictureBox();
+            picMssqlServer = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)picSqlite).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picMssqlServer).BeginInit();
+            SuspendLayout();
             // 
             // picSqlite
             // 
-            this.picSqlite.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picSqlite.Image = ((System.Drawing.Image)(resources.GetObject("picSqlite.Image")));
-            this.picSqlite.Location = new System.Drawing.Point(183, 12);
-            this.picSqlite.Name = "picSqlite";
-            this.picSqlite.Size = new System.Drawing.Size(166, 143);
-            this.picSqlite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picSqlite.TabIndex = 5;
-            this.picSqlite.TabStop = false;
-            this.picSqlite.Click += new System.EventHandler(this.picSqlite_Click);
+            picSqlite.Cursor = System.Windows.Forms.Cursors.Hand;
+            picSqlite.Image = (System.Drawing.Image)resources.GetObject("picSqlite.Image");
+            picSqlite.Location = new System.Drawing.Point(214, 31);
+            picSqlite.Name = "picSqlite";
+            picSqlite.Size = new System.Drawing.Size(120, 107);
+            picSqlite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            picSqlite.TabIndex = 5;
+            picSqlite.TabStop = false;
+            picSqlite.Click += picSqlite_Click;
             // 
             // picMssqlServer
             // 
-            this.picMssqlServer.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picMssqlServer.Image = ((System.Drawing.Image)(resources.GetObject("picMssqlServer.Image")));
-            this.picMssqlServer.Location = new System.Drawing.Point(25, 33);
-            this.picMssqlServer.Name = "picMssqlServer";
-            this.picMssqlServer.Size = new System.Drawing.Size(129, 107);
-            this.picMssqlServer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picMssqlServer.TabIndex = 6;
-            this.picMssqlServer.TabStop = false;
-            this.picMssqlServer.Click += new System.EventHandler(this.picMssqlServer_Click);
+            picMssqlServer.Cursor = System.Windows.Forms.Cursors.Hand;
+            picMssqlServer.Image = (System.Drawing.Image)resources.GetObject("picMssqlServer.Image");
+            picMssqlServer.Location = new System.Drawing.Point(35, 31);
+            picMssqlServer.Name = "picMssqlServer";
+            picMssqlServer.Size = new System.Drawing.Size(129, 107);
+            picMssqlServer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            picMssqlServer.TabIndex = 6;
+            picMssqlServer.TabStop = false;
+            picMssqlServer.Click += picMssqlServer_Click;
             // 
             // FrmNewConnection
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(375, 173);
-            this.Controls.Add(this.picMssqlServer);
-            this.Controls.Add(this.picSqlite);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "FrmNewConnection";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Create New";
-            ((System.ComponentModel.ISupportInitialize)(this.picSqlite)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picMssqlServer)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.White;
+            ClientSize = new System.Drawing.Size(375, 173);
+            Controls.Add(picMssqlServer);
+            Controls.Add(picSqlite);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Name = "FrmNewConnection";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Create New";
+            ((System.ComponentModel.ISupportInitialize)picSqlite).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picMssqlServer).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

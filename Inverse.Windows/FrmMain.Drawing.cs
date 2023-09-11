@@ -1,5 +1,4 @@
 ﻿using Inverse.Domain;
-using Inverse.Domain.Columns;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,7 +20,7 @@ namespace Inverse.Windows
             g.SmoothingMode = x;
         }
 
-        private void DrawTables(Graphics g, IOrderedEnumerable<Domain.Tables.Table> tables)
+        private void DrawTables(Graphics g, IOrderedEnumerable<Table> tables)
         {
             const int PK_SEP_PADDING = 8;
             var fontRegular = new Font(Font.FontFamily, 8);
@@ -55,7 +54,7 @@ namespace Inverse.Windows
             }
         }
 
-        private void DrawColumns(Graphics g, int PK_SEP_PADDING, Font fontRegular, Font fontBold, Font fontItalic, Font fontBoldItalic, Domain.Tables.Table table, Color tableBorderColor, IEnumerable<Column> pks)
+        private void DrawColumns(Graphics g, int PK_SEP_PADDING, Font fontRegular, Font fontBold, Font fontItalic, Font fontBoldItalic, Table table, Color tableBorderColor, IEnumerable<Column> pks)
         {
             var separatorPksY = table.Top + Column.HEIGHT;
 
@@ -119,7 +118,7 @@ namespace Inverse.Windows
             }
         }
 
-        private void DrawRelationships(Graphics g, IOrderedEnumerable<Domain.Tables.Table> tables)
+        private void DrawRelationships(Graphics g, IOrderedEnumerable<Table> tables)
         {
             var relationBorder = Theme.Table.Border.GetPen();
             var temp = new Pen(Brushes.Red, 2);

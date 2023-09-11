@@ -35,3 +35,7 @@
 /Inverse.Plugin.DatabaseGenerator.Sqlite/bin/Release/net6.0
 /Inverse.Plugin.FileManager.EncryptedXml/bin/Release/net6.0
 /Inverse.Plugin.ScriptGenerator.MsSqlServer/bin/Release/net6.0
+/Inverse.Application/bin/Debug/net6.0
+/Inverse.Application/obj
+/Inverse.Domain/bin/Debug/net6.0
+/Inverse.Domain/obj

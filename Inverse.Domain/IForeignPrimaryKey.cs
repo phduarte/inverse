@@ -1,4 +1,4 @@
-﻿namespace Inverse.Domain.Columns
+﻿namespace Inverse.Domain
 {
     public interface IForeignPrimaryKey : IPrimaryKey, IForeignKey
     {

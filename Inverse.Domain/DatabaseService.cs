@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Inverse.Domain.Databases
+namespace Inverse.Domain
 {
     public class DatabaseService : IDatabaseService
     {

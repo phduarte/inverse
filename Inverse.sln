@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse", "Inverse\Inverse.csproj", "{D2A06862-9606-4DF0-9826-A70B8FA7DBA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Domain", "Inverse.Domain\Inverse.Domain.csproj", "{D2A06862-9606-4DF0-9826-A70B8FA7DBA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Windows", "Inverse.Windows\Inverse.Windows.csproj", "{86ADC61B-A1D7-4337-8BD8-3EFEBD028200}"
 EndProject
@@ -16,8 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin.DatabaseGenerator.Sqlite", "Inverse.Plugin.DatabaseGenerator.Sqlite\Inverse.Plugin.DatabaseGenerator.Sqlite.csproj", "{19A7AD7D-FA33-43A4-87B2-FB5945BA4AF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin.FileManager.EncryptedXml", "Inverse.Plugin.FileManager.EncryptedXml\Inverse.Plugin.FileManager.EncryptedXml.csproj", "{81E9C5EA-21ED-4612-87C3-035197C078D5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Plugin", "Inverse.Plugin\Inverse.Plugin.csproj", "{E09C4AFD-56A6-496C-A098-2D7BD10497DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Core", "2. Core", "{CC129F39-76ED-41CC-9EA1-6107E9955D72}"
 EndProject
@@ -33,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Sol
 		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Application", "Inverse.Application\Inverse.Application.csproj", "{CDCA0D52-AB12-49CA-8020-5D24306BFB72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,10 +68,10 @@ Global
 		{81E9C5EA-21ED-4612-87C3-035197C078D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81E9C5EA-21ED-4612-87C3-035197C078D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81E9C5EA-21ED-4612-87C3-035197C078D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E09C4AFD-56A6-496C-A098-2D7BD10497DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E09C4AFD-56A6-496C-A098-2D7BD10497DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E09C4AFD-56A6-496C-A098-2D7BD10497DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E09C4AFD-56A6-496C-A098-2D7BD10497DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,7 +84,7 @@ Global
 		{99E0FB1C-9DC6-4B3D-8188-B7D5C37440FF} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
 		{19A7AD7D-FA33-43A4-87B2-FB5945BA4AF8} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
 		{81E9C5EA-21ED-4612-87C3-035197C078D5} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
-		{E09C4AFD-56A6-496C-A098-2D7BD10497DF} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
+		{CDCA0D52-AB12-49CA-8020-5D24306BFB72} = {CC129F39-76ED-41CC-9EA1-6107E9955D72}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F47E113-B215-4F25-B4DC-A9727BD0A459}
