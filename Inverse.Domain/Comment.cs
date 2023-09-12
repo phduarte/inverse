@@ -18,20 +18,23 @@ namespace Inverse.Domain
 
         public static IEnumerable<Comment> FromNotes(string notes)
         {
-            var lines = notes.Split('\n');
-
-            foreach (var line in lines)
+            if (notes is not null)
             {
-                var fields = line.Split(';');
+                var lines = notes.Split('\n');
 
-                if (fields.Length >= 3)
+                foreach (var line in lines)
                 {
-                    yield return new Comment
+                    var fields = line.Split(';');
+
+                    if (fields.Length >= 3)
                     {
-                        Date = DateTime.Parse(fields[0]),
-                        Author = fields[1],
-                        Text = fields[2].Replace("<br />", "\n")
-                    };
+                        yield return new Comment
+                        {
+                            Date = DateTime.Parse(fields[0]),
+                            Author = fields[1],
+                            Text = fields[2].Replace("<br />", "\n")
+                        };
+                    }
                 }
             }
         }
