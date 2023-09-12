@@ -1,4 +1,5 @@
 ﻿using Inverse.Domain;
+using Inverse.Extensions;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -92,15 +93,18 @@ namespace Inverse.Desktop
                     isSavePending = true;
                 }
             }
-            else if (showToolTipsToolStripMenuItem.Checked
-                && GetActiveTable() is Table table)
-            {
-                toolTip1.Show(table.Notes, panel1);
-            }
-            else
-            {
-                toolTip1.Hide(panel1);
-            }
+            //else if (showToolTipsToolStripMenuItem.Checked
+            //    && toolTip1.Active
+            //    && GetActiveTable() is Table table
+            //    //&& _currentPoint.IsBetween(table.GetCommentButton())
+            //    )
+            //{
+            //    toolTip1.Show(table.Notes, panel1);
+            //}
+            //else
+            //{
+            //    toolTip1.Hide(panel1);
+            //}
 
             panel1.Invalidate();
         }
@@ -135,7 +139,7 @@ namespace Inverse.Desktop
                 case Keys.Right:
                 case Keys.Up:
                 case Keys.Down:
-                    if (e.Alt)
+                    if (e.Shift)
                     {
                         var isHorizontalMove = e.KeyCode == Keys.Left || e.KeyCode == Keys.Right;
                         var isVerticalMove = e.KeyCode == Keys.Up || e.KeyCode == Keys.Down;

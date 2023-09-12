@@ -28,13 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lblName = new System.Windows.Forms.Label();
             txtName = new System.Windows.Forms.TextBox();
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
             dataGridView1 = new System.Windows.Forms.DataGridView();
-            tabPage2 = new System.Windows.Forms.TabPage();
-            txtNotes = new System.Windows.Forms.TextBox();
             ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ColumnType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,10 +41,18 @@
             ColumnPK = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ColumnReferences = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ColumnTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            button1 = new System.Windows.Forms.Button();
+            txtNote = new System.Windows.Forms.TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabPage2.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // lblName
@@ -97,26 +104,6 @@
             dataGridView1.Size = new System.Drawing.Size(830, 347);
             dataGridView1.TabIndex = 0;
             // 
-            // tabPage2
-            // 
-            tabPage2.Controls.Add(txtNotes);
-            tabPage2.Location = new System.Drawing.Point(4, 24);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            tabPage2.Size = new System.Drawing.Size(836, 353);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "Notes";
-            tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // txtNotes
-            // 
-            txtNotes.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtNotes.Location = new System.Drawing.Point(3, 3);
-            txtNotes.Multiline = true;
-            txtNotes.Name = "txtNotes";
-            txtNotes.Size = new System.Drawing.Size(830, 347);
-            txtNotes.TabIndex = 0;
-            // 
             // ColumnName
             // 
             ColumnName.HeaderText = "Name";
@@ -154,6 +141,69 @@
             ColumnTag.Name = "ColumnTag";
             ColumnTag.Visible = false;
             // 
+            // tabPage2
+            // 
+            tabPage2.Controls.Add(flowLayoutPanel1);
+            tabPage2.Controls.Add(button1);
+            tabPage2.Controls.Add(txtNote);
+            tabPage2.Location = new System.Drawing.Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            tabPage2.Size = new System.Drawing.Size(836, 353);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Notes";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.Location = new System.Drawing.Point(3, 6);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new System.Drawing.Size(830, 289);
+            flowLayoutPanel1.TabIndex = 3;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem, deleteToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(108, 48);
+            // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            editToolStripMenuItem.Text = "Edit";
+            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+            // 
+            // deleteToolStripMenuItem
+            // 
+            deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            deleteToolStripMenuItem.Text = "Delete";
+            deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
+            // 
+            // button1
+            // 
+            button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            button1.Location = new System.Drawing.Point(754, 301);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(79, 49);
+            button1.TabIndex = 2;
+            button1.Text = "Send";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // txtNote
+            // 
+            txtNote.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtNote.Location = new System.Drawing.Point(3, 301);
+            txtNote.Multiline = true;
+            txtNote.Name = "txtNote";
+            txtNote.Size = new System.Drawing.Size(745, 49);
+            txtNote.TabIndex = 1;
+            txtNote.KeyDown += txtNote_KeyDown;
+            // 
             // FrmTableEdit
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -163,6 +213,7 @@
             Controls.Add(txtName);
             Controls.Add(lblName);
             Name = "FrmTableEdit";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             Text = "Table";
             FormClosing += FrmTableEdit_FormClosing;
             Load += FrmTableEdit_Load;
@@ -171,6 +222,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -183,7 +235,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox txtNotes;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnType;
@@ -191,5 +242,11 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPK;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnReferences;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTag;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtNote;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
     }
 }

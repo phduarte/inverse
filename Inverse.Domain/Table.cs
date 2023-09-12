@@ -9,6 +9,7 @@ namespace Inverse.Domain
     public class Table : Entity<string>, IDraggableElement, IAggregateRoot
     {
         readonly List<Column> _columns = new();
+        readonly List<Comment> _comments = new();
 
         public const int HEIGHT = 30;
         public const int WIDTH = 100;
@@ -17,7 +18,7 @@ namespace Inverse.Domain
         public const int TYPE_WIDTH = 90;
 
         public string Name { get; set; }
-        public string Notes { get; set; }
+        public IReadOnlyList<Comment> Comments => _comments;
         public IReadOnlyList<Column> Columns => _columns;
         public int Width { get; private set; } = WIDTH;
         public int Height { get; private set; } = HEIGHT;
@@ -35,6 +36,7 @@ namespace Inverse.Domain
         public Database Database { get; set; }
         public int Index { get; set; }
         public bool IsModified { get; set; }
+        public string Notes => Comment.ToNotes(Comments);
 
         public Table()
         {
@@ -87,6 +89,27 @@ namespace Inverse.Domain
             enumerable.ToList().ForEach(e => Add(e));
         }
 
+        public void Add(Comment comment)
+        {
+            comment.Table = this;
+            _comments.Add(comment);
+        }
+
+        public void AddRange(IEnumerable<Comment> comments)
+        {
+            foreach (var comment in comments)
+            {
+                Add(comment);
+            }
+        }
+
+        public void Clear()
+        {
+            _columns.Clear();
+            _comments.Clear();
+            IsModified = true;
+        }
+
         public void MoveTo(int x, int y)
         {
             Left = Max(0, x);
@@ -124,12 +147,6 @@ namespace Inverse.Domain
         public override string ToString()
         {
             return Name;
-        }
-
-        public void Clear()
-        {
-            _columns.Clear();
-            IsModified = true;
         }
     }
 }

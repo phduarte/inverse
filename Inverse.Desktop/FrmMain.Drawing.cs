@@ -51,6 +51,14 @@ namespace Inverse.Desktop
 
                 var pks = table.Columns.Where(_ => _.IsPrimaryKey);
                 DrawColumns(g, PK_SEP_PADDING, fontRegular, fontBold, fontItalic, fontBoldItalic, table, tableBorderColor, pks);
+
+                if (table.Comments.Any())
+                {
+                    var rect = GetCommentButton(table);
+
+                    g.FillEllipse(Brushes.DodgerBlue, rect);
+                    g.DrawString("i", Font, Brushes.White, new Point(rect.Left + 5, rect.Top));
+                }
             }
         }
 
@@ -342,6 +350,11 @@ namespace Inverse.Desktop
                     }
                 }
             }
+        }
+
+        public static Rectangle GetCommentButton(Table table)
+        {
+            return new Rectangle(table.Right - 8, table.Top - 8, 16, 16);
         }
     }
 }

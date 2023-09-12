@@ -333,18 +333,18 @@ namespace Inverse.Desktop
             // addTableToolStripMenuItem
             // 
             addTableToolStripMenuItem.Name = "addTableToolStripMenuItem";
-            addTableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            addTableToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             addTableToolStripMenuItem.Text = "Add Table";
             addTableToolStripMenuItem.Click += addTableToolStripMenuItem_Click;
             // 
             // toolStripSeparator9
             // 
             toolStripSeparator9.Name = "toolStripSeparator9";
-            toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator9.Size = new System.Drawing.Size(123, 6);
             // 
             // diagramToolStripMenuItem
             // 
-            diagramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { selectAllToolStripMenuItem, arrangeToolStripMenuItem, refreshToolStripMenuItem, toolStripSeparator7, showHiddenTablesToolStripMenuItem, showToolTipsToolStripMenuItem, toolStripSeparator8, releaseTablesToolStripMenuItem, cardinalityToolStripMenuItem, readOnlyToolStripMenuItem });
+            diagramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { selectAllToolStripMenuItem, arrangeToolStripMenuItem, refreshToolStripMenuItem, toolStripSeparator7, readOnlyToolStripMenuItem, showHiddenTablesToolStripMenuItem, showToolTipsToolStripMenuItem, toolStripSeparator8, releaseTablesToolStripMenuItem, cardinalityToolStripMenuItem });
             diagramToolStripMenuItem.Name = "diagramToolStripMenuItem";
             diagramToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             diagramToolStripMenuItem.Text = "Diagram";

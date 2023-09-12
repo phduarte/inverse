@@ -51,16 +51,18 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                 var tbLeft = xmlTable.GetFromAttribute("left");
                 var tbTop = xmlTable.GetFromAttribute("top");
                 var isHidden = xmlTable.GetFromAttribute("isHidden") ?? "false";
+
                 var table = new Table
                 {
                     Id = tbGuid,
                     Name = tbName,
-                    Notes = tabNotes,
                     Database = database,
                     Left = int.Parse(tbLeft),
                     Top = int.Parse(tbTop),
                     IsHidden = bool.Parse(isHidden)
                 };
+
+                table.AddRange(Comment.FromNotes(tabNotes));
 
                 var xmlColumns = xmlTable.SelectNodes(".//column");
 
