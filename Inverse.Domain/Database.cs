@@ -19,6 +19,7 @@ namespace Inverse.Domain
         public Database(Provider provider)
         {
             Provider = provider;
+            Id = Guid.NewGuid();
         }
 
         public override string ToString()

@@ -11,6 +11,11 @@ namespace Inverse.Domain
         public DateTime Date { get; set; }
         public string Text { get; set; }
 
+        public Comment()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public static IEnumerable<Comment> FromNotes(string notes)
         {
             var lines = notes.Split('\n');

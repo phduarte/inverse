@@ -66,12 +66,12 @@ namespace Inverse.Desktop
             refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             arrangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            releaseTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             readOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             showHiddenTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             showToolTipsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            releaseTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             cardinalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             noneToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             numberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -237,20 +237,20 @@ namespace Inverse.Desktop
             // 
             newToolStripMenuItem.Name = "newToolStripMenuItem";
             newToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N;
-            newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             newToolStripMenuItem.Text = "&New";
             newToolStripMenuItem.Click += newToolStripMenuItem_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(143, 6);
             // 
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
             openToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O;
-            openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             openToolStripMenuItem.Text = "Open";
             openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
@@ -258,21 +258,21 @@ namespace Inverse.Desktop
             // 
             closeToolStripMenuItem.Enabled = false;
             closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            closeToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             closeToolStripMenuItem.Text = "Close";
             closeToolStripMenuItem.Click += closeToolStripMenuItem_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator4.Size = new System.Drawing.Size(143, 6);
             // 
             // saveToolStripMenuItem
             // 
             saveToolStripMenuItem.Enabled = false;
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             saveToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S;
-            saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             saveToolStripMenuItem.Text = "Save";
             saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
@@ -280,21 +280,21 @@ namespace Inverse.Desktop
             // 
             saveAsToolStripMenuItem.Enabled = false;
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveAsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             saveAsToolStripMenuItem.Text = "Save as";
             saveAsToolStripMenuItem.Click += saveAsToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
             // 
             // exportToolStripMenuItem
             // 
             exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { scriptToolStripMenuItem, imageToolStripMenuItem });
             exportToolStripMenuItem.Enabled = false;
             exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            exportToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             exportToolStripMenuItem.Text = "Export";
             // 
             // scriptToolStripMenuItem
@@ -314,20 +314,19 @@ namespace Inverse.Desktop
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4;
-            exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem1
             // 
             editToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { addTableToolStripMenuItem, toolStripSeparator9 });
-            editToolStripMenuItem1.Enabled = false;
             editToolStripMenuItem1.Name = "editToolStripMenuItem1";
             editToolStripMenuItem1.Size = new System.Drawing.Size(39, 20);
             editToolStripMenuItem1.Text = "Edit";
@@ -375,6 +374,14 @@ namespace Inverse.Desktop
             arrangeToolStripMenuItem.Text = "Arrange";
             arrangeToolStripMenuItem.Click += arrangeToolStripMenuItem_Click;
             // 
+            // releaseTablesToolStripMenuItem
+            // 
+            releaseTablesToolStripMenuItem.Enabled = false;
+            releaseTablesToolStripMenuItem.Name = "releaseTablesToolStripMenuItem";
+            releaseTablesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            releaseTablesToolStripMenuItem.Text = "Release Tables";
+            releaseTablesToolStripMenuItem.Click += releaseTablesToolStripMenuItem_Click;
+            // 
             // toolStripSeparator7
             // 
             toolStripSeparator7.Name = "toolStripSeparator7";
@@ -408,14 +415,6 @@ namespace Inverse.Desktop
             // 
             toolStripSeparator8.Name = "toolStripSeparator8";
             toolStripSeparator8.Size = new System.Drawing.Size(177, 6);
-            // 
-            // releaseTablesToolStripMenuItem
-            // 
-            releaseTablesToolStripMenuItem.Enabled = false;
-            releaseTablesToolStripMenuItem.Name = "releaseTablesToolStripMenuItem";
-            releaseTablesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            releaseTablesToolStripMenuItem.Text = "Release Tables";
-            releaseTablesToolStripMenuItem.Click += releaseTablesToolStripMenuItem_Click;
             // 
             // cardinalityToolStripMenuItem
             // 

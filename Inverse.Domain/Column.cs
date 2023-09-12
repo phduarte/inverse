@@ -3,7 +3,7 @@ using System;
 
 namespace Inverse.Domain
 {
-    public class Column : Entity<string>, IColumn, IVisualElement, IAggregateRoot
+    public class Column : Entity<string>, IColumn, IVisualElement
     {
         public const int HEIGHT = 30;
         public const int TITLE_MARGIN = 30;

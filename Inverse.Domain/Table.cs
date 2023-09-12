@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Inverse.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Inverse.Extensions;
 using static System.Math;
 
 namespace Inverse.Domain
 {
-    public class Table : Entity<string>, IDraggableElement, IAggregateRoot
+    public class Table : Entity<string>, IDraggableElement
     {
         readonly List<Column> _columns = new();
         readonly List<Comment> _comments = new();
