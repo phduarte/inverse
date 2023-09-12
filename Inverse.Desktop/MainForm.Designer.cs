@@ -1,7 +1,7 @@
 ﻿
 namespace Inverse.Desktop
 {
-    partial class FrmMain
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,7 +30,7 @@ namespace Inverse.Desktop
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panel1 = new System.Windows.Forms.Panel();
             contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

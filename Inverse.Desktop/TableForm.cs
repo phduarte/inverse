@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmTableEdit : Form
+    public partial class TableForm : Form
     {
         private Table _table;
 
-        public FrmTableEdit(Table table)
+        public TableForm(Table table)
         {
             InitializeComponent();
             _table = table;

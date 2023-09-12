@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmAbout : Form
+    public partial class AboutForm : Form
     {
-        public FrmAbout()
+        public AboutForm()
         {
             InitializeComponent();
         }

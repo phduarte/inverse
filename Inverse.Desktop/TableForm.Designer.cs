@@ -1,6 +1,6 @@
 ﻿namespace Inverse.Desktop
 {
-    partial class FrmTableEdit
+    partial class TableForm
     {
         /// <summary>
         /// Required designer variable.

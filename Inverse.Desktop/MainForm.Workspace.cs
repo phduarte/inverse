@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmMain
+    public partial class MainForm
     {
         bool isDragging = false;
 

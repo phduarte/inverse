@@ -1,6 +1,6 @@
 ﻿namespace Inverse.Desktop
 {
-    partial class FrmAbout
+    partial class AboutForm
     {
         /// <summary>
         /// Required designer variable.

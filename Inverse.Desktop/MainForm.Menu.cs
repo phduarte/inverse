@@ -5,14 +5,14 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmMain
+    public partial class MainForm
     {
         private string _currentFilename = string.Empty;
         private bool isSavePending = false;
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new FrmNewConnection(this);
+            var form = new DatabaseForm(this);
             form.ShowDialog();
             ToggleMenuButtons();
             isSavePending = true;

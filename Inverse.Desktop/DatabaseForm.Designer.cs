@@ -1,7 +1,7 @@
 ﻿
 namespace Inverse.Desktop
 {
-    partial class FrmNewConnection
+    partial class DatabaseForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace Inverse.Desktop
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmNewConnection));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DatabaseForm));
             picSqlite = new System.Windows.Forms.PictureBox();
             picMssqlServer = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)picSqlite).BeginInit();
@@ -60,7 +60,7 @@ namespace Inverse.Desktop
             picMssqlServer.TabStop = false;
             picMssqlServer.Click += picMssqlServer_Click;
             // 
-            // FrmNewConnection
+            // DatabaseForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -69,9 +69,9 @@ namespace Inverse.Desktop
             Controls.Add(picMssqlServer);
             Controls.Add(picSqlite);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            Name = "FrmNewConnection";
+            Name = "DatabaseForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            Text = "Create New";
+            Text = "New Database";
             ((System.ComponentModel.ISupportInitialize)picSqlite).EndInit();
             ((System.ComponentModel.ISupportInitialize)picMssqlServer).EndInit();
             ResumeLayout(false);

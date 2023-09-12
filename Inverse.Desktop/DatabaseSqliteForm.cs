@@ -5,12 +5,12 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmNewConnectionSqlite : Form
+    public partial class DatabaseSqliteForm : Form
     {
-        private readonly FrmMain _parentForm;
+        private readonly MainForm _parentForm;
         private static string _filename;
 
-        public FrmNewConnectionSqlite(FrmMain parentForm)
+        public DatabaseSqliteForm(MainForm parentForm)
         {
             _parentForm = parentForm;
             InitializeComponent();
@@ -21,8 +21,10 @@ namespace Inverse.Desktop
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Arquivo de Banco de Dados SQLite|*.db";
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Arquivo de Banco de Dados SQLite|*.db"
+            };
 
             dialog.ShowDialog();
 
@@ -36,9 +38,7 @@ namespace Inverse.Desktop
 
         private void btnRevert_Click(object sender, EventArgs e)
         {
-            var connectionString = $"Data source={_filename};";
-
-            _parentForm.UseDatabase(Provider.SQLite, connectionString);
+            _parentForm.UseDatabase(Provider.SQLite, $"Data source={_filename};");
             Close();
         }
     }

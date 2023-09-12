@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmMain
+    public partial class MainForm
     {
         private void Draw(Graphics g)
         {

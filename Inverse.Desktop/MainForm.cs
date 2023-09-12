@@ -3,6 +3,7 @@ using Inverse.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmMain : Form
+    public partial class MainForm : Form
     {
         private readonly IDatabaseService _databaseService;
         private readonly StringFormat _textAlignLeft = new(StringFormatFlags.NoClip)
@@ -55,7 +56,7 @@ namespace Inverse.Desktop
         DateTime _lastUpdate = DateTime.MinValue;
         protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
 
-        public FrmMain()
+        public MainForm()
         {
             InitializeComponent();
             _databaseService = new DatabaseService();
@@ -283,8 +284,6 @@ namespace Inverse.Desktop
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                panel1.Scale(new SizeF(panel1.Width * 2, panel1.Height * 2));
-
                 var filename = dialog.FileName;
                 var format = System.Drawing.Imaging.ImageFormat.Png;
                 var bmp = new Bitmap(panel1.Width, panel1.Height);
@@ -300,6 +299,7 @@ namespace Inverse.Desktop
                     var fonte = new Font("Arial", 10);
                     var g = Graphics.FromImage(bmp);
 
+                    g.ScaleTransform(3, 3);
                     g.SmoothingMode = SmoothingMode.HighQuality;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -308,10 +308,14 @@ namespace Inverse.Desktop
                     g.Flush();
 
                     bmp.Save(filename, format);
+
+                    if (MessageBox.Show("Do you want to open the exported image file?", "Open file", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        OpenImage(filename);
+                    }
                 }
                 finally
                 {
-                    panel1.Scale(new SizeF(panel1.Width, panel1.Height));
 
                     panel1.ResumeLayout();
                 }
@@ -364,7 +368,7 @@ namespace Inverse.Desktop
 
             if (GetActiveTable() is Table activeTable)
             {
-                new FrmTableEdit(activeTable).ShowDialog();
+                new TableForm(activeTable).ShowDialog();
 
                 panel1.Invalidate();
             }
@@ -407,7 +411,15 @@ namespace Inverse.Desktop
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new FrmAbout().ShowDialog();
+            new AboutForm().ShowDialog();
+        }
+
+        private static void OpenImage(string imagePath)
+        {
+            var process = new Process();
+            process.StartInfo.FileName = "explorer";
+            process.StartInfo.Arguments = imagePath;
+            process.Start();
         }
     }
 }

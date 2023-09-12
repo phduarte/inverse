@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmNewConnection : Form
+    public partial class DatabaseForm : Form
     {
-        private readonly FrmMain _parentForm;
+        private readonly MainForm _parentForm;
 
-        public FrmNewConnection(FrmMain form)
+        public DatabaseForm(MainForm form)
         {
             _parentForm = form;
             InitializeComponent();
@@ -15,7 +15,7 @@ namespace Inverse.Desktop
 
         private void picMssqlServer_Click(object sender, EventArgs e)
         {
-            var frm = new FrmNewConnectionSqlServer(_parentForm);
+            var frm = new DatabaseSqlServerForm(_parentForm);
             Hide();
             frm.ShowDialog();
             Close();
@@ -23,7 +23,7 @@ namespace Inverse.Desktop
 
         private void picSqlite_Click(object sender, EventArgs e)
         {
-            var frm = new FrmNewConnectionSqlite(_parentForm);
+            var frm = new DatabaseSqliteForm(_parentForm);
             Hide();
             frm.ShowDialog();
             Close();

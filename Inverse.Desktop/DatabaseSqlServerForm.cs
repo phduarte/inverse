@@ -4,15 +4,15 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmNewConnectionSqlServer : Form
+    public partial class DatabaseSqlServerForm : Form
     {
-        private readonly FrmMain _parentForm;
+        private readonly MainForm _parentForm;
         private static string _server;
         private static string _database;
         private static string _username;
         private static string _password;
 
-        public FrmNewConnectionSqlServer(FrmMain parentForm)
+        public DatabaseSqlServerForm(MainForm parentForm)
         {
             _parentForm = parentForm;
             InitializeComponent();
@@ -30,7 +30,7 @@ namespace Inverse.Desktop
 
                 if (!chkWindowsAuth.Checked)
                 {
-                    connectionString += $"User ID={_username = txtUsername.Text};Password={_password = txtPassword.Text };";
+                    connectionString += $"User ID={_username = txtUsername.Text};Password={_password = txtPassword.Text};";
                 }
                 else
                 {

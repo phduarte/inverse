@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Inverse.Desktop
 {
-    public partial class FrmMain
+    public partial class MainForm
     {
         private void borderThinToolStripMenuItem_Click(object sender, EventArgs e)
         {
