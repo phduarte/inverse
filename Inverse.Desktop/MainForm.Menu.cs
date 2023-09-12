@@ -51,7 +51,7 @@ namespace Inverse.Desktop
                 var dialog = new SaveFileDialog
                 {
                     Filter = GetCompatibleFilesFilter(),
-                    FileName = _database.Name + Constants.FileManager.FILTER_EXTENSION
+                    FileName = _database.Name
                 };
 
                 var res = dialog.ShowDialog();
