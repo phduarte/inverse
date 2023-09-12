@@ -22,11 +22,12 @@ Também é possível exportar o diagrama para arquivo de script `.SQL`. Isso fac
 
 ![exportação de script](tela4.png)
 
-## Requisitos Mínimos:
+## Requisitos mínimos:
 
 - Windows 7+, Linux
 - Processador 1 GHz
 - RAM 512MB
+- .NET 6 Runtime
 
 ## Requisitos (DEV):
 
