@@ -15,7 +15,7 @@
                 Name = foreignKey.Name,
                 RelatedColumn = foreignKey.RelatedColumn,
                 RelatedTable = foreignKey.RelatedTable,
-                Required = foreignKey.Required,
+                IsRequired = foreignKey.IsRequired,
                 Table = foreignKey.Table,
                 Type = foreignKey.Type
             };

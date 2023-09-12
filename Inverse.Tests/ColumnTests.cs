@@ -100,7 +100,7 @@ namespace Inverse.Tests
                 Index = 1,
                 RelatedTable = "Customers",
                 RelatedColumn = "CustomerId",
-                Required = true,
+                IsRequired = true,
                 Table = new Table
                 {
                     Name = "Sales"
@@ -115,7 +115,7 @@ namespace Inverse.Tests
             Assert.Equal(fk.Index, fpk.Index);
             Assert.Equal(fk.RelatedTable, fpk.RelatedTable);
             Assert.Equal(fk.RelatedColumn, fpk.RelatedColumn);
-            Assert.Equal(fk.Required, fpk.Required);
+            Assert.Equal(fk.IsRequired, fpk.IsRequired);
             Assert.Equal(fk.Table.Name, fpk.Table.Name);
             Assert.Equal(Column.FOREIGN_PRIMART_KEY_PREFIX, fpk.Prefix);
         }

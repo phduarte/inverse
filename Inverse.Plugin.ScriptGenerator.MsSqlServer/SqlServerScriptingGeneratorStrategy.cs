@@ -83,7 +83,7 @@ namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
             }
             else if (column is ForeignKey fk && fk.Table.ForeignKeysCount == 1)
             {
-                if (column.Required)
+                if (column.IsRequired)
                 {
                     return $"\t{fk.Name} {fk.Type.ToUpper()} NOT NULL REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
                 }
@@ -92,7 +92,7 @@ namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
                     return $"\t{fk.Name} {fk.Type.ToUpper()} REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
                 }
             }
-            else if (column.Required)
+            else if (column.IsRequired)
             {
                 return $"\t{column.Name} {column.Type.ToUpper()} NOT NULL";
             }

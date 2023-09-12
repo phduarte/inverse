@@ -64,5 +64,10 @@ namespace Inverse.Domain
 
             table.Index = _tables.Max(t => t.Index) + 1;
         }
+
+        public void Remove(Table activeTable)
+        {
+            _tables.Remove(activeTable);
+        }
     }
 }

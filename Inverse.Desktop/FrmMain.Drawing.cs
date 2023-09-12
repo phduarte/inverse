@@ -72,7 +72,7 @@ namespace Inverse.Desktop
 
                     g.DrawString(col.Prefix, fontRegular, fontColor, areaChaveColuna, _textAlignLeft);
 
-                    var fontStyle = col.Required ? new Font(fontRegular, FontStyle.Bold) : fontRegular;
+                    var fontStyle = col.IsRequired ? new Font(fontRegular, FontStyle.Bold) : fontRegular;
 
                     g.DrawString(col.Name, fontStyle, fontColor, areaNomeColuna, _textAlignLeft);
                     g.DrawString(col.Type, fontRegular, fontColor, areaTipoColuna, _textAlignLeft);
@@ -99,7 +99,7 @@ namespace Inverse.Desktop
                 {
                     var fontColor = columnIsHover ? Theme.Table.ForeignKeyText.SelectedColor : Theme.Table.ForeignKeyText.Color;
                     var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, Column.PREFIX_WIDTH, col.Height);
-                    var nameFontStyle = col.Required ? fontBoldItalic : fontItalic;
+                    var nameFontStyle = col.IsRequired ? fontBoldItalic : fontItalic;
 
                     g.DrawString(col.Prefix, fontRegular, fontColor, areaChaveColuna, _textAlignLeft);
                     g.DrawString(col.Name, nameFontStyle, fontColor, areaNomeColuna, _textAlignLeft);
@@ -108,7 +108,7 @@ namespace Inverse.Desktop
                 else
                 {
                     var fontColor = columnIsHover ? Theme.Table.Column.Text.SelectedColor : Theme.Table.Column.Text.Color;
-                    var nameFontStyle = col.Required ? fontBold : fontRegular;
+                    var nameFontStyle = col.IsRequired ? fontBold : fontRegular;
 
                     g.DrawString(col.Name, nameFontStyle, fontColor, areaNomeColuna, _textAlignLeft);
                     g.DrawString(col.Type, fontRegular, fontColor, areaTipoColuna, _textAlignLeft);

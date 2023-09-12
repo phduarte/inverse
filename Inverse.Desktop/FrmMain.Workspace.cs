@@ -92,6 +92,34 @@ namespace Inverse.Desktop
                     isSavePending = true;
                 }
             }
+            else if (showToolTipsToolStripMenuItem.Checked
+                && GetActiveTable() is Table table)
+            {
+                toolTip1.Show(table.Notes, panel1);
+            }
+            else
+            {
+                toolTip1.Hide(panel1);
+            }
+
+            panel1.Invalidate();
+        }
+
+        private void panel1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (readOnlyToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            var newTable = new Table
+            {
+                Name = "New Table",
+                Left = e.Location.X,
+                Top = e.Location.Y,
+            };
+
+            _database.Add(newTable);
 
             panel1.Invalidate();
         }

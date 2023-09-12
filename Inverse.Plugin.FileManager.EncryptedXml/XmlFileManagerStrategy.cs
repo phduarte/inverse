@@ -76,7 +76,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired)
+                            IsRequired = bool.Parse(colRequired)
                         };
 
                         table.Add(column);
@@ -90,7 +90,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired),
+                            IsRequired = bool.Parse(colRequired),
                             RelatedColumn = colRelatedColumn,
                             RelatedTable = colRelatedTable
                         };
@@ -106,7 +106,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired)
+                            IsRequired = bool.Parse(colRequired)
                         };
 
                         table.Add(column);
@@ -120,7 +120,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired),
+                            IsRequired = bool.Parse(colRequired),
                             RelatedColumn = colRelatedColumn,
                             RelatedTable = colRelatedTable
                         };
@@ -152,15 +152,15 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                 {
                     if (column is ForeignKey fk)
                     {
-                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.Required}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable}\" relatedColumn=\"{fk.RelatedColumn}\"/>");
+                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable}\" relatedColumn=\"{fk.RelatedColumn}\"/>");
                     }
                     else if (column is PrimaryKey pk)
                     {
-                        content.AppendLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.Required}\" class=\"{pk.GetType().Name}\" />");
+                        content.AppendLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.IsRequired}\" class=\"{pk.GetType().Name}\" />");
                     }
                     else
                     {
-                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.Required}\" class=\"{column.GetType().Name}\" />");
+                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" class=\"{column.GetType().Name}\" />");
                     }
                 }
 

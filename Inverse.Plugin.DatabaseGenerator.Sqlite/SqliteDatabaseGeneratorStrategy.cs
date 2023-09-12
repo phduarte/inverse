@@ -72,7 +72,7 @@ namespace Inverse.Plugin.DatabaseGenerator.Sqlite
                     RelatedTable = relatedTable,
                     RelatedColumn = to,
                     Table = table,
-                    Required = col.Required
+                    IsRequired = col.IsRequired
                 };
             }
         }
@@ -104,7 +104,7 @@ namespace Inverse.Plugin.DatabaseGenerator.Sqlite
                         Name = name,
                         Type = type,
                         Table = table,
-                        Required = required,
+                        IsRequired = required,
                     };
                 }
                 else
@@ -115,7 +115,7 @@ namespace Inverse.Plugin.DatabaseGenerator.Sqlite
                         Name = name,
                         Type = type,
                         Table = table,
-                        Required = required,
+                        IsRequired = required,
                     };
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Inverse.Extensions;
 using static System.Math;
@@ -16,6 +17,7 @@ namespace Inverse.Domain
         public const int TYPE_WIDTH = 90;
 
         public string Name { get; set; }
+        public string Notes { get; set; }
         public IReadOnlyList<Column> Columns => _columns;
         public int Width { get; private set; } = WIDTH;
         public int Height { get; private set; } = HEIGHT;
@@ -32,6 +34,12 @@ namespace Inverse.Domain
         public bool IsHidden { get; set; }
         public Database Database { get; set; }
         public int Index { get; set; }
+        public bool IsModified { get; set; }
+
+        public Table()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
 
         public void Add(Column column)
         {
@@ -116,6 +124,12 @@ namespace Inverse.Domain
         public override string ToString()
         {
             return Name;
+        }
+
+        public void Clear()
+        {
+            _columns.Clear();
+            IsModified = true;
         }
     }
 }

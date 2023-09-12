@@ -353,5 +353,55 @@ namespace Inverse.Desktop
             toolStripStatusLabel1.Text = message;
             _lastUpdate = DateTime.Now;
         }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (readOnlyToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            if (GetActiveTable() is Table activeTable)
+            {
+                new FrmTableEdit(activeTable).ShowDialog();
+
+                panel1.Invalidate();
+            }
+        }
+
+        private void addTableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (readOnlyToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            var newTable = new Table
+            {
+                Name = "New Table",
+            };
+
+            _database.Add(newTable);
+
+            panel1.Invalidate();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (readOnlyToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            if (GetActiveTable() is Table activeTable)
+            {
+                if (MessageBox.Show($"You're trying to delete the table \"{activeTable.Name}\". \n\nAre you sure?", Program.Name, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    _database.Remove(activeTable);
+                }
+
+                panel1.Invalidate();
+            }
+        }
     }
 }

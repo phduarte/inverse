@@ -52,7 +52,7 @@ namespace Inverse.Desktop
             return new Column
             {
                 Name = txtColumnName.Text,
-                Required = chkRequired.Checked,
+                IsRequired = chkRequired.Checked,
                 Type = cmbDataType.Text
             };
         }
@@ -62,7 +62,7 @@ namespace Inverse.Desktop
             return new PrimaryKey
             {
                 Name = txtColumnName.Text,
-                Required = chkRequired.Checked,
+                IsRequired = chkRequired.Checked,
                 Type = cmbDataType.Text
             };
         }
@@ -72,7 +72,7 @@ namespace Inverse.Desktop
             return new ForeignKey
             {
                 Name = txtColumnName.Text,
-                Required = chkRequired.Checked,
+                IsRequired = chkRequired.Checked,
                 Type = cmbDataType.Text
             };
         }

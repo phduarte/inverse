@@ -12,11 +12,11 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 		<None Include="FrmMain.*.cs">
 			<DependentUpon>FrmMain.cs</DependentUpon>
 		</None>
-	</ItemGroup>
+	</ItemGroup>-->
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Inverse.Application\Inverse.Application.csproj" />

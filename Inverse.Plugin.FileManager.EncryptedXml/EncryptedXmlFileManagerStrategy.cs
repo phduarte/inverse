@@ -27,10 +27,11 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
             xml.LoadXml(decoredContent);
             var doc = xml.DocumentElement;
 
-            string dbName = doc.GetAttribute("name");
-            string dbGuid = doc.GetAttribute("id");
-            string dbProvider = doc.GetAttribute("provider");
-            string dbConnectionString = doc.GetAttribute("connectionstring");
+            var isbase64 = Convert.ToBoolean(doc.Attributes["isbase64"]?.Value);
+            string dbName = doc.GetFromAttribute("name", isbase64);
+            string dbGuid = doc.GetFromAttribute("id");
+            string dbProvider = doc.GetFromAttribute("provider");
+            string dbConnectionString = doc.GetFromAttribute("connectionstring", isbase64);
             var dbId = Guid.Parse(dbGuid);
 
             var database = new Database(Enum.Parse<Provider>(dbProvider))
@@ -44,15 +45,17 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
 
             foreach (XmlNode xmlTable in tables)
             {
-                var tbGuid = xmlTable.Attributes["id"]?.Value ?? Guid.NewGuid().ToString();
-                var tbName = xmlTable.Attributes["name"].Value;
-                var tbLeft = xmlTable.Attributes["left"].Value;
-                var tbTop = xmlTable.Attributes["top"].Value;
-                var isHidden = xmlTable.Attributes["isHidden"]?.Value ?? "false";
+                var tbGuid = xmlTable.GetFromAttribute("id") ?? Guid.NewGuid().ToString();
+                var tbName = xmlTable.GetFromAttribute("name", isbase64);
+                var tabNotes = xmlTable.GetFromAttribute("notes", isbase64);
+                var tbLeft = xmlTable.GetFromAttribute("left");
+                var tbTop = xmlTable.GetFromAttribute("top");
+                var isHidden = xmlTable.GetFromAttribute("isHidden") ?? "false";
                 var table = new Table
                 {
                     Id = tbGuid,
                     Name = tbName,
+                    Notes = tabNotes,
                     Database = database,
                     Left = int.Parse(tbLeft),
                     Top = int.Parse(tbTop),
@@ -63,14 +66,15 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
 
                 foreach (XmlNode xmlColumn in xmlColumns)
                 {
-                    var colGuid = xmlColumn.Attributes["id"]?.Value ?? Guid.NewGuid().ToString();
-                    var colName = xmlColumn.Attributes["name"].Value;
-                    var colIndex = xmlColumn.Attributes["index"].Value;
-                    var colType = xmlColumn.Attributes["type"].Value;
-                    var colRequired = xmlColumn.Attributes["required"].Value;
-                    var colClass = xmlColumn.Attributes["class"].Value;
-                    var colRelatedTable = xmlColumn.Attributes["relatedTable"]?.Value;
-                    var colRelatedColumn = xmlColumn.Attributes["relatedColumn"]?.Value;
+                    var colGuid = xmlColumn.GetFromAttribute("id") ?? Guid.NewGuid().ToString();
+                    var colName = xmlColumn.GetFromAttribute("name", isbase64);
+                    var colDesc = xmlColumn.GetFromAttribute("description", isbase64);
+                    var colIndex = xmlColumn.GetFromAttribute("index");
+                    var colType = xmlColumn.GetFromAttribute("type");
+                    var colRequired = xmlColumn.GetFromAttribute("required");
+                    var colClass = xmlColumn.GetFromAttribute("class");
+                    var colRelatedTable = xmlColumn.GetFromAttribute("relatedTable", isbase64);
+                    var colRelatedColumn = xmlColumn.GetFromAttribute("relatedColumn", isbase64);
 
                     if (colClass.Equals(nameof(Column)))
                     {
@@ -78,10 +82,11 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                         {
                             Id = colGuid,
                             Name = colName,
+                            Description = colDesc,
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired)
+                            IsRequired = bool.Parse(colRequired)
                         };
 
                         table.Add(column);
@@ -92,10 +97,11 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                         {
                             Id = colGuid,
                             Name = colName,
+                            Description = colDesc,
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired),
+                            IsRequired = bool.Parse(colRequired),
                             RelatedColumn = colRelatedColumn,
                             RelatedTable = colRelatedTable
                         };
@@ -108,10 +114,11 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                         {
                             Id = colGuid,
                             Name = colName,
+                            Description = colDesc,
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired)
+                            IsRequired = bool.Parse(colRequired)
                         };
 
                         table.Add(column);
@@ -122,10 +129,11 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                         {
                             Id = colGuid,
                             Name = colName,
+                            Description = colDesc,
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            Required = bool.Parse(colRequired),
+                            IsRequired = bool.Parse(colRequired),
                             RelatedColumn = colRelatedColumn,
                             RelatedTable = colRelatedTable
                         };
@@ -145,27 +153,27 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
             using var sw = new StreamWriter(fileName);
             var content = new StringBuilder();
 
-            content.AppendLine($"<database name=\"{database.Name}\" id=\"{database.Id}\" provider=\"{database.Provider}\" connectionstring=\"{database.ConnectionString}\">");
+            content.AppendLine($"<database name=\"{database.Name.ToBase64()}\" id=\"{database.Id}\" provider=\"{database.Provider}\" connectionstring=\"{database.ConnectionString.ToBase64()}\" isbase64=\"True\" >");
             content.AppendLine($"    <tables>");
 
             foreach (var table in database.Tables)
             {
-                content.AppendLine($"        <table id=\"{table.Id}\" name=\"{table.Name}\" left=\"{table.Left}\" top=\"{table.Top}\" isHidden=\"{table.IsHidden}\">");
+                content.AppendLine($"        <table id=\"{table.Id}\" name=\"{table.Name.ToBase64()}\" notes=\"{table.Notes.ToBase64()}\" left=\"{table.Left}\" top=\"{table.Top}\" isHidden=\"{table.IsHidden}\">");
                 content.AppendLine($"            <columns>");
 
                 foreach (var column in table.Columns)
                 {
                     if (column is ForeignKey fk)
                     {
-                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.Required}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable}\" relatedColumn=\"{fk.RelatedColumn}\"/>");
+                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable.ToBase64()}\" relatedColumn=\"{fk.RelatedColumn.ToBase64()}\"/>");
                     }
                     else if (column is PrimaryKey pk)
                     {
-                        content.AppendLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.Required}\" class=\"{pk.GetType().Name}\" />");
+                        content.AppendLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.IsRequired}\" class=\"{pk.GetType().Name}\" />");
                     }
                     else
                     {
-                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.Required}\" class=\"{column.GetType().Name}\" />");
+                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" class=\"{column.GetType().Name}\" />");
                     }
                 }
 

@@ -12,7 +12,7 @@
         int Middle { get; }
         string Name { get; set; }
         string Prefix { get; }
-        bool Required { get; set; }
+        bool IsRequired { get; set; }
         int Right { get; }
         Table Table { get; set; }
         int Top { get; }

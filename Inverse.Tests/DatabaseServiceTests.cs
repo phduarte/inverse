@@ -215,7 +215,7 @@ namespace Inverse.Tests
                 Name = "user_id",
                 Type = "string",
                 Index = 0,
-                Required = true
+                IsRequired = true
             };
 
             var username = new Column
@@ -224,7 +224,7 @@ namespace Inverse.Tests
                 Name = "username",
                 Type = "string",
                 Index = 1,
-                Required = true
+                IsRequired = true
             };
 
             table.Add(userId);
@@ -257,7 +257,7 @@ namespace Inverse.Tests
                 Name = "user_id",
                 Type = "int",
                 Index = 0,
-                Required = true
+                IsRequired = true
             };
 
             var username = new Column
@@ -266,7 +266,7 @@ namespace Inverse.Tests
                 Name = "username",
                 Type = "string",
                 Index = 1,
-                Required = true
+                IsRequired = true
             };
 
             users.Add(userId);
@@ -287,7 +287,7 @@ namespace Inverse.Tests
                 Index = 0,
                 Id = "1",
                 Name = "permission_id",
-                Required = true,
+                IsRequired = true,
                 Type = "int",
             };
 
@@ -296,7 +296,7 @@ namespace Inverse.Tests
                 Index = 1,
                 Id = "2",
                 Name = "permission",
-                Required = true,
+                IsRequired = true,
                 Type = "string",
             };
 
@@ -307,7 +307,7 @@ namespace Inverse.Tests
                 Name = "user_id",
                 RelatedTable = "users",
                 RelatedColumn = "user_id",
-                Required = true,
+                IsRequired = true,
                 Type = "int",
             };
 
@@ -346,7 +346,7 @@ namespace Inverse.Tests
                     Index = 0,
                     Id = "1",
                     Name = "person_id",
-                    Required = true,
+                    IsRequired = true,
                     Type = "int"
                 },
                 new Column
@@ -354,7 +354,7 @@ namespace Inverse.Tests
                     Index = 1,
                     Id = "2",
                     Name = "person_name",
-                    Required = true,
+                    IsRequired = true,
                     Type = "string"
                 }
                 );
@@ -366,7 +366,7 @@ namespace Inverse.Tests
                     Id = "1",
                     Name = "schedule_id",
                     Type = "int",
-                    Required = true
+                    IsRequired = true
                 },
                 new Column
                 {
@@ -374,7 +374,7 @@ namespace Inverse.Tests
                     Id = "2",
                     Name = "starttime",
                     Type = "datetime",
-                    Required = true
+                    IsRequired = true
                 },
                 new Column
                 {
@@ -382,7 +382,7 @@ namespace Inverse.Tests
                     Id = "3",
                     Name = "endtime",
                     Type = "datetime",
-                    Required = false
+                    IsRequired = false
                 },
                 new ForeignKey
                 {
@@ -391,7 +391,7 @@ namespace Inverse.Tests
                     Name = "person_id",
                     RelatedTable = "people",
                     RelatedColumn = "person_id",
-                    Required = false,
+                    IsRequired = false,
                     Type = "int",
                 }
                 );
@@ -422,7 +422,7 @@ namespace Inverse.Tests
                 Index = 0,
                 Id = "1",
                 Name = "user_id",
-                Required = true,
+                IsRequired = true,
                 Type = "int"
             };
 
@@ -431,7 +431,7 @@ namespace Inverse.Tests
                 Index = 1,
                 Id = "2",
                 Name = "permission_id",
-                Required = true,
+                IsRequired = true,
                 Type = "int"
             };
 
@@ -440,7 +440,7 @@ namespace Inverse.Tests
                 Index = 2,
                 Id = "3",
                 Name = "created_dt",
-                Required = false,
+                IsRequired = false,
                 Type = "datetime"
             };
 
@@ -473,7 +473,7 @@ namespace Inverse.Tests
                 Index = 0,
                 Id = "1",
                 Name = "almope",
-                Required = true,
+                IsRequired = true,
                 Type = "int",
             };
 
@@ -482,7 +482,7 @@ namespace Inverse.Tests
                 Index = 1,
                 Id = "2",
                 Name = "data",
-                Required = true,
+                IsRequired = true,
                 Type = "date",
             };
 
@@ -502,7 +502,7 @@ namespace Inverse.Tests
                 Name = "almope",
                 RelatedColumn = "almope",
                 RelatedTable = "cadastro",
-                Required = true,
+                IsRequired = true,
                 Type = "int",
             };
 
@@ -513,7 +513,7 @@ namespace Inverse.Tests
                 Name = "data",
                 RelatedColumn = "data",
                 RelatedTable = "cadastro",
-                Required = true,
+                IsRequired = true,
                 Type = "date",
             };
 
@@ -522,7 +522,7 @@ namespace Inverse.Tests
                 Index = 2,
                 Id = "3",
                 Name = "presente",
-                Required = false,
+                IsRequired = false,
                 Type = "int",
             };
 

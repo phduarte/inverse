@@ -15,9 +15,10 @@ namespace Inverse.Domain
 
         public int Index { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public string Type { get; set; }
         public Table Table { get; set; }
-        public bool Required { get; set; }
+        public bool IsRequired { get; set; }
         public virtual bool IsPrimaryKey { get; }
         public virtual bool IsForeignKey { get; }
         public virtual string Prefix { get; } = string.Empty;
