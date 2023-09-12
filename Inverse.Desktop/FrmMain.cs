@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     public partial class FrmMain : Form
     {
@@ -276,11 +276,14 @@ namespace Inverse.Windows
         {
             var dialog = new SaveFileDialog
             {
-                Filter = "Portable Network Graphics|*.png"
+                Filter = "Portable Network Graphics|*.png",
+                FileName = _database.Name
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                panel1.Scale(new SizeF(panel1.Width * 2, panel1.Height * 2));
+
                 var filename = dialog.FileName;
                 var format = System.Drawing.Imaging.ImageFormat.Png;
                 var bmp = new Bitmap(panel1.Width, panel1.Height);
@@ -307,6 +310,8 @@ namespace Inverse.Windows
                 }
                 finally
                 {
+                    panel1.Scale(new SizeF(panel1.Width, panel1.Height));
+
                     panel1.ResumeLayout();
                 }
             }

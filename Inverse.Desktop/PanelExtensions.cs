@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows.Forms;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     public static class PanelExtensions
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     partial class FrmNewConnection
     {

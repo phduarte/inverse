@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     internal static class Theme
     {

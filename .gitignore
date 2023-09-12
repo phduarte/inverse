@@ -5,14 +5,14 @@
 /EngenhariaReversaDb.Windows/obj/*
 /Inverse/bin/Debug/net6.0
 /Inverse/obj
-/Inverse.Windows/bin/Debug/net6.0-windows
-/Inverse.Windows/obj
+/Inverse.Desktop/bin/Debug/net6.0-windows
+/Inverse.Desktop/obj
 *.user
 /Inverse.Tests/bin/Debug/net6.0
 /Inverse.Tests/obj
 /Inverse/bin/Release/net6.0
 /Inverse.Tests/bin/Release/net6.0
-/Inverse.Windows/bin/Release/net6.0-windows
+/Inverse.Desktop/bin/Release/net6.0-windows
 /Inverse.Plugin/bin/Debug/net6.0
 /Inverse.Plugin/obj/Debug/net6.0
 /Inverse.Plugin/obj

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Domain", "Inverse.Domain\Inverse.Domain.csproj", "{D2A06862-9606-4DF0-9826-A70B8FA7DBA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Windows", "Inverse.Windows\Inverse.Windows.csproj", "{86ADC61B-A1D7-4337-8BD8-3EFEBD028200}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Desktop", "Inverse.Desktop\Inverse.Desktop.csproj", "{86ADC61B-A1D7-4337-8BD8-3EFEBD028200}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Tests", "Inverse.Tests\Inverse.Tests.csproj", "{E85988AC-858E-4FEA-A6EA-72FE762CCA33}"
 EndProject
@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Sol
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Application", "Inverse.Application\Inverse.Application.csproj", "{CDCA0D52-AB12-49CA-8020-5D24306BFB72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Application", "Inverse.Application\Inverse.Application.csproj", "{CDCA0D52-AB12-49CA-8020-5D24306BFB72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

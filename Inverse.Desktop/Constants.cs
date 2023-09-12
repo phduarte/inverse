@@ -1,4 +1,4 @@
-﻿namespace Inverse.Windows
+﻿namespace Inverse.Desktop
 {
     public class Constants
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     public partial class FrmMain
     {

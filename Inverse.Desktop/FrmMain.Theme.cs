@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     public partial class FrmMain
     {

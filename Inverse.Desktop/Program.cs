@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     static class Program
     {

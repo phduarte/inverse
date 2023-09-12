@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Inverse.Windows
+namespace Inverse.Desktop
 {
     public partial class FrmNewConnectionSqlite : Form
     {
