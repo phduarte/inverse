@@ -63,6 +63,7 @@ namespace Inverse.Desktop
 
             panel1.SetDoubleBuffered();
             panelBackgroundColorLightToolStripMenuItem_Click(null, null);
+            editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
         }
 
         public void UseDatabase(Database database)
@@ -402,6 +403,11 @@ namespace Inverse.Desktop
 
                 panel1.Invalidate();
             }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FrmAbout().ShowDialog();
         }
     }
 }

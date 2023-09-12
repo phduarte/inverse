@@ -24,6 +24,7 @@ namespace Inverse.Desktop
             {
                 Filter = GetCompatibleFilesFilter()
             };
+
             dialog.ShowDialog();
 
             if (!string.IsNullOrEmpty(dialog.FileName))
@@ -33,6 +34,8 @@ namespace Inverse.Desktop
                 _database = _databaseService.OpenFile(_currentFilename);
                 _connectionString = _database.ConnectionString;
                 panel1.Invalidate();
+
+                editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = true;
             }
 
             ToggleMenuButtons();
@@ -110,6 +113,7 @@ namespace Inverse.Desktop
                 _currentFilename = null;
                 ResetPanelSize();
                 ToggleMenuButtons();
+                editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
             }
         }
 
