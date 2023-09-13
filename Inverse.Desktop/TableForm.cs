@@ -116,7 +116,7 @@ namespace Inverse.Desktop
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -152,7 +152,7 @@ namespace Inverse.Desktop
                 ContextMenuStrip = contextMenuStrip1
             };
 
-            flowLayoutPanel1.Controls.Add(label);            
+            flowLayoutPanel1.Controls.Add(label);
             flowLayoutPanel1.ScrollControlIntoView(label);
         }
     }

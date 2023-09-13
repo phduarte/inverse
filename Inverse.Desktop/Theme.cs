@@ -72,85 +72,85 @@ namespace Inverse.Desktop
                 public static Background Background { set; get; } = new Background(Brushes.Transparent);
             }
         }
-    }
 
-    public class Text
-    {
-        public int Size { get; set; } = 10;
-        public Color Color { get; set; } = Brushes.Black;
-        public Color SelectedColor { get; set; } = Brushes.Red;
-
-        public Text() { }
-
-        public Text(Brush brush)
+        public class Text
         {
-            Color = brush;
+            public int Size { get; set; } = 10;
+            public Color Color { get; set; } = Brushes.Black;
+            public Color SelectedColor { get; set; } = Brushes.Red;
+
+            public Text() { }
+
+            public Text(Brush brush)
+            {
+                Color = brush;
+            }
+
+            //public static implicit operator Brush(Text text)
+            //{
+            //    return text.Color;
+            //}
         }
 
-        //public static implicit operator Brush(Text text)
-        //{
-        //    return text.Color;
-        //}
-    }
-
-    public class Background
-    {
-        public Color Color { get; set; } = Brushes.Transparent;
-        public Color SelectedColor { get; set; } = Brushes.Transparent;
-
-        public Background() { }
-
-        public Background(Brush brush)
+        public class Background
         {
-            Color = brush;
+            public Color Color { get; set; } = Brushes.Transparent;
+            public Color SelectedColor { get; set; } = Brushes.Transparent;
+
+            public Background() { }
+
+            public Background(Brush brush)
+            {
+                Color = brush;
+            }
+
+            public void SetColor(Brush color, Brush selectedColor)
+            {
+                Color = color;
+                SelectedColor = selectedColor;
+            }
         }
 
-        public void SetColor(Brush color, Brush selectedColor)
+        public class Line
         {
-            Color = color;
-            SelectedColor = selectedColor;
-        }
-    }
+            public int Size { get; set; } = 1;
+            public Color Color { get; set; } = Brushes.Black;
+            public Color SelectedColor { get; set; } = Brushes.Red;
 
-    public class Line
-    {
-        public int Size { get; set; } = 1;
-        public Color Color { get; set; } = Brushes.Black;
-        public Color SelectedColor { get; set; } = Brushes.Red;
+            public Line(Brush color)
+            {
+                Color = color;
+            }
 
-        public Line(Brush color)
-        {
-            Color = color;
-        }
-
-        public Pen GetPen(bool isSelected = false)
-        {
-            return new Pen(isSelected ? SelectedColor : Color, Size);
-        }
-    }
-
-    public class Color
-    {
-        public Brush Brush { get; set; }
-
-        public static implicit operator Pen(Color color)
-        {
-            return new(color.Brush);
+            public Pen GetPen(bool isSelected = false)
+            {
+                return new Pen(isSelected ? SelectedColor : Color, Size);
+            }
         }
 
-        public static implicit operator Brush(Color color)
+        public class Color
         {
-            return color.Brush;
-        }
+            public Brush Brush { get; set; }
 
-        public static implicit operator Color(Brush brush)
-        {
-            return new Color { Brush = brush };
-        }
+            public static implicit operator Pen(Color color)
+            {
+                return new(color.Brush);
+            }
 
-        public override string ToString()
-        {
-            return Brush.ToString();
+            public static implicit operator Brush(Color color)
+            {
+                return color.Brush;
+            }
+
+            public static implicit operator Color(Brush brush)
+            {
+                return new Color { Brush = brush };
+            }
+
+            public override string ToString()
+            {
+                return Brush.ToString();
+            }
         }
     }
 }

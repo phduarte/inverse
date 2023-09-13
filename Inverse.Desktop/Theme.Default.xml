@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<theme>
+	<canvas>
+		<background>
+			<normal color="#000000" />
+		</background>
+		<text size="1">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</text>
+	</canvas>
+	<table>
+		<background size="1">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</background>
+		<text size="1">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</text>
+		<line size="1">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</line>
+		<comments size="10">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</comments>
+	</table>
+	<relationship>
+		<line size="1">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</line>
+		<arrow size="1">
+			<normal color="#000000" />
+			<active color="#000000" />
+			<selected color="#000000" />
+		</arrow>
+	</relationship>
+</theme>
