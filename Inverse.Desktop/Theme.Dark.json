@@ -1,0 +1,110 @@
+{
+  "canvas": {
+    "background": {
+      "size": 0,
+      "normal": "#1E1E1E"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    }
+  },
+  "table": {
+    "background": {
+      "size": 0,
+      "normal": "#333333",
+      "hover": "#4D4D4D",
+      "selected": "#4D4D4D"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#4D4D4D",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    }
+  },
+  "balloon": {
+    "background": {
+      "size": 1,
+      "normal": "#C04048",
+      "hover": "#C04048",
+      "selected": "#C04048"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
+    }
+  },
+  "column": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    }
+  },
+  "prefix": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#B0B0B0",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    }
+  },
+  "type": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#B0B0B0",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    }
+  },
+  "relationship": {
+    "line": {
+      "size": 1,
+      "normal": "#B0B0B0",
+      "hover": "#FFFFE0",
+      "selected": "#FFFFE0"
+    },
+    "arrow": {
+      "size": 1,
+      "normal": "#B0B0B0",
+      "hover": "#FFFFE0",
+      "selected": "#FFFFE0"
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "canvas": {
+    "background": {
+      "size": 0,
+      "normal": "#FFFFFF",
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
+    },
+    "text": {
+      "size": 20,
+      "normal": "#000000",
+      "hover": "#0000FF",
+      "selected": "#FFFF00"
+    }
+  },
+  "table": {
+    "background": {
+      "size": 0,
+      "normal": "#FFFFFF",
+      "hover": "#FFFFE0",
+      "selected": "#FFFFE0"
+    },
+    "text": {
+      "size": 30,
+      "normal": "#000000",
+      "hover": "#0000FF",
+      "selected": "#FFFF00"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#000000",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    }
+  },
+  "balloon": {
+    "background": {
+      "size": 0,
+      "normal": "#FF1E90FF",
+      "hover": "#FF1E90FF",
+      "selected": "#FF1E90FF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
+    }
+  },
+  "column": {
+    "background": {
+      "size": 0,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 8,
+      "normal": "#000000",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#000000",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    }
+  },
+  "prefix": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#000000",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    }
+  },
+  "type": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#000000",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    }
+  },
+  "relationship": {
+    "line": {
+      "size": 1,
+      "normal": "#000000",
+      "hover": "#000000",
+      "selected": "#000000"
+    },
+    "arrow": {
+      "size": 1,
+      "normal": "#000000",
+      "hover": "#000000",
+      "selected": "#000000"
+    }
+  }
+}

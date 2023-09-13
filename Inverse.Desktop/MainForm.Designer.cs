@@ -77,6 +77,8 @@ namespace Inverse.Desktop
             numberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             crowsFeetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            defaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             backgroundColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             panelBackgroundColorLightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             panelBackgroundColorDarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,6 +110,8 @@ namespace Inverse.Desktop
             titleGrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             titleWhiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             titleBlueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(components);
@@ -219,7 +223,7 @@ namespace Inverse.Desktop
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem1, diagramToolStripMenuItem, themeToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem1, diagramToolStripMenuItem, themeToolStripMenuItem, windowToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new System.Drawing.Size(1081, 24);
@@ -334,14 +338,14 @@ namespace Inverse.Desktop
             // addTableToolStripMenuItem
             // 
             addTableToolStripMenuItem.Name = "addTableToolStripMenuItem";
-            addTableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            addTableToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             addTableToolStripMenuItem.Text = "Add Table";
             addTableToolStripMenuItem.Click += addTableToolStripMenuItem_Click;
             // 
             // toolStripSeparator9
             // 
             toolStripSeparator9.Name = "toolStripSeparator9";
-            toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator9.Size = new System.Drawing.Size(123, 6);
             // 
             // diagramToolStripMenuItem
             // 
@@ -451,10 +455,22 @@ namespace Inverse.Desktop
             // 
             // themeToolStripMenuItem
             // 
-            themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { backgroundColorToolStripMenuItem1, foreColorToolStripMenuItem, borderSizeToolStripMenuItem, borderColorToolStripMenuItem, foreColorSelectedToolStripMenuItem, backgroundColorToolStripMenuItem, titleToolStripMenuItem });
+            themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { defaultToolStripMenuItem, toolStripSeparator10, backgroundColorToolStripMenuItem1, foreColorToolStripMenuItem, borderSizeToolStripMenuItem, borderColorToolStripMenuItem, foreColorSelectedToolStripMenuItem, backgroundColorToolStripMenuItem, titleToolStripMenuItem });
             themeToolStripMenuItem.Name = "themeToolStripMenuItem";
             themeToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             themeToolStripMenuItem.Text = "Theme";
+            // 
+            // defaultToolStripMenuItem
+            // 
+            defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
+            defaultToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            defaultToolStripMenuItem.Text = "Default";
+            defaultToolStripMenuItem.Click += defaultToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator10
+            // 
+            toolStripSeparator10.Name = "toolStripSeparator10";
+            toolStripSeparator10.Size = new System.Drawing.Size(214, 6);
             // 
             // backgroundColorToolStripMenuItem1
             // 
@@ -462,6 +478,7 @@ namespace Inverse.Desktop
             backgroundColorToolStripMenuItem1.Name = "backgroundColorToolStripMenuItem1";
             backgroundColorToolStripMenuItem1.Size = new System.Drawing.Size(217, 22);
             backgroundColorToolStripMenuItem1.Text = "Background Color";
+            backgroundColorToolStripMenuItem1.Visible = false;
             // 
             // panelBackgroundColorLightToolStripMenuItem
             // 
@@ -483,6 +500,7 @@ namespace Inverse.Desktop
             foreColorToolStripMenuItem.Name = "foreColorToolStripMenuItem";
             foreColorToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             foreColorToolStripMenuItem.Text = "Fore Color";
+            foreColorToolStripMenuItem.Visible = false;
             // 
             // fontBlackToolStripMenuItem
             // 
@@ -518,6 +536,7 @@ namespace Inverse.Desktop
             borderSizeToolStripMenuItem.Name = "borderSizeToolStripMenuItem";
             borderSizeToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             borderSizeToolStripMenuItem.Text = "Border Size";
+            borderSizeToolStripMenuItem.Visible = false;
             // 
             // borderThinToolStripMenuItem
             // 
@@ -539,6 +558,7 @@ namespace Inverse.Desktop
             borderColorToolStripMenuItem.Name = "borderColorToolStripMenuItem";
             borderColorToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             borderColorToolStripMenuItem.Text = "Border Color";
+            borderColorToolStripMenuItem.Visible = false;
             // 
             // noneToolStripMenuItem
             // 
@@ -595,6 +615,7 @@ namespace Inverse.Desktop
             foreColorSelectedToolStripMenuItem.Name = "foreColorSelectedToolStripMenuItem";
             foreColorSelectedToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             foreColorSelectedToolStripMenuItem.Text = "Selected Fore Color";
+            foreColorSelectedToolStripMenuItem.Visible = false;
             // 
             // foreColorSelectedBlackToolStripMenuItem
             // 
@@ -630,6 +651,7 @@ namespace Inverse.Desktop
             backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
             backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             backgroundColorToolStripMenuItem.Text = "Selected Background Color";
+            backgroundColorToolStripMenuItem.Visible = false;
             // 
             // backgroundColorSelectedYellowToolStripMenuItem
             // 
@@ -651,6 +673,7 @@ namespace Inverse.Desktop
             titleToolStripMenuItem.Name = "titleToolStripMenuItem";
             titleToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             titleToolStripMenuItem.Text = "Title";
+            titleToolStripMenuItem.Visible = false;
             // 
             // titleGrayToolStripMenuItem
             // 
@@ -673,6 +696,22 @@ namespace Inverse.Desktop
             titleBlueToolStripMenuItem.Text = "Blue";
             titleBlueToolStripMenuItem.Click += titleBlueToolStripMenuItem_Click;
             // 
+            // windowToolStripMenuItem
+            // 
+            windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fullScreenToolStripMenuItem });
+            windowToolStripMenuItem.Name = "windowToolStripMenuItem";
+            windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            windowToolStripMenuItem.Text = "Window";
+            // 
+            // fullScreenToolStripMenuItem
+            // 
+            fullScreenToolStripMenuItem.CheckOnClick = true;
+            fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
+            fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
+            fullScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            fullScreenToolStripMenuItem.Text = "Full Screen";
+            fullScreenToolStripMenuItem.Click += fullScreenToolStripMenuItem_Click;
+            // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { aboutToolStripMenuItem });
@@ -692,7 +731,7 @@ namespace Inverse.Desktop
             contextMenuStrip2.Name = "contextMenuStrip2";
             contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
             // 
-            // FrmMain
+            // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -704,10 +743,11 @@ namespace Inverse.Desktop
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MainMenuStrip = menuStrip1;
-            Name = "FrmMain";
+            Name = "MainForm";
             Text = "InverseDB";
             WindowState = System.Windows.Forms.FormWindowState.Maximized;
             FormClosing += FrmMain_FormClosing;
+            Load += MainForm_Load;
             SizeChanged += Main_SizeChanged;
             KeyDown += FrmMain_KeyDown;
             contextMenuStrip1.ResumeLayout(false);
@@ -803,6 +843,10 @@ namespace Inverse.Desktop
         private System.Windows.Forms.ToolStripMenuItem readOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem defaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem windowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
     }
 }
 

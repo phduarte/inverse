@@ -165,6 +165,15 @@ namespace Inverse.Desktop
                         panel1.Invalidate();
                     }
                     break;
+                case Keys.F11:
+                    fullScreenToolStripMenuItem_Click(sender, e);
+                    break;
+                case Keys.Alt:
+                    if (fullScreenToolStripMenuItem.Checked)
+                    {
+                        menuStrip1.Visible = !menuStrip1.Visible;
+                    }
+                    break;
                 default:
                     break;
             }

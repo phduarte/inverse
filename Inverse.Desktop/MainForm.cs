@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -56,6 +57,8 @@ namespace Inverse.Desktop
         DateTime _lastUpdate = DateTime.MinValue;
         protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
 
+        private Theme Theme = new();
+
         public MainForm()
         {
             InitializeComponent();
@@ -63,8 +66,9 @@ namespace Inverse.Desktop
             _databaseService.InstallPlugins();
 
             panel1.SetDoubleBuffered();
-            panelBackgroundColorLightToolStripMenuItem_Click(null, null);
             editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
+
+            ChangeTheme("");
         }
 
         public void UseDatabase(Database database)
@@ -234,44 +238,44 @@ namespace Inverse.Desktop
 
         private void grayToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Gray);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.Gray);
+            //panel1.Invalidate();
         }
 
         private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.White);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.White);
+            //panel1.Invalidate();
         }
 
         private void blackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Black);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.Black);
+            //panel1.Invalidate();
         }
 
         private void noneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Transparent);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.Transparent);
+            //panel1.Invalidate();
         }
 
         private void blueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Blue);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.Blue);
+            //panel1.Invalidate();
         }
 
         private void orangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Orange);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.Orange);
+            //panel1.Invalidate();
         }
 
         private void redToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Theme.Table.SetBorderColor(Brushes.Red);
-            panel1.Invalidate();
+            //Theme.Table.SetBorderColor(Brushes.Red);
+            //panel1.Invalidate();
         }
 
         private void imageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -420,6 +424,67 @@ namespace Inverse.Desktop
             process.StartInfo.FileName = "explorer";
             process.StartInfo.Arguments = imagePath;
             process.Start();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            var themes = Directory
+                .GetFiles(AppDomain.CurrentDomain.BaseDirectory)
+                .Select(x => new FileInfo(x))
+                .Where(x => x.Name.StartsWith("Theme") && x.Extension.Equals(".json"));
+
+            foreach (var theme in themes)
+            {
+                var split = theme.Name.Split('.');
+
+                if (split.Length < 3)
+                {
+                    continue;
+                }
+
+                var menuItem = new ToolStripMenuItem();
+
+                menuItem.Text = split[1];
+                menuItem.Click += (s, e) =>
+                {
+                    ChangeTheme(menuItem.Text);
+                };
+
+                themeToolStripMenuItem.DropDownItems.Add(menuItem);
+            }
+        }
+
+        private void ChangeTheme(string selectedTheme)
+        {
+            Theme = ThemeManager.Load(selectedTheme);
+
+            panel1.BackColor = Theme.Canvas.Background.AsColor();
+            panel1.ForeColor = Theme.Canvas.Text.AsColor();
+        }
+
+        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeTheme("");
+        }
+
+        private void fullScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fullScreenToolStripMenuItem.Checked)
+            {
+                TopMost = true;
+                FormBorderStyle = FormBorderStyle.None;
+                WindowState = FormWindowState.Maximized;
+                menuStrip1.Visible = statusStrip1.Visible = false;
+                //flowLayoutPanel1.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                //flowLayoutPanel1.Dock = DockStyle.None;
+                menuStrip1.Visible = statusStrip1.Visible = true;
+                TopMost = false;
+                FormBorderStyle = FormBorderStyle.Sizable;
+                WindowState = FormWindowState.Maximized;
+            }
         }
     }
 }

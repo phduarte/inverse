@@ -33,21 +33,20 @@ namespace Inverse.Desktop
                 var layout = new Rectangle(table.Left, table.Top, table.Width, table.Height);
                 var isTableHover = table.IsHover(_currentPoint.X, _currentPoint.Y);
                 var isTabSelected = _selectedTables.Contains(table) || _currentTable == table;
-                var tableBackgroundColor = isTableHover || isTabSelected ? Theme.Table.Background.SelectedColor : Theme.Table.Background.Color;
-                var tableBorderColor = isTableHover ? Theme.Table.Border.SelectedColor : Theme.Table.Border.Color;
+
+                var tableBackgroundColor = Theme.Column.Background.AsBrush(isTableHover, isTabSelected);
+                var tableBorderColor = Theme.Table.Line.AsPen(isTableHover, isTabSelected);
 
                 g.FillRectangle(tableBackgroundColor, layout);
                 g.DrawRectangle(tableBorderColor, layout);
 
-                Pen tableBorderPen = Theme.Table.Border.GetPen(isTableHover);
-
                 // título da tabela
-                var titlePadding = (int)Math.Ceiling(Theme.Table.Border.Size / 2.0);
+                var titlePadding = (int)Math.Ceiling(Theme.Table.Line.Size / 2.0);
                 var areaTitulo = new RectangleF(table.Left + titlePadding, table.Top + titlePadding, table.Width - titlePadding, Column.HEIGHT - titlePadding);
 
-                g.FillRectangle(Theme.Table.Title.Background.Color, areaTitulo);
-                g.DrawString(table.Name, Font, Theme.Table.Title.Text.Color, areaTitulo, _textAlignCenter);
-                g.DrawLine(tableBorderPen, new Point((int)areaTitulo.Left, (int)areaTitulo.Bottom), new Point((int)areaTitulo.Right, (int)areaTitulo.Bottom));
+                g.FillRectangle(Theme.Table.Background.AsBrush(isTableHover, isTabSelected), areaTitulo);
+                g.DrawString(table.Name, Font, Theme.Table.Text.AsBrush(isTableHover, isTabSelected), areaTitulo, _textAlignCenter);
+                g.DrawLine(Theme.Table.Line.AsPen(isTableHover, isTabSelected), new Point((int)areaTitulo.Left, (int)areaTitulo.Bottom), new Point((int)areaTitulo.Right, (int)areaTitulo.Bottom));
 
                 var pks = table.Columns.Where(_ => _.IsPrimaryKey);
                 DrawColumns(g, PK_SEP_PADDING, fontRegular, fontBold, fontItalic, fontBoldItalic, table, tableBorderColor, pks);
@@ -56,13 +55,13 @@ namespace Inverse.Desktop
                 {
                     var rect = GetCommentButton(table);
 
-                    g.FillEllipse(Brushes.DodgerBlue, rect);
-                    g.DrawString("i", Font, Brushes.White, new Point(rect.Left + 5, rect.Top));
+                    g.FillEllipse(Theme.Balloon.Background.AsBrush(), rect);
+                    g.DrawString("i", Font, Theme.Balloon.Text.AsBrush(), new Point(rect.Left + 5, rect.Top));
                 }
             }
         }
 
-        private void DrawColumns(Graphics g, int PK_SEP_PADDING, Font fontRegular, Font fontBold, Font fontItalic, Font fontBoldItalic, Table table, Color tableBorderColor, IEnumerable<Column> pks)
+        private void DrawColumns(Graphics g, int PK_SEP_PADDING, Font fontRegular, Font fontBold, Font fontItalic, Font fontBoldItalic, Table table, Pen tableBorderColor, IEnumerable<Column> pks)
         {
             var separatorPksY = table.Top + Column.HEIGHT;
 
@@ -74,22 +73,17 @@ namespace Inverse.Desktop
                     var areaNomeColuna = new RectangleF(col.Left + Column.PREFIX_WIDTH, col.Top, col.Width - Column.TYPE_WIDTH - Column.PREFIX_WIDTH, col.Height);
                     var areaTipoColuna = new RectangleF(col.Right - Column.TYPE_WIDTH, col.Top, Column.TYPE_WIDTH, col.Height);
                     var columnIsHover = col.IsHover(_currentPoint.X, _currentPoint.Y);
-                    var fontColor = columnIsHover ?
-                        Theme.Table.Text.SelectedColor :
-                        Theme.Table.Text.Color;
-
-                    g.DrawString(col.Prefix, fontRegular, fontColor, areaChaveColuna, _textAlignLeft);
-
                     var fontStyle = col.IsRequired ? new Font(fontRegular, FontStyle.Bold) : fontRegular;
 
-                    g.DrawString(col.Name, fontStyle, fontColor, areaNomeColuna, _textAlignLeft);
-                    g.DrawString(col.Type, fontRegular, fontColor, areaTipoColuna, _textAlignLeft);
+                    g.DrawString(col.Prefix, fontRegular, Theme.Prefix.Text.AsBrush(columnIsHover), areaChaveColuna, _textAlignLeft);
+                    g.DrawString(col.Name, fontStyle, Theme.Column.Text.AsBrush(columnIsHover), areaNomeColuna, _textAlignLeft);
+                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover), areaTipoColuna, _textAlignLeft);
 
                     separatorPksY += col.Height;
                 }
 
                 // separador das chaves primárias
-                g.DrawLine(tableBorderColor, new Point(table.Left + PK_SEP_PADDING, separatorPksY), new Point(table.Right - PK_SEP_PADDING, separatorPksY));
+                g.DrawLine(Theme.Column.Line.AsPen(), new Point(table.Left + PK_SEP_PADDING, separatorPksY), new Point(table.Right - PK_SEP_PADDING, separatorPksY));
             }
 
             foreach (var col in table.Columns.Except(pks))
@@ -97,38 +91,36 @@ namespace Inverse.Desktop
                 var areaNomeColuna = new RectangleF(col.Left + Column.PREFIX_WIDTH, col.Top, col.Width - Column.TYPE_WIDTH - Column.PREFIX_WIDTH, col.Height);
                 var areaTipoColuna = new RectangleF(col.Right - Column.TYPE_WIDTH, col.Top, Column.TYPE_WIDTH, col.Height);
                 var columnIsHover = col.IsHover(_currentPoint.X, _currentPoint.Y);
-                var backgroundColor = columnIsHover ?
-                    Theme.Table.Column.Background.SelectedColor :
-                    Theme.Table.Column.Background.Color;
+                var backgroundColor = Theme.Column.Background.AsBrush(columnIsHover);
 
                 g.FillRectangle(backgroundColor, areaNomeColuna);
 
                 if (col is ForeignKey)
                 {
-                    var fontColor = columnIsHover ? Theme.Table.ForeignKeyText.SelectedColor : Theme.Table.ForeignKeyText.Color;
                     var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, Column.PREFIX_WIDTH, col.Height);
                     var nameFontStyle = col.IsRequired ? fontBoldItalic : fontItalic;
 
-                    g.DrawString(col.Prefix, fontRegular, fontColor, areaChaveColuna, _textAlignLeft);
-                    g.DrawString(col.Name, nameFontStyle, fontColor, areaNomeColuna, _textAlignLeft);
-                    g.DrawString(col.Type, fontRegular, fontColor, areaTipoColuna, _textAlignLeft);
+                    g.DrawString(col.Prefix, fontRegular, Theme.Prefix.Text.AsBrush(columnIsHover), areaChaveColuna, _textAlignLeft);
+                    g.DrawString(col.Name, nameFontStyle, Theme.Column.Text.AsBrush(columnIsHover), areaNomeColuna, _textAlignLeft);
+                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover), areaTipoColuna, _textAlignLeft);
                 }
                 else
                 {
-                    var fontColor = columnIsHover ? Theme.Table.Column.Text.SelectedColor : Theme.Table.Column.Text.Color;
                     var nameFontStyle = col.IsRequired ? fontBold : fontRegular;
 
-                    g.DrawString(col.Name, nameFontStyle, fontColor, areaNomeColuna, _textAlignLeft);
-                    g.DrawString(col.Type, fontRegular, fontColor, areaTipoColuna, _textAlignLeft);
+                    g.DrawString(col.Name, nameFontStyle, Theme.Column.Text.AsBrush(columnIsHover), areaNomeColuna, _textAlignLeft);
+                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover), areaTipoColuna, _textAlignLeft);
                 }
 
-                g.DrawLine(Theme.Table.Separator.Color, new Point(col.Left, col.Top), new Point(col.Left + col.Width, col.Top));
+                g.DrawLine(Theme.Column.Line.AsPen(), new Point(col.Left, col.Top), new Point(col.Left + col.Width, col.Top));
             }
         }
 
         private void DrawRelationships(Graphics g, IOrderedEnumerable<Table> tables)
         {
-            var relationBorder = Theme.Table.Border.GetPen();
+            var relationBorder = Theme.Relationship.Line.AsPen();
+            var canvasText = Theme.Canvas.Text.AsBrush();
+
             var temp = new Pen(Brushes.Red, 2);
             const int VINTE = 20;
             const int DOZE = 12;
@@ -168,7 +160,7 @@ namespace Inverse.Desktop
                                 {
                                     var circleArea = new Rectangle(source.Right + DOZE + CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
-                                    g.FillEllipse(Brushes.White, circleArea);
+                                    g.FillEllipse(Brushes.Transparent, circleArea);
                                     g.DrawEllipse(relationBorder, circleArea);
                                 }
                                 else
@@ -185,10 +177,10 @@ namespace Inverse.Desktop
                             else if (numberToolStripMenuItem.Checked)
                             {
                                 // one
-                                g.DrawString("1", DefaultFont, Brushes.Black, new PointF(target.Left - VINTE, target.Middle));
+                                g.DrawString("1", DefaultFont, canvasText, new PointF(target.Left - VINTE, target.Middle));
 
                                 // many
-                                g.DrawString("N", DefaultFont, Brushes.Black, new PointF(source.Right + DEZ, source.Middle));
+                                g.DrawString("N", DefaultFont, canvasText, new PointF(source.Right + DEZ, source.Middle));
                             }
                         }
                         else
@@ -216,7 +208,7 @@ namespace Inverse.Desktop
                                 {
                                     var circleArea = new Rectangle(source.Left - DOZE - DEZ - CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
-                                    g.FillEllipse(Brushes.White, circleArea);
+                                    g.FillEllipse(Brushes.Transparent, circleArea);
                                     g.DrawEllipse(relationBorder, circleArea);
                                 }
                                 else
@@ -233,10 +225,10 @@ namespace Inverse.Desktop
                             else if (numberToolStripMenuItem.Checked)
                             {
                                 // dest
-                                g.DrawString("1", DefaultFont, Brushes.Black, new PointF(target.Right + DEZ, target.Top - DefaultFont.Size));
+                                g.DrawString("1", DefaultFont, canvasText, new PointF(target.Right + DEZ, target.Top - DefaultFont.Size));
 
                                 // source
-                                g.DrawString("N", DefaultFont, Brushes.Black, new PointF(source.Left - VINTE, source.Top - DefaultFont.Size));
+                                g.DrawString("N", DefaultFont, canvasText, new PointF(source.Left - VINTE, source.Top - DefaultFont.Size));
                             }
                         }
                         else
@@ -266,7 +258,7 @@ namespace Inverse.Desktop
                                     {
                                         var circleArea = new Rectangle(table.Center - CINCO, table.Top - DOZE - DEZ - CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
-                                        g.FillEllipse(Brushes.White, circleArea);
+                                        g.FillEllipse(Brushes.Transparent, circleArea);
                                         g.DrawEllipse(relationBorder, circleArea);
                                     }
                                     else
@@ -283,10 +275,10 @@ namespace Inverse.Desktop
                                 else if (numberToolStripMenuItem.Checked)
                                 {
                                     // dest
-                                    g.DrawString("1", DefaultFont, Brushes.Black, new PointF(destTable.Center, destTable.Bottom));
+                                    g.DrawString("1", DefaultFont, canvasText, new PointF(destTable.Center, destTable.Bottom));
 
                                     // source
-                                    g.DrawString("N", DefaultFont, Brushes.Black, new PointF(table.Center, table.Top - VINTE));
+                                    g.DrawString("N", DefaultFont, canvasText, new PointF(table.Center, table.Top - VINTE));
                                 }
                             }
                             else
@@ -318,7 +310,7 @@ namespace Inverse.Desktop
                                     {
                                         var circleArea = new Rectangle(table.Center - CINCO, table.Bottom + DOZE + CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
-                                        g.FillEllipse(Brushes.White, circleArea);
+                                        g.FillEllipse(Brushes.Transparent, circleArea);
                                         g.DrawEllipse(relationBorder, circleArea);
                                     }
                                     else
@@ -335,10 +327,10 @@ namespace Inverse.Desktop
                                 else if (numberToolStripMenuItem.Checked)
                                 {
                                     // dest
-                                    g.DrawString("1", DefaultFont, Brushes.Black, new PointF(destTable.Center, destTable.Top - VINTE));
+                                    g.DrawString("1", DefaultFont, canvasText, new PointF(destTable.Center, destTable.Top - VINTE));
 
                                     // source
-                                    g.DrawString("N", DefaultFont, Brushes.Black, new PointF(table.Center, table.Bottom + DefaultFont.Size));
+                                    g.DrawString("N", DefaultFont, canvasText, new PointF(table.Center, table.Bottom + DefaultFont.Size));
                                 }
                             }
                             else
