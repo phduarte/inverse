@@ -495,20 +495,8 @@ namespace Inverse.Desktop
 
         private void fullScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (fullScreenToolStripMenuItem.Checked)
-            {
-                TopMost = true;
-                FormBorderStyle = FormBorderStyle.None;
-                WindowState = FormWindowState.Maximized;
-                statusStrip1.Visible = false;
-            }
-            else
-            {
-                statusStrip1.Visible = true;
-                TopMost = false;
-                FormBorderStyle = FormBorderStyle.Sizable;
-                WindowState = FormWindowState.Maximized;
-            }
+            FullScreenMode.Toggle(this, fullScreenToolStripMenuItem.Checked);
+            statusStrip1.Visible = !fullScreenToolStripMenuItem.Checked;
         }
 
         private void hideMenuToolStripMenuItem_Click(object sender, EventArgs e)

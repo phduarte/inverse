@@ -142,6 +142,11 @@ namespace Inverse.Desktop
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !(!isSavePending || (isSavePending && UserWantsClose()));
+
+            if (!e.Cancel)
+            {
+                FullScreenMode.Toggle(this, false);
+            }
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
