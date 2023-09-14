@@ -62,7 +62,47 @@
       "size": 1,
       "normal": "#00FFFFFF",
       "hover": "#D7BA6D",
+      "selected": "#4D4D4D"
+    }
+  },
+  "primaryKey": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#D7BA6D",
       "selected": "#D7BA6D"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#4D4D4D"
+    }
+  },
+  "foreignKey": {
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#D7BA6D"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#D7BA6D",
+      "selected": "#4D4D4D"
     }
   },
   "prefix": {

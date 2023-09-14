@@ -22,6 +22,8 @@ namespace Inverse.Desktop
             panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Bottom) + Table.MARGIN);
         }
 
+        private bool isControlPressed = false;
+
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -34,7 +36,16 @@ namespace Inverse.Desktop
                     var x = _pressedPoint.X - _currentTable.Left;
                     var y = _pressedPoint.Y - _currentTable.Top;
                     _pressedPointCorrection = new Point(x, y);
-                    isDragging = true;
+
+                    if (isControlPressed
+                        && !_selectedTables.Contains(_currentTable))
+                    {
+                        _selectedTables.Add(_currentTable);
+                    }
+                    else
+                    {
+                        isDragging = true;
+                    }
                 }
                 else
                 {
@@ -128,7 +139,12 @@ namespace Inverse.Desktop
             panel1.Invalidate();
         }
 
-        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !(!isSavePending || (isSavePending && UserWantsClose()));
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -177,6 +193,13 @@ namespace Inverse.Desktop
                 default:
                     break;
             }
+
+            isControlPressed = e.KeyCode == Keys.ControlKey;
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            isControlPressed = false;
         }
     }
 }

@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Inverse.Desktop": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "Inverse.Desktop - IABOC": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\phdua\\Desktop\\iaboc.idb -theme Light"
+    },
+    "Inverse.Desktop - CNN": {
+      "commandName": "Project",
+      "commandLineArgs": "-provider MSSQLServer -connectionstring Server=(localdb)\\MSSQLLocalDB;Database=Organo;Trusted_Connection=True; -theme Light"
+    }
+  }
+}

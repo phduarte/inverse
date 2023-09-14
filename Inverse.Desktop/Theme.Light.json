@@ -1,44 +1,39 @@
 {
   "canvas": {
     "background": {
-      "size": 0,
-      "normal": "#EEEEEE",
-      "hover": "#EEEEEE",
-      "selected": "#EEEEEE"
+      "normal": "#FFFFFF"
     },
     "text": {
       "size": 12,
-      "normal": "#000000",
-      "hover": "#000000",
-      "selected": "#000000"
+      "normal": "#222222",
+      "hover": "#222222",
+      "selected": "#222222"
     }
   },
   "table": {
     "background": {
-      "size": 0,
-      "normal": "#CC1E90FF",
-      "hover": "#CC1E90FF",
+      "normal": "#E6F3FF",
+      "hover": "#E6F3FF",
       "selected": "#CC1E90FF"
     },
     "text": {
       "size": 12,
-      "normal": "#FFFFFF",
-      "hover": "#FFFFFF",
+      "normal": "#0055FF",
+      "hover": "#267F99",
       "selected": "#FFFFFF"
     },
     "line": {
       "size": 1,
-      "normal": "#000000",
+      "normal": "#222222",
       "hover": "#FF1E90FF",
       "selected": "#FF1E90FF"
     }
   },
   "balloon": {
     "background": {
-      "size": 1,
-      "normal": "#FF0000",
-      "hover": "#FF0000",
-      "selected": "#FF0000"
+      "normal": "#2C2C2C",
+      "hover": "#2C2C2C",
+      "selected": "#2C2C2C"
     },
     "text": {
       "size": 12,
@@ -49,27 +44,63 @@
   },
   "column": {
     "background": {
-      "size": 1,
       "normal": "#00FFFFFF",
       "hover": "#00FFFFFF",
       "selected": "#00FFFFFF"
     },
     "text": {
       "size": 12,
-      "normal": "#000000",
+      "normal": "#222222",
       "hover": "#FF0000",
       "selected": "#FF0000"
     },
     "line": {
       "size": 1,
-      "normal": "#000000",
+      "normal": "#F3F3F3",
+      "hover": "#FF1E90FF",
+      "selected": "#FF1E90FF"
+    }
+  },
+  "primaryKey": {
+    "background": {
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#2C2C2C",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#F3F3F3",
+      "hover": "#FF1E90FF",
+      "selected": "#FF1E90FF"
+    }
+  },
+  "foreignKey": {
+    "background": {
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    },
+    "text": {
+      "size": 12,
+      "normal": "#2C2C2C",
+      "hover": "#FF0000",
+      "selected": "#FF0000"
+    },
+    "line": {
+      "size": 1,
+      "normal": "#F3F3F3",
       "hover": "#FF1E90FF",
       "selected": "#FF1E90FF"
     }
   },
   "prefix": {
     "background": {
-      "size": 1,
       "normal": "#00FFFFFF",
       "hover": "#00FFFFFF",
       "selected": "#00FFFFFF"
@@ -77,21 +108,20 @@
     "text": {
       "size": 12,
       "normal": "#FF0000",
-      "hover": "#FF8C00",
+      "hover": "#267F99",
       "selected": "#FF8C00"
     }
   },
   "type": {
     "background": {
-      "size": 1,
       "normal": "#00FFFFFF",
       "hover": "#00FFFFFF",
       "selected": "#00FFFFFF"
     },
     "text": {
       "size": 12,
-      "normal": "#0000FF",
-      "hover": "#00BFFF",
+      "normal": "#2C2C2C",
+      "hover": "#267F99",
       "selected": "#00BFFF"
     }
   },

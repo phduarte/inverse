@@ -49,7 +49,17 @@ namespace Inverse.Desktop
                 g.DrawLine(Theme.Table.Line.AsPen(isTableHover, isTabSelected), new Point((int)areaTitulo.Left, (int)areaTitulo.Bottom), new Point((int)areaTitulo.Right, (int)areaTitulo.Bottom));
 
                 var pks = table.Columns.Where(_ => _.IsPrimaryKey);
-                DrawColumns(g, PK_SEP_PADDING, fontRegular, fontBold, fontItalic, fontBoldItalic, table, tableBorderColor, pks);
+
+                DrawColumns(g,
+                    PK_SEP_PADDING,
+                    fontRegular,
+                    fontBold,
+                    fontItalic,
+                    fontBoldItalic,
+                    table,
+                    tableBorderColor,
+                    isTabSelected,
+                    pks);
 
                 if (table.Comments.Any())
                 {
@@ -61,7 +71,17 @@ namespace Inverse.Desktop
             }
         }
 
-        private void DrawColumns(Graphics g, int PK_SEP_PADDING, Font fontRegular, Font fontBold, Font fontItalic, Font fontBoldItalic, Table table, Pen tableBorderColor, IEnumerable<Column> pks)
+        private void DrawColumns(
+            Graphics g,
+            int PK_SEP_PADDING,
+            Font fontRegular,
+            Font fontBold,
+            Font fontItalic,
+            Font fontBoldItalic,
+            Table table,
+            Pen tableBorderColor,
+            bool isTableSelected,
+            IEnumerable<Column> pks)
         {
             var separatorPksY = table.Top + Column.HEIGHT;
 
@@ -75,9 +95,13 @@ namespace Inverse.Desktop
                     var columnIsHover = col.IsHover(_currentPoint.X, _currentPoint.Y);
                     var fontStyle = col.IsRequired ? new Font(fontRegular, FontStyle.Bold) : fontRegular;
 
-                    g.DrawString(col.Prefix, fontRegular, Theme.Prefix.Text.AsBrush(columnIsHover), areaChaveColuna, _textAlignLeft);
-                    g.DrawString(col.Name, fontStyle, Theme.Column.Text.AsBrush(columnIsHover), areaNomeColuna, _textAlignLeft);
-                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover), areaTipoColuna, _textAlignLeft);
+                    g.FillRectangle(Theme.PrimaryKey.Background.AsBrush(columnIsHover, isTableSelected), areaChaveColuna);
+                    g.FillRectangle(Theme.PrimaryKey.Background.AsBrush(columnIsHover, isTableSelected), areaNomeColuna);
+                    g.FillRectangle(Theme.PrimaryKey.Background.AsBrush(columnIsHover, isTableSelected), areaTipoColuna);
+
+                    g.DrawString(col.Prefix, fontRegular, Theme.Prefix.Text.AsBrush(columnIsHover, isTableSelected), areaChaveColuna, _textAlignLeft);
+                    g.DrawString(col.Name, fontStyle, Theme.PrimaryKey.Text.AsBrush(columnIsHover, isTableSelected), areaNomeColuna, _textAlignLeft);
+                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover, isTableSelected), areaTipoColuna, _textAlignLeft);
 
                     separatorPksY += col.Height;
                 }
@@ -91,28 +115,33 @@ namespace Inverse.Desktop
                 var areaNomeColuna = new RectangleF(col.Left + Column.PREFIX_WIDTH, col.Top, col.Width - Column.TYPE_WIDTH - Column.PREFIX_WIDTH, col.Height);
                 var areaTipoColuna = new RectangleF(col.Right - Column.TYPE_WIDTH, col.Top, Column.TYPE_WIDTH, col.Height);
                 var columnIsHover = col.IsHover(_currentPoint.X, _currentPoint.Y);
-                var backgroundColor = Theme.Column.Background.AsBrush(columnIsHover);
-
-                g.FillRectangle(backgroundColor, areaNomeColuna);
+                var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, Column.PREFIX_WIDTH, col.Height);
 
                 if (col is ForeignKey)
                 {
-                    var areaChaveColuna = new RectangleF(col.Left + 2, col.Top, Column.PREFIX_WIDTH, col.Height);
                     var nameFontStyle = col.IsRequired ? fontBoldItalic : fontItalic;
 
-                    g.DrawString(col.Prefix, fontRegular, Theme.Prefix.Text.AsBrush(columnIsHover), areaChaveColuna, _textAlignLeft);
-                    g.DrawString(col.Name, nameFontStyle, Theme.Column.Text.AsBrush(columnIsHover), areaNomeColuna, _textAlignLeft);
-                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover), areaTipoColuna, _textAlignLeft);
+                    g.FillRectangle(Theme.ForeignKey.Background.AsBrush(columnIsHover, isTableSelected), areaChaveColuna);
+                    g.FillRectangle(Theme.ForeignKey.Background.AsBrush(columnIsHover, isTableSelected), areaNomeColuna);
+                    g.FillRectangle(Theme.ForeignKey.Background.AsBrush(columnIsHover, isTableSelected), areaTipoColuna);
+
+                    g.DrawString(col.Prefix, fontRegular, Theme.Prefix.Text.AsBrush(columnIsHover, isTableSelected), areaChaveColuna, _textAlignLeft);
+                    g.DrawString(col.Name, nameFontStyle, Theme.ForeignKey.Text.AsBrush(columnIsHover, isTableSelected), areaNomeColuna, _textAlignLeft);
+                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover, isTableSelected), areaTipoColuna, _textAlignLeft);
                 }
                 else
                 {
                     var nameFontStyle = col.IsRequired ? fontBold : fontRegular;
 
-                    g.DrawString(col.Name, nameFontStyle, Theme.Column.Text.AsBrush(columnIsHover), areaNomeColuna, _textAlignLeft);
-                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover), areaTipoColuna, _textAlignLeft);
+                    g.FillRectangle(Theme.Column.Background.AsBrush(columnIsHover, isTableSelected), areaChaveColuna);
+                    g.FillRectangle(Theme.Column.Background.AsBrush(columnIsHover, isTableSelected), areaNomeColuna);
+                    g.FillRectangle(Theme.Column.Background.AsBrush(columnIsHover, isTableSelected), areaTipoColuna);
+
+                    g.DrawString(col.Name, nameFontStyle, Theme.Column.Text.AsBrush(columnIsHover, isTableSelected), areaNomeColuna, _textAlignLeft);
+                    g.DrawString(col.Type, fontRegular, Theme.Type.Text.AsBrush(columnIsHover, isTableSelected), areaTipoColuna, _textAlignLeft);
                 }
 
-                g.DrawLine(Theme.Column.Line.AsPen(), new Point(col.Left, col.Top), new Point(col.Left + col.Width, col.Top));
+                g.DrawLine(Theme.Column.Line.AsPen(columnIsHover, isTableSelected), new Point(col.Left, col.Top), new Point(col.Left + col.Width, col.Top));
             }
         }
 

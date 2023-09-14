@@ -59,7 +59,7 @@ namespace Inverse.Desktop
 
         private Theme Theme = new();
 
-        public MainForm()
+        public MainForm(params string[] args)
         {
             InitializeComponent();
             _databaseService = new DatabaseService();
@@ -68,7 +68,38 @@ namespace Inverse.Desktop
             panel1.SetDoubleBuffered();
             editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
 
-            ChangeTheme("");
+            if (args.Length > 0)
+            {
+                var filename = args.Select(s => new FileInfo(s)).Where(f => f.Exists).FirstOrDefault()?.FullName;
+
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    OpenFile(filename);
+                }
+                else
+                if (GetValueFromArgs("-provider", args) is string p)
+                {
+                    var provider = Enum.Parse<Provider>(p);
+                    var connectionString = GetValueFromArgs("-connectionstring", args);
+
+                    UseDatabase(provider, connectionString);
+                }
+
+                ChangeTheme(GetValueFromArgs("-theme", args));
+            }
+        }
+
+        private string GetValueFromArgs(string argName, params string[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].Equals(argName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return args[i + 1];
+                }
+            }
+
+            return null;
         }
 
         public void UseDatabase(Database database)
@@ -326,11 +357,6 @@ namespace Inverse.Desktop
             }
         }
 
-        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = !(!isSavePending || (isSavePending && UserWantsClose()));
-        }
-
         private bool UserWantsClose()
         {
             return MessageBox.Show("Unsaved changes will be lost. Are you sure?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
@@ -474,17 +500,20 @@ namespace Inverse.Desktop
                 TopMost = true;
                 FormBorderStyle = FormBorderStyle.None;
                 WindowState = FormWindowState.Maximized;
-                menuStrip1.Visible = statusStrip1.Visible = false;
-                //flowLayoutPanel1.Dock = DockStyle.Fill;
+                statusStrip1.Visible = false;
             }
             else
             {
-                //flowLayoutPanel1.Dock = DockStyle.None;
-                menuStrip1.Visible = statusStrip1.Visible = true;
+                statusStrip1.Visible = true;
                 TopMost = false;
                 FormBorderStyle = FormBorderStyle.Sizable;
                 WindowState = FormWindowState.Maximized;
             }
+        }
+
+        private void hideMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            menuStrip1.Visible = !menuStrip1.Visible;
         }
     }
 }

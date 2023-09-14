@@ -112,6 +112,7 @@ namespace Inverse.Desktop
             titleBlueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            hideMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(components);
@@ -698,7 +699,7 @@ namespace Inverse.Desktop
             // 
             // windowToolStripMenuItem
             // 
-            windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fullScreenToolStripMenuItem });
+            windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fullScreenToolStripMenuItem, hideMenuToolStripMenuItem });
             windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             windowToolStripMenuItem.Text = "Window";
@@ -708,9 +709,17 @@ namespace Inverse.Desktop
             fullScreenToolStripMenuItem.CheckOnClick = true;
             fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            fullScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            fullScreenToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             fullScreenToolStripMenuItem.Text = "Full Screen";
             fullScreenToolStripMenuItem.Click += fullScreenToolStripMenuItem_Click;
+            // 
+            // hideMenuToolStripMenuItem
+            // 
+            hideMenuToolStripMenuItem.Name = "hideMenuToolStripMenuItem";
+            hideMenuToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Space;
+            hideMenuToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            hideMenuToolStripMenuItem.Text = "Hide Menu";
+            hideMenuToolStripMenuItem.Click += hideMenuToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -746,10 +755,11 @@ namespace Inverse.Desktop
             Name = "MainForm";
             Text = "InverseDB";
             WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            FormClosing += FrmMain_FormClosing;
+            FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             SizeChanged += Main_SizeChanged;
-            KeyDown += FrmMain_KeyDown;
+            KeyDown += MainForm_KeyDown;
+            KeyUp += MainForm_KeyUp;
             contextMenuStrip1.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
             statusStrip1.ResumeLayout(false);
@@ -847,6 +857,7 @@ namespace Inverse.Desktop
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripMenuItem windowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideMenuToolStripMenuItem;
     }
 }
 

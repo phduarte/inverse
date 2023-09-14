@@ -29,14 +29,18 @@ namespace Inverse.Desktop
 
             if (!string.IsNullOrEmpty(dialog.FileName))
             {
-                _currentFilename = dialog.FileName;
-
-                _database = _databaseService.OpenFile(_currentFilename);
-                _connectionString = _database.ConnectionString;
-                panel1.Invalidate();
-
-                editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = true;
+                OpenFile(dialog.FileName);
             }
+        }
+
+        private void OpenFile(string filename)
+        {
+            _currentFilename = filename;
+            _database = _databaseService.OpenFile(_currentFilename);
+            _connectionString = _database.ConnectionString;
+            panel1.Invalidate();
+
+            editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = true;
 
             ToggleMenuButtons();
         }
