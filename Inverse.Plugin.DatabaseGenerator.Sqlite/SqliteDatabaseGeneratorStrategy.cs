@@ -13,9 +13,10 @@ namespace Inverse.Plugin.DatabaseGenerator.Sqlite
 
         public Database LoadDatabase(string connectionString)
         {
-            var database = new Database(Provider)
+            var database = new Database
             {
                 Id = Guid.NewGuid(),
+                Provider = Provider,
                 ConnectionString = connectionString
             };
 

@@ -40,8 +40,6 @@ namespace Inverse.Desktop
             _connectionString = _database.ConnectionString;
             panel1.Invalidate();
 
-            editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = true;
-
             ToggleMenuButtons();
         }
 
@@ -68,6 +66,7 @@ namespace Inverse.Desktop
 
             _databaseService.SaveFile(_database, _currentFilename);
             isSavePending = false;
+            Text = $"Inverse [{_currentFilename}]";
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -113,7 +112,7 @@ namespace Inverse.Desktop
         {
             if (!isSavePending || UserWantsClose())
             {
-                _database = new Database(_provider);
+                _database = new Database();
                 _currentFilename = null;
                 ResetPanelSize();
                 ToggleMenuButtons();
@@ -131,6 +130,7 @@ namespace Inverse.Desktop
             var exportables = _databaseService.GetCompatiblesScriptings();
 
             dialog.Filter = string.Join("|", exportables);
+            dialog.FileName = _database.Name;
             dialog.ShowDialog();
 
             if (string.IsNullOrEmpty(dialog.FileName))
@@ -168,6 +168,9 @@ namespace Inverse.Desktop
 
         private void ToggleMenuButtons()
         {
+            editToolStripMenuItem1.Visible
+                = diagramToolStripMenuItem.Visible = !_database.IsEmpty;
+
             saveAsToolStripMenuItem.Enabled
                 = saveToolStripMenuItem.Enabled
                 = refreshToolStripMenuItem.Enabled
@@ -197,7 +200,7 @@ namespace Inverse.Desktop
 
         private void releaseTablesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _currentTable = null;
+            _activeTable = null;
             _selectedTables.Clear();
             panel1.Invalidate();
         }

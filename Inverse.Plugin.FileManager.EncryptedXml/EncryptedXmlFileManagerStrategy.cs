@@ -34,10 +34,16 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
             string dbConnectionString = doc.GetFromAttribute("connectionstring", isbase64);
             var dbId = Guid.Parse(dbGuid);
 
-            var database = new Database(Enum.Parse<Provider>(dbProvider))
+            if (string.IsNullOrEmpty(dbProvider))
+            {
+                dbProvider = Provider.MSSQLServer.ToString();
+            }
+
+            var database = new Database
             {
                 Id = dbId,
                 Name = dbName,
+                Provider = Enum.Parse<Provider>(dbProvider),
                 ConnectionString = dbConnectionString
             };
 
@@ -77,6 +83,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                     var colClass = xmlColumn.GetFromAttribute("class");
                     var colRelatedTable = xmlColumn.GetFromAttribute("relatedTable", isbase64);
                     var colRelatedColumn = xmlColumn.GetFromAttribute("relatedColumn", isbase64);
+                    var colDefaultValue = xmlColumn.GetFromAttribute("defaultValue", isbase64);
 
                     if (colClass.Equals(nameof(Column)))
                     {
@@ -88,7 +95,8 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            IsRequired = bool.Parse(colRequired)
+                            IsRequired = bool.Parse(colRequired),
+                            DefaultValue = colDefaultValue,
                         };
 
                         table.Add(column);
@@ -104,6 +112,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Table = table,
                             Index = int.Parse(colIndex),
                             IsRequired = bool.Parse(colRequired),
+                            DefaultValue = colDefaultValue,
                             RelatedColumn = colRelatedColumn,
                             RelatedTable = colRelatedTable
                         };
@@ -120,7 +129,8 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Type = colType,
                             Table = table,
                             Index = int.Parse(colIndex),
-                            IsRequired = bool.Parse(colRequired)
+                            IsRequired = bool.Parse(colRequired),
+                            DefaultValue = colDefaultValue,
                         };
 
                         table.Add(column);
@@ -137,7 +147,8 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                             Index = int.Parse(colIndex),
                             IsRequired = bool.Parse(colRequired),
                             RelatedColumn = colRelatedColumn,
-                            RelatedTable = colRelatedTable
+                            RelatedTable = colRelatedTable,
+                            DefaultValue = colDefaultValue,
                         };
 
                         table.Add(column);
@@ -167,15 +178,15 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
                 {
                     if (column is ForeignKey fk)
                     {
-                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable.ToBase64()}\" relatedColumn=\"{fk.RelatedColumn.ToBase64()}\"/>");
+                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" defaultValue=\"{column.DefaultValue}\" class=\"{column.GetType().Name}\" relatedTable=\"{fk.RelatedTable.ToBase64()}\" relatedColumn=\"{fk.RelatedColumn.ToBase64()}\"/>");
                     }
                     else if (column is PrimaryKey pk)
                     {
-                        content.AppendLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.IsRequired}\" class=\"{pk.GetType().Name}\" />");
+                        content.AppendLine($"                <column id=\"{pk.Id}\" name=\"{pk.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{pk.Index}\" type=\"{pk.Type}\" required=\"{pk.IsRequired}\" defaultValue=\"{pk.DefaultValue}\" class=\"{pk.GetType().Name}\" />");
                     }
                     else
                     {
-                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" class=\"{column.GetType().Name}\" />");
+                        content.AppendLine($"                <column id=\"{column.Id}\" name=\"{column.Name.ToBase64()}\" description=\"{column.Description.ToBase64()}\" index=\"{column.Index}\" type=\"{column.Type}\" required=\"{column.IsRequired}\" defaultValue=\"{column.DefaultValue}\" class=\"{column.GetType().Name}\" />");
                     }
                 }
 
@@ -210,20 +221,27 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
 
         private static string DecryptString(string encodedText)
         {
-            byte[] cipherText = Convert.FromBase64String(encodedText);
-            using RijndaelManaged rijAlg = new();
+            try
+            {
+                byte[] cipherText = Convert.FromBase64String(encodedText);
+                using RijndaelManaged rijAlg = new();
 
-            rijAlg.Key = KEY;
-            rijAlg.IV = INIT_VECTOR;
+                rijAlg.Key = KEY;
+                rijAlg.IV = INIT_VECTOR;
 
-            ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
+                ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
 
-            using MemoryStream msDecrypt = new(cipherText);
-            using CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read);
-            using StreamReader srDecrypt = new(csDecrypt);
-            string plaintext = srDecrypt.ReadToEnd();
+                using MemoryStream msDecrypt = new(cipherText);
+                using CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read);
+                using StreamReader srDecrypt = new(csDecrypt);
+                string plaintext = srDecrypt.ReadToEnd();
 
-            return plaintext;
+                return plaintext;
+            }
+            catch
+            {
+                return encodedText;
+            }
         }
     }
 }

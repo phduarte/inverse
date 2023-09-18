@@ -32,6 +32,8 @@ namespace Inverse.Desktop
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DatabaseForm));
             picSqlite = new System.Windows.Forms.PictureBox();
             picMssqlServer = new System.Windows.Forms.PictureBox();
+            linkLabel1 = new System.Windows.Forms.LinkLabel();
+            label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)picSqlite).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picMssqlServer).BeginInit();
             SuspendLayout();
@@ -60,12 +62,34 @@ namespace Inverse.Desktop
             picMssqlServer.TabStop = false;
             picMssqlServer.Click += picMssqlServer_Click;
             // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new System.Drawing.Point(104, 176);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new System.Drawing.Size(166, 15);
+            linkLabel1.TabIndex = 7;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Continue with a new database";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(178, 161);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(18, 15);
+            label1.TabIndex = 8;
+            label1.Text = "or";
+            // 
             // DatabaseForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
-            ClientSize = new System.Drawing.Size(375, 173);
+            ClientSize = new System.Drawing.Size(375, 216);
+            Controls.Add(label1);
+            Controls.Add(linkLabel1);
             Controls.Add(picMssqlServer);
             Controls.Add(picSqlite);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -75,11 +99,14 @@ namespace Inverse.Desktop
             ((System.ComponentModel.ISupportInitialize)picSqlite).EndInit();
             ((System.ComponentModel.ISupportInitialize)picMssqlServer).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox picSqlite;
         private System.Windows.Forms.PictureBox picMssqlServer;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label1;
     }
 }

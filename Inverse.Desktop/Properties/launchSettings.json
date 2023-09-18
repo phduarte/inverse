@@ -6,7 +6,7 @@
     },
     "Inverse.Desktop - IABOC": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\phdua\\Desktop\\iaboc.idb -theme Light"
+      "commandLineArgs": "C:\\Users\\phdua\\Desktop\\iaboc.idb -theme dbDiffo"
     },
     "Inverse.Desktop - CNN": {
       "commandName": "Project",

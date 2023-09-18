@@ -77,28 +77,30 @@ namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
 
         private static string GetColumnScript<T>(T column) where T : Column
         {
+            var defaultValue = !string.IsNullOrEmpty(column.DefaultValue) ? $" DEFAULT({column.DefaultValue})" : string.Empty;
+
             if (column is PrimaryKey pk && column.Table.PrimaryKeysCount == 1)
             {
-                return $"\t{pk.Name} {pk.Type.ToUpper()} NOT NULL PRIMARY KEY";
+                return $"\t{pk.Name} {pk.Type.ToUpper()} NOT NULL PRIMARY KEY{defaultValue}";
             }
             else if (column is ForeignKey fk && fk.Table.ForeignKeysCount == 1)
             {
                 if (column.IsRequired)
                 {
-                    return $"\t{fk.Name} {fk.Type.ToUpper()} NOT NULL REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
+                    return $"\t{fk.Name} {fk.Type.ToUpper()} NOT NULL{defaultValue} REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
                 }
                 else
                 {
-                    return $"\t{fk.Name} {fk.Type.ToUpper()} REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
+                    return $"\t{fk.Name} {fk.Type.ToUpper()}{defaultValue} REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
                 }
             }
             else if (column.IsRequired)
             {
-                return $"\t{column.Name} {column.Type.ToUpper()} NOT NULL";
+                return $"\t{column.Name} {column.Type.ToUpper()} NOT NULL{defaultValue}";
             }
             else
             {
-                return $"\t{column.Name} {column.Type.ToUpper()}";
+                return $"\t{column.Name} {column.Type.ToUpper()}{defaultValue}";
             }
         }
     }

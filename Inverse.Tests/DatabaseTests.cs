@@ -9,9 +9,10 @@ namespace Inverse.Tests
 
         public DatabaseTests()
         {
-            db = new Database(Provider.MSSQLServer)
+            db = new Database
             {
                 Name = "test_db",
+                Provider = Provider.MSSQLServer,
                 ConnectionString = "foobar"
             };
         }

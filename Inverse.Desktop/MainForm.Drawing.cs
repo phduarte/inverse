@@ -17,6 +17,14 @@ namespace Inverse.Desktop
             DrawRelationships(g, tables);
             DrawTables(g, tables);
 
+            if (isControlPressed 
+                && _originColumn is not null
+                && !_pressedPoint.IsEmpty 
+                && !_currentPoint.IsEmpty)
+            {
+                g.DrawLine(Theme.Relationship.Line.AsPen(isSelected: true), _pressedPoint, _currentPoint);
+            }
+
             g.SmoothingMode = x;
         }
 
@@ -32,7 +40,7 @@ namespace Inverse.Desktop
             {
                 var layout = new Rectangle(table.Left, table.Top, table.Width, table.Height);
                 var isTableHover = table.IsHover(_currentPoint.X, _currentPoint.Y);
-                var isTabSelected = _selectedTables.Contains(table) || _currentTable == table;
+                var isTabSelected = _selectedTables.Contains(table) || _activeTable == table;
 
                 var tableBackgroundColor = Theme.Column.Background.AsBrush(isTableHover, isTabSelected);
                 var tableBorderColor = Theme.Table.Line.AsPen(isTableHover, isTabSelected);
@@ -189,7 +197,7 @@ namespace Inverse.Desktop
                                 {
                                     var circleArea = new Rectangle(source.Right + DOZE + CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
-                                    g.FillEllipse(Brushes.Transparent, circleArea);
+                                    g.FillEllipse(Theme.Canvas.Background.AsBrush(), circleArea);
                                     g.DrawEllipse(relationBorder, circleArea);
                                 }
                                 else
@@ -237,7 +245,7 @@ namespace Inverse.Desktop
                                 {
                                     var circleArea = new Rectangle(source.Left - DOZE - DEZ - CINCO, source.Middle - CINCO, DEZ, DEZ);
                                     g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
-                                    g.FillEllipse(Brushes.Transparent, circleArea);
+                                    g.FillEllipse(Theme.Canvas.Background.AsBrush(), circleArea);
                                     g.DrawEllipse(relationBorder, circleArea);
                                 }
                                 else
@@ -287,7 +295,7 @@ namespace Inverse.Desktop
                                     {
                                         var circleArea = new Rectangle(table.Center - CINCO, table.Top - DOZE - DEZ - CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
-                                        g.FillEllipse(Brushes.Transparent, circleArea);
+                                        g.FillEllipse(Theme.Canvas.Background.AsBrush(), circleArea);
                                         g.DrawEllipse(relationBorder, circleArea);
                                     }
                                     else
@@ -339,7 +347,7 @@ namespace Inverse.Desktop
                                     {
                                         var circleArea = new Rectangle(table.Center - CINCO, table.Bottom + DOZE + CINCO, DEZ, DEZ);
                                         g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
-                                        g.FillEllipse(Brushes.Transparent, circleArea);
+                                        g.FillEllipse(Theme.Canvas.Background.AsBrush(), circleArea);
                                         g.DrawEllipse(relationBorder, circleArea);
                                     }
                                     else

@@ -18,6 +18,7 @@ namespace Inverse.Domain
         public string Description { get; set; }
         public string Type { get; set; }
         public Table Table { get; set; }
+        public string DefaultValue { get; set; }
         public bool IsRequired { get; set; }
         public virtual bool IsPrimaryKey { get; }
         public virtual bool IsForeignKey { get; }

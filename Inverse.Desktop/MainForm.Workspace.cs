@@ -1,5 +1,4 @@
 ﻿using Inverse.Domain;
-using Inverse.Extensions;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -9,7 +8,10 @@ namespace Inverse.Desktop
 {
     public partial class MainForm
     {
-        bool isDragging = false;
+        private Table _activeTable = null;
+        private Column _activeColumn = null;
+        private bool isDragging = false;
+        private bool isControlPressed = false;
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -22,25 +24,23 @@ namespace Inverse.Desktop
             panel1.Height = Math.Max(flowLayoutPanel1.Height, _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden).Max(x => x.Bottom) + Table.MARGIN);
         }
 
-        private bool isControlPressed = false;
-
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 _pressedPoint = e.Location;
-                _currentTable = GetActiveTable();
+                _originColumn = _database.GetColumnByPosition(_pressedPoint.X, _pressedPoint.Y);
 
-                if (_currentTable is not null)
+                if (_activeTable is not null)
                 {
-                    var x = _pressedPoint.X - _currentTable.Left;
-                    var y = _pressedPoint.Y - _currentTable.Top;
+                    var x = _pressedPoint.X - _activeTable.Left;
+                    var y = _pressedPoint.Y - _activeTable.Top;
                     _pressedPointCorrection = new Point(x, y);
 
                     if (isControlPressed
-                        && !_selectedTables.Contains(_currentTable))
+                        && !_selectedTables.Contains(_activeTable))
                     {
-                        _selectedTables.Add(_currentTable);
+                        _selectedTables.Add(_activeTable);
                     }
                     else
                     {
@@ -52,15 +52,36 @@ namespace Inverse.Desktop
                     _selectedTables.Clear();
                 }
             }
+            else if (e.Button == MouseButtons.Right)
+            {
+                panel1.ContextMenuStrip = _activeTable is null
+                    ? contextMenuStripDatabase
+                    : contextMenuStripTable;
+            }
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
+            if (_originColumn is not null
+                && _activeTable is not null
+                && _activeColumn is Column destColumn
+                )
+            {
+                //var destColumn = _activeTable.Columns.FirstOrDefault(s => s.Name.Equals(_originColumn.Name));
+
+                if (destColumn != null && !destColumn.Id.Equals(_originColumn.Id))
+                {
+                    _originColumn.Table.Join(_activeTable, _originColumn, destColumn);
+                }
+            }
+
+            _originColumn = null;
+
             if (isDragging)
             {
                 if (!_selectedTables.Any())
                 {
-                    _currentTable.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
+                    _activeTable?.MoveTo(e.X - _pressedPointCorrection.X, e.Y - _pressedPointCorrection.Y);
                     panel1.Invalidate();
                 }
 
@@ -71,16 +92,18 @@ namespace Inverse.Desktop
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
             _currentPoint = e.Location;
+            _activeTable = _database.GetTableByPosition(_currentPoint.X, _currentPoint.Y);
+            _activeColumn = _database.GetColumnByPosition(_currentPoint.X, _currentPoint.Y);
 
             if (!HasStateChange)
             {
                 toolStripStatusLabel1.Text = $"X={_currentPoint.X},Y={_currentPoint.Y}";
             }
 
-            if (isDragging)
+            if (isDragging && _activeTable is not null)
             {
-                var startPointX = _currentTable.Left;
-                var startPointY = _currentTable.Top;
+                var startPointX = _activeTable.Left;
+                var startPointY = _activeTable.Top;
                 var endPointX = e.X - _pressedPointCorrection.X;
                 var endPointY = e.Y - _pressedPointCorrection.Y;
                 var offsetX = endPointX - startPointX;
@@ -100,22 +123,12 @@ namespace Inverse.Desktop
                 }
                 else
                 {
-                    _currentTable.MoveTo(endPointX, endPointY);
+                    _activeTable.MoveTo(endPointX, endPointY);
                     isSavePending = true;
                 }
             }
-            //else if (showToolTipsToolStripMenuItem.Checked
-            //    && toolTip1.Active
-            //    && GetActiveTable() is Table table
-            //    //&& _currentPoint.IsBetween(table.GetCommentButton())
-            //    )
-            //{
-            //    toolTip1.Show(table.Notes, panel1);
-            //}
-            //else
-            //{
-            //    toolTip1.Hide(panel1);
-            //}
+
+
 
             panel1.Invalidate();
         }
@@ -135,7 +148,7 @@ namespace Inverse.Desktop
             };
 
             _database.Add(newTable);
-
+            ToggleMenuButtons();
             panel1.Invalidate();
         }
 
@@ -155,6 +168,7 @@ namespace Inverse.Desktop
             {
                 case Keys.Escape:
                     releaseTablesToolStripMenuItem_Click(sender, e);
+                    _pressedPoint = Point.Empty;
                     break;
                 case Keys.Left:
                 case Keys.Right:
@@ -177,9 +191,9 @@ namespace Inverse.Desktop
                                 }
                             }
                         }
-                        else if (_currentTable is not null)
+                        else if (_activeTable is not null)
                         {
-                            _currentTable.MoveOffset(x, y);
+                            _activeTable.MoveOffset(x, y);
                         }
 
                         isSavePending = true;

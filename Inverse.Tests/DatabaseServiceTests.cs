@@ -141,7 +141,7 @@ namespace Inverse.Tests
         {
             var fileName = "test4.idb";
             var expected = CreateDatabaseWithTwoTables();
-            var actual = new Database(Provider.MSSQLServer);
+            var actual = new Database { Provider = expected.Provider };
             var svc = new DatabaseService();
 
             svc.InstallPlugins();
@@ -195,11 +195,12 @@ namespace Inverse.Tests
 
         private static Database CreateDatabaseWithOneTable()
         {
-            var db = new Database(Provider.SQLite)
+            var db = new Database
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
-                ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
+                Provider= Provider.SQLite,
+                ConnectionString = "Data source=file.db",
             };
 
             var table = new Table
@@ -237,11 +238,12 @@ namespace Inverse.Tests
 
         private static Database CreateDatabaseWithTwoTables()
         {
-            var db = new Database(Provider.SQLite)
+            var db = new Database
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
-                ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
+                Provider = Provider.SQLite,
+                ConnectionString = "Data source=file.db",
             };
 
             var users = new Table
@@ -322,11 +324,12 @@ namespace Inverse.Tests
 
         private static Database CreateDatabaseWithOptionalRelationship()
         {
-            var db = new Database(Provider.SQLite)
+            var db = new Database
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
-                ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
+                Provider= Provider.SQLite,
+                ConnectionString = "Data source=file.db",
             };
 
             var people = new Table
@@ -403,11 +406,12 @@ namespace Inverse.Tests
 
         private static Database CreateDatabaseWithCompositePrimaryKey()
         {
-            var db = new Database(Provider.SQLite)
+            var db = new Database
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
-                ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
+                Provider= Provider.SQLite,
+                ConnectionString = "Data source=file.db",
             };
 
             var grant = new Table
@@ -455,11 +459,12 @@ namespace Inverse.Tests
 
         private static Database CreateDatabaseWithCompositeForeignKey()
         {
-            var db = new Database(Provider.SQLite)
+            var db = new Database
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
-                ConnectionString = "Data source=file.db",
                 Name = "security_users_db",
+                Provider = Provider.SQLite,
+                ConnectionString = "Data source=file.db",
             };
 
             var cadastro = new Table

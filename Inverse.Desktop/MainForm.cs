@@ -1,4 +1,5 @@
 ﻿using Inverse.Application;
+using Inverse.Desktop.Themes;
 using Inverse.Domain;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -46,13 +48,13 @@ namespace Inverse.Desktop
 
         private string _connectionString;
         private Provider _provider;
-        private Database _database = new(Provider.MSSQLServer);
+        private Database _database = new();
         private Point _pressedPoint = Point.Empty;
-        private Table _currentTable;
+
+        private Column _originColumn;
         private Point _currentPoint = Point.Empty;
         private Point _pressedPointCorrection = Point.Empty;
         private readonly IList<Table> _selectedTables = new List<Table>();
-
         private readonly IList<TableViewStatus> _tablePositions = new List<TableViewStatus>();
         DateTime _lastUpdate = DateTime.MinValue;
         protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
@@ -87,6 +89,10 @@ namespace Inverse.Desktop
 
                 ChangeTheme(GetValueFromArgs("-theme", args));
             }
+            else
+            {
+                ChangeTheme(string.Empty);
+            }
         }
 
         private string GetValueFromArgs(string argName, params string[] args)
@@ -116,6 +122,14 @@ namespace Inverse.Desktop
             var database = _databaseService.LoadDatabase(provider, connectionString);
             _currentFilename = string.Empty;
             UseDatabase(database);
+        }
+
+        internal void UseEmptyDatabase()
+        {
+            _database = new Database();
+            _connectionString = string.Empty;
+            _provider = _database.Provider;
+            panel1.Refresh();
         }
 
         private async Task Arrange()
@@ -227,86 +241,33 @@ namespace Inverse.Desktop
 
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = GetActiveTable() is null;
+            e.Cancel = _activeTable is null;
         }
 
         private void hideToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (GetActiveTable() is Table activeTable)
-            {
-                activeTable.Hide();
-            }
+            _activeTable?.Hide();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (GetActiveTable() is Table activeTable)
-            {
-                activeTable.Show();
-            }
-        }
-
-        private Table GetActiveTable()
-        {
-            return _database.Tables.LastOrDefault(f => f.IsHover(_currentPoint.X, _currentPoint.Y));
+            _activeTable?.Show();
         }
 
         private void bringToFrontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (GetActiveTable() is Table table)
+            if (_activeTable is not null)
             {
-                _database.BringToFront(table);
+                _database.BringToFront(_activeTable);
             }
         }
 
         private void sendToBackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (GetActiveTable() is Table table)
+            if (_activeTable is not null)
             {
-                _database.SendToBack(table);
+                _database.SendToBack(_activeTable);
             }
-        }
-
-        private void grayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.Gray);
-            //panel1.Invalidate();
-        }
-
-        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.White);
-            //panel1.Invalidate();
-        }
-
-        private void blackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.Black);
-            //panel1.Invalidate();
-        }
-
-        private void noneToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.Transparent);
-            //panel1.Invalidate();
-        }
-
-        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.Blue);
-            //panel1.Invalidate();
-        }
-
-        private void orangeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.Orange);
-            //panel1.Invalidate();
-        }
-
-        private void redToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Theme.Table.SetBorderColor(Brushes.Red);
-            //panel1.Invalidate();
         }
 
         private void imageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -369,14 +330,14 @@ namespace Inverse.Desktop
             crowsFeetToolStripMenuItem.Checked = false;
         }
 
-        private void numberToolStripMenuItem_Click(object sender, EventArgs e)
+        private void umlToolStripMenuItem_Click(object sender, EventArgs e)
         {
             noneToolStripMenuItem1.Checked = false;
             numberToolStripMenuItem.Checked = true;
             crowsFeetToolStripMenuItem.Checked = false;
         }
 
-        private void crowsFeetToolStripMenuItem_Click(object sender, EventArgs e)
+        private void crowsFootToolStripMenuItem_Click(object sender, EventArgs e)
         {
             noneToolStripMenuItem1.Checked = false;
             numberToolStripMenuItem.Checked = false;
@@ -396,9 +357,9 @@ namespace Inverse.Desktop
                 return;
             }
 
-            if (GetActiveTable() is Table activeTable)
+            if (_activeTable is not null)
             {
-                new TableForm(activeTable).ShowDialog();
+                new TableForm(_activeTable).ShowDialog();
 
                 panel1.Invalidate();
             }
@@ -414,10 +375,14 @@ namespace Inverse.Desktop
             var newTable = new Table
             {
                 Name = "New Table",
+                Left = _currentPoint.X,
+                Top = _currentPoint.Y
             };
 
             _database.Add(newTable);
 
+            ToggleMenuButtons();
+            isSavePending = true;
             panel1.Invalidate();
         }
 
@@ -428,11 +393,13 @@ namespace Inverse.Desktop
                 return;
             }
 
-            if (GetActiveTable() is Table activeTable)
+            if (_activeTable is not null)
             {
-                if (MessageBox.Show($"You're trying to delete the table \"{activeTable.Name}\". \n\nAre you sure?", Program.Name, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show($"You're trying to delete the table \"{_activeTable.Name}\". \n\nAre you sure?", Program.Name, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    _database.Remove(activeTable);
+                    _database.Remove(_activeTable);
+                    isSavePending = true;
+                    ToggleMenuButtons();
                 }
 
                 panel1.Invalidate();
@@ -454,54 +421,89 @@ namespace Inverse.Desktop
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            var themes = Directory
-                .GetFiles(AppDomain.CurrentDomain.BaseDirectory)
-                .Select(x => new FileInfo(x))
-                .Where(x => x.Name.StartsWith("Theme") && x.Extension.Equals(".json"));
+            var themes = ThemeManager.ListNames();
 
             foreach (var theme in themes)
             {
-                var split = theme.Name.Split('.');
-
-                if (split.Length < 3)
+                var menuItem = new ToolStripMenuItem
                 {
-                    continue;
-                }
+                    Text = theme
+                };
 
-                var menuItem = new ToolStripMenuItem();
-
-                menuItem.Text = split[1];
                 menuItem.Click += (s, e) =>
                 {
-                    ChangeTheme(menuItem.Text);
+                    ChangeTheme(menuItem);
                 };
 
                 themeToolStripMenuItem.DropDownItems.Add(menuItem);
             }
         }
 
-        private void ChangeTheme(string selectedTheme)
-        {
-            Theme = ThemeManager.Load(selectedTheme);
-
-            panel1.BackColor = Theme.Canvas.Background.AsColor();
-            panel1.ForeColor = Theme.Canvas.Text.AsColor();
-        }
-
-        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeTheme("");
-        }
-
         private void fullScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FullScreenMode.Toggle(this, fullScreenToolStripMenuItem.Checked);
             statusStrip1.Visible = !fullScreenToolStripMenuItem.Checked;
+
+            if (fullScreenToolStripMenuItem.Checked)
+            {
+                FormBorderStyle = FormBorderStyle.None;
+                DesktopBounds = SystemInformation.VirtualScreen;
+            }
+            else
+            {
+                FormBorderStyle = FormBorderStyle.Sizable;
+            }
         }
 
         private void hideMenuToolStripMenuItem_Click(object sender, EventArgs e)
         {
             menuStrip1.Visible = !menuStrip1.Visible;
         }
+
+        private void databaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new DatabaseEditForm(_database).ShowDialog();
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new DatabaseEditForm(_database).ShowDialog();
+        }
+
+        private void contextMenuStripDatabase_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = _database.IsEmpty;
+        }
+
+        private void readOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addTableToolStripMenuItem.Enabled = !readOnlyToolStripMenuItem.Checked;
+        }
+
+        //[DllImport("User32.dll", CharSet = CharSet.Auto)]
+        //public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        //[DllImport("User32.dll")]
+        //private static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        //protected override void WndProc(ref Message m)
+        //{
+        //    base.WndProc(ref m);
+        //    const int WM_NCPAINT = 0x85;
+        //    if (m.Msg == WM_NCPAINT)
+        //    {
+        //        IntPtr hdc = GetWindowDC(m.HWnd);
+        //        if ((int)hdc != 0)
+        //        {
+        //            if (Graphics.FromHdc(hdc) is Graphics g)
+        //            {
+        //                g.FillRectangle(new SolidBrush(BackColor), new Rectangle(0, 0, 4800, 23));
+        //                g.Flush();
+        //            }
+
+        //            ReleaseDC(m.HWnd, hdc);
+        //        }
+        //    }
+        //}
     }
 }

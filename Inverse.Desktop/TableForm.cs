@@ -1,6 +1,7 @@
 ﻿using Inverse.Domain;
 using System;
 using System.Linq;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace Inverse.Desktop
@@ -21,13 +22,17 @@ namespace Inverse.Desktop
 
             foreach (var column in _table.Columns)
             {
+                var fk = column as ForeignKey;
+                var fkName = fk is not null ? $"{fk.RelatedTable}" : string.Empty;
+
                 dataGridView1.Rows.Add(
                     column.Name,
                     column.Description,
                     column.Type,
                     column.IsRequired,
                     column.IsPrimaryKey,
-                    column.IsForeignKey.ToString(),
+                    column.DefaultValue,
+                    fkName,
                     column
                     );
             }
@@ -57,7 +62,8 @@ namespace Inverse.Desktop
                 var columnType = row.Cells[2].Value as string;
                 var columnIsRequired = row.Cells[3].Value;
                 var columnIsPrimaryKey = row.Cells[4].Value;
-                var column = row.Cells[6].Value as Column;
+                var defaultValue = row.Cells[5].Value as string;
+                var column = row.Cells[7].Value as Column;
 
                 if (columnName is null && columnType is null)
                     break;
@@ -70,14 +76,21 @@ namespace Inverse.Desktop
                         Description = columnDesc,
                         Type = columnType,
                         Index = index++,
+                        DefaultValue = defaultValue,
                         IsRequired = Convert.ToBoolean(columnIsRequired)
                     };
+
+                    if (Convert.ToBoolean(columnIsPrimaryKey))
+                    {
+                        column = PrimaryKey.Parse(column);
+                    }
                 }
                 else
                 {
                     column.Name = columnName;
                     column.Description = columnDesc;
                     column.Type = columnType;
+                    column.DefaultValue = defaultValue;
                     column.IsRequired = Convert.ToBoolean(columnIsRequired);
                 }
 

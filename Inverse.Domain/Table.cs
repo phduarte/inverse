@@ -1,6 +1,7 @@
 ﻿using Inverse.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using static System.Math;
 
@@ -100,6 +101,63 @@ namespace Inverse.Domain
             foreach (var comment in comments)
             {
                 Add(comment);
+            }
+        }
+
+        public PrimaryKey ChangeToPrimaryKey(Column column)
+        {
+            var idx = _columns.IndexOf(column);
+            var newColumn = PrimaryKey.Parse(column);
+
+            _columns.Remove(column);
+            _columns.Insert(idx, newColumn);
+
+            return newColumn;
+        }
+
+        public ForeignKey ChangeToForeignKey(Column column)
+        {
+            var idx = _columns.IndexOf(column);
+            var newColumn = ForeignKey.Parse(column);
+
+            _columns.Remove(column);
+            _columns.Insert(idx, newColumn);
+
+            return newColumn;
+        }
+
+        private ForeignPrimaryKey ChangeToPrimaryForeignKey(Column column)
+        {
+            var idx = _columns.IndexOf(column);
+            var newColumn = ForeignPrimaryKey.Parse(column);
+
+            _columns.Remove(column);
+            _columns.Insert(idx, newColumn);
+
+            return newColumn;
+        }
+
+        public void Join(Table referencedTable, Column origin, Column destination)
+        {
+            if (origin.IsPrimaryKey && destination.IsPrimaryKey)
+            {
+                var fk = referencedTable.ChangeToPrimaryForeignKey(destination);
+                fk.RelatedTable = this.Name;
+                fk.RelatedColumn = origin.Name;
+            }
+            else if (destination.IsPrimaryKey)
+            {
+                // origin referencia dest
+                var fk = ChangeToForeignKey(origin);
+                fk.RelatedTable = referencedTable.Name;
+                fk.RelatedColumn = destination.Name;
+            }
+            else
+            {
+                // dest referencia origin
+                var fk = referencedTable.ChangeToForeignKey(destination);
+                fk.RelatedTable = this.Name;
+                fk.RelatedColumn = origin.Name;
             }
         }
 

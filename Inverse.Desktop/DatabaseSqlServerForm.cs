@@ -1,6 +1,8 @@
 ﻿using Inverse.Domain;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Inverse.Desktop
 {
@@ -22,8 +24,14 @@ namespace Inverse.Desktop
             txtPassword.Text = _password;
         }
 
-        private void btnRevert_Click(object sender, EventArgs e)
+        private async void btnRevert_Click(object sender, EventArgs e)
         {
+            btnRevert.Enabled = false;
+            var database = new Database
+            {
+                Provider = Provider.MSSQLServer
+            };
+
             try
             {
                 var connectionString = $"Server={_server = txtServer.Text};Database={_database = txtDatabase.Text};";
@@ -37,12 +45,29 @@ namespace Inverse.Desktop
                     connectionString += "Trusted_Connection=True;";
                 }
 
-                _parentForm.UseDatabase(Provider.MSSQLServer, connectionString);
+                database.Name = txtDatabase.Text;
+                database.ConnectionString = connectionString;
+                database.OnTableAdded += (t) =>
+                {
+                    progressBar1.Value++;
+                };
+
+                await Task.Run(() =>
+                {
+                    _parentForm.UseDatabase(database);
+                });
+
+                progressBar1.Value = progressBar1.Maximum;
+
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnRevert.Enabled = true;
             }
         }
 

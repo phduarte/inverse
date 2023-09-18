@@ -17,7 +17,7 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
         public Database OpenFile(string fileName)
         {
             string encodedContent = File.ReadAllText(fileName);
-            
+
             var xml = new XmlDocument();
             xml.LoadXml(encodedContent);
             var doc = xml.DocumentElement;
@@ -28,10 +28,11 @@ namespace Inverse.Plugin.FileManager.EncryptedXml
             string dbConnectionString = doc.GetAttribute("connectionstring");
             var dbId = Guid.Parse(dbGuid);
 
-            var database = new Database(Enum.Parse<Provider>(dbProvider))
+            var database = new Database
             {
                 Id = dbId,
                 Name = dbName,
+                Provider = Enum.Parse<Provider>(dbProvider),
                 ConnectionString = dbConnectionString
             };
 

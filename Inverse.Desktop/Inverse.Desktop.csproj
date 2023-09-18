@@ -12,12 +12,6 @@
 		<Content Include="favicon.ico" />
 	</ItemGroup>
 
-	<!--<ItemGroup>
-		<None Include="FrmMain.*.cs">
-			<DependentUpon>FrmMain.cs</DependentUpon>
-		</None>
-	</ItemGroup>-->
-
 	<ItemGroup>
 		<ProjectReference Include="..\Inverse.Application\Inverse.Application.csproj" />
 	</ItemGroup>
@@ -37,12 +31,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Theme.json">
+		<None Update="Themes\Theme.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Theme.*.json">
+		<None Update="Themes\Theme.*.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<DependentUpon>Theme.json</DependentUpon>
 		</None>
 	</ItemGroup>
 

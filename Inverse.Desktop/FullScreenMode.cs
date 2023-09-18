@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -42,7 +37,7 @@ namespace Inverse.Desktop
             {
                 //form.TopMost = true;
                 form.FormBorderStyle = FormBorderStyle.None;
-                form.Height = form.Height + HideTrayBar();
+                form.Height += HideTrayBar();
                 form.WindowState = FormWindowState.Maximized;
             }
             else
@@ -50,7 +45,7 @@ namespace Inverse.Desktop
                 //form.TopMost = false;
                 form.FormBorderStyle = FormBorderStyle.Sizable;
                 form.WindowState = FormWindowState.Maximized;
-                form.Height = form.Height - ShowTraybar();
+                form.Height -= ShowTraybar();
             }
         }
 
@@ -74,7 +69,7 @@ namespace Inverse.Desktop
             }
             catch (Exception ex)
             {
-                // Tratar erro ao ocultar a barra de tarefas aqui
+                Debug.Write(ex);
                 return 0;
             }
         }
@@ -99,7 +94,7 @@ namespace Inverse.Desktop
             }
             catch (Exception ex)
             {
-                // Tratar erro ao mostrar a barra de tarefas aqui
+                Debug.Write(ex);
                 return 0;
             }
         }

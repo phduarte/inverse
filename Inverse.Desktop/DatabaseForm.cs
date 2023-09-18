@@ -28,5 +28,11 @@ namespace Inverse.Desktop
             frm.ShowDialog();
             Close();
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            _parentForm.UseEmptyDatabase();
+            Close();
+        }
     }
 }

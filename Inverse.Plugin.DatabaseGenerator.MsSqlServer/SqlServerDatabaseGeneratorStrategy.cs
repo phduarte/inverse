@@ -13,11 +13,12 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
 
         public Database LoadDatabase(string connectionString)
         {
-            var database = new Database(Provider)
+            var database = new Database
             {
                 Id = Guid.NewGuid(),
                 ConnectionString = connectionString,
-                Name = GetDatabaseNameByConnectionString(connectionString)
+                Name = GetDatabaseNameByConnectionString(connectionString),
+                Provider = Provider
             };
 
             var commandText = @"select object_id, name

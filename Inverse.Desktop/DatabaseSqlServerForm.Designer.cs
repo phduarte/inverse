@@ -40,6 +40,7 @@
             chkWindowsAuth = new System.Windows.Forms.CheckBox();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
+            progressBar1 = new System.Windows.Forms.ProgressBar();
             SuspendLayout();
             // 
             // label1
@@ -157,12 +158,21 @@
             label6.Text = "V";
             label6.Visible = false;
             // 
+            // progressBar1
+            // 
+            progressBar1.Location = new System.Drawing.Point(2, 298);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new System.Drawing.Size(375, 23);
+            progressBar1.TabIndex = 10;
+            progressBar1.Visible = false;
+            // 
             // DatabaseSqlServerForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
-            ClientSize = new System.Drawing.Size(378, 314);
+            ClientSize = new System.Drawing.Size(378, 324);
+            Controls.Add(progressBar1);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(chkWindowsAuth);
@@ -197,5 +207,6 @@
         private System.Windows.Forms.CheckBox chkWindowsAuth;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
