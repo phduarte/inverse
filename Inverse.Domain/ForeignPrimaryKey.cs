@@ -8,6 +8,8 @@
 
         new public static ForeignPrimaryKey Parse(Column foreignKey)
         {
+            var fk = foreignKey as ForeignKey;
+
             return new ForeignPrimaryKey
             {
                 Id = foreignKey.Id,
@@ -15,7 +17,11 @@
                 Name = foreignKey.Name,
                 IsRequired = foreignKey.IsRequired,
                 Table = foreignKey.Table,
-                Type = foreignKey.Type
+                Type = foreignKey.Type,
+                DefaultValue = foreignKey.DefaultValue,
+                Description = foreignKey.Description,
+                RelatedColumn = fk?.RelatedColumn,
+                RelatedTable = fk?.RelatedTable
             };
         }
     }

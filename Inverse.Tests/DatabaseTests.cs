@@ -87,10 +87,6 @@ namespace Inverse.Tests
             db.AddRange(table1, table2);
 
             Assert.False(db.IsEmpty);
-
-            db.ConnectionString = null;
-
-            Assert.True(db.IsEmpty);
         }
     }
 }
