@@ -92,7 +92,12 @@ namespace Inverse.Desktop
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
             _currentPoint = e.Location;
-            _activeTable = _database.GetTableByPosition(_currentPoint.X, _currentPoint.Y);
+            
+            if (!isDragging)
+            {
+                _activeTable = _database.GetTableByPosition(_currentPoint.X, _currentPoint.Y);
+            }
+
             _activeColumn = _database.GetColumnByPosition(_currentPoint.X, _currentPoint.Y);
 
             if (!HasStateChange)
