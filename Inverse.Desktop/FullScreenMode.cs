@@ -15,9 +15,10 @@ namespace Inverse.Desktop
 
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
@@ -28,8 +29,8 @@ namespace Inverse.Desktop
             public int Bottom;      // y position of lower-right corner
         }
 
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 1;
+        private const int SW_HIDE = 0;
+        private const int SW_SHOW = 1;
 
         public static void Toggle(Form form, bool fullscreenActivated)
         {

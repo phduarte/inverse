@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,26 +17,31 @@ namespace Inverse.Desktop
     public partial class MainForm : Form
     {
         private readonly IDatabaseService _databaseService;
+
         private readonly StringFormat _textAlignLeft = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Near
         };
+
         private readonly StringFormat _textAlignRight = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Far
         };
+
         private readonly StringFormat _textAlignLeftTop = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Near,
             Alignment = StringAlignment.Near
         };
+
         private readonly StringFormat _textAlignCenter = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Center
         };
+
         private readonly StringFormat _imageTextAlignCenter = new(StringFormatFlags.NoClip)
         {
             LineAlignment = StringAlignment.Center,
@@ -56,7 +60,7 @@ namespace Inverse.Desktop
         private Point _pressedPointCorrection = Point.Empty;
         private readonly IList<Table> _selectedTables = new List<Table>();
         private readonly IList<TableViewStatus> _tablePositions = new List<TableViewStatus>();
-        DateTime _lastUpdate = DateTime.MinValue;
+        private DateTime _lastUpdate = DateTime.MinValue;
         protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
 
         private Theme Theme = new();
@@ -221,7 +225,6 @@ namespace Inverse.Desktop
                 var overridenTable = _database.Tables.Except(new List<Table> { table }).FirstOrDefault(x => x.IsHover(table.Left, table.Top));
 
                 intersect = overridenTable is not null;
-
             } while (intersect);
 
             table.Show();
@@ -312,7 +315,6 @@ namespace Inverse.Desktop
                 }
                 finally
                 {
-
                     panel1.ResumeLayout();
                 }
             }

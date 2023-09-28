@@ -199,7 +199,7 @@ namespace Inverse.Tests
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 Name = "security_users_db",
-                Provider= Provider.SQLite,
+                Provider = Provider.SQLite,
                 ConnectionString = "Data source=file.db",
             };
 
@@ -328,7 +328,7 @@ namespace Inverse.Tests
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 Name = "security_users_db",
-                Provider= Provider.SQLite,
+                Provider = Provider.SQLite,
                 ConnectionString = "Data source=file.db",
             };
 
@@ -410,7 +410,7 @@ namespace Inverse.Tests
             {
                 Id = Guid.Parse("4E174BFC-70B8-493D-872E-D098512442CB"),
                 Name = "security_users_db",
-                Provider= Provider.SQLite,
+                Provider = Provider.SQLite,
                 ConnectionString = "Data source=file.db",
             };
 

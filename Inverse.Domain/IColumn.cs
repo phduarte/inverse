@@ -20,6 +20,7 @@
         int Width { get; }
 
         bool IsHover(int x, int y);
+
         string ToString();
     }
 }

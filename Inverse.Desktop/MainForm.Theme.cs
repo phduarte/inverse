@@ -36,7 +36,7 @@ namespace Inverse.Desktop
                 control.Checked = false;
             }
 
-            defaultToolStripMenuItem.Checked=true;
+            defaultToolStripMenuItem.Checked = true;
         }
     }
 }

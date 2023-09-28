@@ -1,5 +1,4 @@
-﻿using System.Buffers.Text;
-using System.Xml;
+﻿using System.Xml;
 
 namespace Inverse.Plugin.FileManager.EncryptedXml
 {

@@ -1,5 +1,5 @@
-﻿using Xunit;
-using Inverse.Extensions;
+﻿using Inverse.Extensions;
+using Xunit;
 
 namespace Inverse.Tests
 {

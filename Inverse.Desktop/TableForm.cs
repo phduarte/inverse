@@ -1,7 +1,6 @@
 ﻿using Inverse.Domain;
 using System;
 using System.Linq;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace Inverse.Desktop
@@ -129,7 +128,6 @@ namespace Inverse.Desktop
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

@@ -128,8 +128,6 @@ namespace Inverse.Desktop
                 }
             }
 
-
-
             panel1.Invalidate();
         }
 
@@ -170,6 +168,7 @@ namespace Inverse.Desktop
                     releaseTablesToolStripMenuItem_Click(sender, e);
                     _pressedPoint = Point.Empty;
                     break;
+
                 case Keys.Left:
                 case Keys.Right:
                 case Keys.Up:
@@ -200,15 +199,18 @@ namespace Inverse.Desktop
                         panel1.Invalidate();
                     }
                     break;
+
                 case Keys.F11:
                     fullScreenToolStripMenuItem_Click(sender, e);
                     break;
+
                 case Keys.Alt:
                     if (fullScreenToolStripMenuItem.Checked)
                     {
                         menuStrip1.Visible = !menuStrip1.Visible;
                     }
                     break;
+
                 default:
                     break;
             }

@@ -6,7 +6,7 @@
         public override bool IsForeignKey => true;
         public override string Prefix => FOREIGN_PRIMART_KEY_PREFIX;
 
-        new public static ForeignPrimaryKey Parse(Column foreignKey)
+        public new static ForeignPrimaryKey Parse(Column foreignKey)
         {
             var fk = foreignKey as ForeignKey;
 

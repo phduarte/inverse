@@ -17,6 +17,7 @@ namespace Inverse.Domain
         public Provider Provider { get; set; } = Provider.Undefined;
         public IReadOnlyList<Table> Tables => _tables;
         public bool IsEmpty => Tables.Count == 0;
+
         public event DatabaseAddedTableEventHandler OnTableAdded;
 
         public Database()

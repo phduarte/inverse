@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Inverse.Desktop
 {
-    static class Program
+    internal static class Program
     {
         public const string Name = "Database Studio Designer";
 
@@ -11,7 +11,7 @@ namespace Inverse.Desktop
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(params string[] args)
+        private static void Main(params string[] args)
         {
             System.Windows.Forms.Application.ThreadException += Application_ThreadException;
             System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware);

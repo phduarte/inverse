@@ -17,9 +17,9 @@ namespace Inverse.Desktop
             DrawRelationships(g, tables);
             DrawTables(g, tables);
 
-            if (isControlPressed 
+            if (isControlPressed
                 && _originColumn is not null
-                && !_pressedPoint.IsEmpty 
+                && !_pressedPoint.IsEmpty
                 && !_currentPoint.IsEmpty)
             {
                 g.DrawLine(Theme.Relationship.Line.AsPen(isSelected: true), _pressedPoint, _currentPoint);

@@ -1,7 +1,6 @@
 ﻿using Inverse.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using static System.Math;
 
@@ -9,8 +8,8 @@ namespace Inverse.Domain
 {
     public class Table : Entity<string>, IDraggableElement
     {
-        readonly List<Column> _columns = new();
-        readonly List<Comment> _comments = new();
+        private readonly List<Column> _columns = new();
+        private readonly List<Comment> _comments = new();
 
         public const int HEIGHT = 30;
         public const int WIDTH = 100;
@@ -173,6 +172,7 @@ namespace Inverse.Domain
             Left = Max(0, x);
             Top = Max(0, y);
         }
+
         public bool CanMoveOffset(int offsetX, int offsetY) => Left + offsetX > -1 && Top + offsetY > -1;
 
         public virtual void MoveOffset(int x, int y)

@@ -22,8 +22,8 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
             };
 
             var commandText = @"select object_id, name
-                                from sys.all_objects 
-                                where type = 'U' 
+                                from sys.all_objects
+                                where type = 'U'
                                   and name not in ('sysdiagrams','trace_xe_action_map','trace_xe_event_map')
                                 order by name";
 
@@ -55,7 +55,7 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
         private static IEnumerable<ForeignKey> GetForeignKeys(string connectionString, Table table)
         {
             var tableId = new SqlParameter("tableId", table.Id);
-            var commandText = $@"SELECT   
+            var commandText = $@"SELECT
                                     f.name AS foreign_key_name,
                                     OBJECT_NAME(f.parent_object_id) AS table_name,
                                     COL_NAME(fc.parent_object_id, fc.parent_column_id) AS constraint_column_name,
@@ -63,10 +63,10 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
                                     COL_NAME(fc.referenced_object_id, fc.referenced_column_id) AS referenced_column_name,
                                     is_disabled,
                                     delete_referential_action_desc,
-                                    update_referential_action_desc  
-                                    FROM sys.foreign_keys AS f  
-                                INNER JOIN sys.foreign_key_columns AS fc   
-                                    ON f.object_id = fc.constraint_object_id   
+                                    update_referential_action_desc
+                                    FROM sys.foreign_keys AS f
+                                INNER JOIN sys.foreign_key_columns AS fc
+                                    ON f.object_id = fc.constraint_object_id
                                 WHERE f.parent_object_id = @tableId";
 
             foreach (var rdr in ExecuteReader(connectionString, commandText, tableId))
@@ -100,7 +100,7 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
                                         c.precision,
 		                                (
 			                                select distinct i.name as primarykey_name
-			                                from sys.indexes i 
+			                                from sys.indexes i
 			                                join sys.index_columns ic on i.object_id = ic.object_id and i.index_id = ic.index_id
 			                                where i.object_id = c.object_id and ic.column_id = c.column_id and i.is_primary_key = 1
 		                                ) as primary_key_name
