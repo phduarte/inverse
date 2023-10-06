@@ -1,5 +1,6 @@
 ﻿using Inverse.Domain;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +19,27 @@ namespace Inverse.Desktop
         private void FrmTableEdit_Load(object sender, EventArgs e)
         {
             txtName.Text = _table.Name;
+            BindGridView();
+
+            foreach (var comment in _table.Comments.OrderBy(x => x.Date))
+            {
+                AddComment(comment.Date, comment.Author, comment.Text);
+            }
+        }
+
+        private void BindGridView()
+        {
+            dataGridView1.Rows.Clear();
+
+            var types = _table.Columns.Select(c => c.Type);
+
+            foreach (var type in types)
+            {
+                if (!dataGridViewComboBoxColumn1.Items.Contains(type))
+                {
+                    dataGridViewComboBoxColumn1.Items.Add(type);
+                }
+            }
 
             foreach (var column in _table.Columns)
             {
@@ -25,20 +47,15 @@ namespace Inverse.Desktop
                 var fkName = fk is not null ? $"{fk.RelatedTable}" : string.Empty;
 
                 dataGridView1.Rows.Add(
-                    column.Name,
-                    column.Description,
-                    column.Type,
-                    column.IsRequired,
-                    column.IsPrimaryKey,
-                    column.DefaultValue,
-                    fkName,
-                    column
-                    );
-            }
-
-            foreach (var comment in _table.Comments.OrderBy(x => x.Date))
-            {
-                AddComment(comment.Date, comment.Author, comment.Text);
+                        column.Name,
+                        column.Description,
+                        column.Type,
+                        column.IsRequired,
+                        column.IsPrimaryKey,
+                        column.DefaultValue,
+                        fkName,
+                        column
+                        );
             }
         }
 
@@ -165,6 +182,57 @@ namespace Inverse.Desktop
 
             flowLayoutPanel1.Controls.Add(label);
             flowLayoutPanel1.ScrollControlIntoView(label);
+        }
+
+        private void txtName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Close();
+            }
+        }
+
+        private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedRows = GetSelectedColumns();
+
+            foreach (var column in selectedRows)
+            {
+                _table.MoveColumnUp(column);
+            }
+
+            BindGridView();
+        }
+
+        private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedRows = GetSelectedColumns();
+
+            foreach (var column in selectedRows)
+            {
+                _table.MoveColumnDown(column);
+            }
+
+            BindGridView();
+        }
+
+        private IList<Column> GetSelectedColumns()
+            => dataGridView1.SelectedRows
+                    .Cast<DataGridViewRow>()
+                    .Select(r => r.Cells[7].Value as Column)
+                    .ToList();
+
+        private void removeFKToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1
+                .SelectedCells
+                .OfType<DataGridViewCell>()
+                .FirstOrDefault() is DataGridViewCell cell && cell.OwningRow.Cells[7].Value is ForeignKey fk)
+            {
+                _table.ChangeToColumn(fk);
+            }
+
+            BindGridView();
         }
     }
 }

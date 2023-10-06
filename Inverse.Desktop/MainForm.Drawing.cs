@@ -153,8 +153,14 @@ namespace Inverse.Desktop
             }
         }
 
+        List<(int X, int Y)> _selectedRelationship = new();
+
         private void DrawRelationships(Graphics g, IOrderedEnumerable<Table> tables)
         {
+            _selectedRelationship.Clear();
+
+            var line = new List<(int X, int Y)>();
+
             var relationBorder = Theme.Relationship.Line.AsPen();
             var canvasText = Theme.Canvas.Text.AsBrush();
 
@@ -169,7 +175,10 @@ namespace Inverse.Desktop
             {
                 foreach (var source in table.ForeignKeys)
                 {
-                    var destTable = _database.Tables.First(x => x.Name.Equals(source.RelatedTable));
+                    var destTable = _database.Tables.FirstOrDefault(x => x.Name.Equals(source.RelatedTable));
+
+                    if (destTable is null) continue;
+
                     var target = destTable.Columns.First(x => x.Name.Equals(source.RelatedColumn));
 
                     var isGoingToRight = source.Right < target.Left;
@@ -181,9 +190,15 @@ namespace Inverse.Desktop
                     {
                         var midway = source.Right + ((target.Left - source.Right) / 2);
 
-                        g.DrawLine(relationBorder, midway, source.Middle, midway, target.Middle);
-                        g.DrawLine(relationBorder, source.Right, source.Middle, midway, source.Middle);
-                        g.DrawLine(relationBorder, midway, target.Middle, target.Left, target.Middle);
+                        line = new List<(int X, int Y)>
+                        {
+                            new(midway, source.Middle),
+                            new(midway, target.Middle),
+                            new(source.Right, source.Middle),
+                            new(midway, source.Middle),
+                            new(midway, target.Middle),
+                            new(target.Left, target.Middle)
+                        };
 
                         if (target.IsPrimaryKey)
                         {
@@ -229,9 +244,15 @@ namespace Inverse.Desktop
                     {
                         var midway = target.Right + ((source.Left - target.Right) / 2);
 
-                        g.DrawLine(relationBorder, midway, source.Middle, midway, target.Middle);
-                        g.DrawLine(relationBorder, target.Right, target.Middle, midway, target.Middle);
-                        g.DrawLine(relationBorder, midway, source.Middle, source.Left, source.Middle);
+                        line = new List<(int X, int Y)>
+                        {
+                            new(midway, source.Middle),
+                            new(midway, target.Middle),
+                            new(target.Right, target.Middle),
+                            new(midway, target.Middle),
+                            new(midway, source.Middle),
+                            new(source.Left, source.Middle)
+                        };
 
                         if (target.IsPrimaryKey)
                         {
@@ -277,9 +298,15 @@ namespace Inverse.Desktop
                     {
                         var midway = table.Top + ((destTable.Bottom - table.Top) / 2);
 
-                        g.DrawLine(relationBorder, table.Center, table.Top, table.Center, midway);
-                        g.DrawLine(relationBorder, table.Center, midway, destTable.Center, midway);
-                        g.DrawLine(relationBorder, destTable.Center, midway, destTable.Center, destTable.Bottom);
+                        line = new List<(int X, int Y)>
+                        {
+                            new(table.Center, table.Top),
+                            new(table.Center, midway),
+                            new(table.Center, midway),
+                            new(destTable.Center, midway),
+                            new(destTable.Center, midway),
+                            new(destTable.Center, destTable.Bottom),
+                        };
 
                         if (table.Top > destTable.Bottom)
                         {
@@ -329,9 +356,15 @@ namespace Inverse.Desktop
                     {
                         var midway = table.Bottom + ((destTable.Top - table.Bottom) / 2);
 
-                        g.DrawLine(relationBorder, table.Center, table.Bottom, table.Center, midway);
-                        g.DrawLine(relationBorder, table.Center, midway, destTable.Center, midway);
-                        g.DrawLine(relationBorder, destTable.Center, midway, destTable.Center, destTable.Top);
+                        line = new List<(int X, int Y)>
+                        {
+                            new(table.Center, table.Bottom),
+                            new(table.Center, midway),
+                            new(table.Center, midway),
+                            new(destTable.Center, midway),
+                            new(destTable.Center, midway),
+                            new(destTable.Center, destTable.Top)
+                        };
 
                         if (destTable.Top > table.Bottom)
                         {
@@ -376,6 +409,16 @@ namespace Inverse.Desktop
                                 g.DrawLine(temp, table.Center + 10, table.Bottom + 10, table.Center, table.Bottom);
                             }
                         }
+                    }
+
+                    foreach (var p in line.Chunk(2))
+                    {
+                        g.DrawLine(relationBorder, p[0].X, p[0].Y, p[1].X, p[1].Y);
+                    }
+
+                    if (line.Any(p => p.X == _currentPoint.X || p.X <= _currentPoint.Y))
+                    {
+                        _selectedRelationship.AddRange(line);
                     }
                 }
             }

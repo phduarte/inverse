@@ -34,26 +34,29 @@
             tabControl1 = new System.Windows.Forms.TabControl();
             tabPage1 = new System.Windows.Forms.TabPage();
             dataGridView1 = new System.Windows.Forms.DataGridView();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            removeFKToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            button1 = new System.Windows.Forms.Button();
+            txtNote = new System.Windows.Forms.TextBox();
             ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ColumnType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             Required = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ColumnPK = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ColumnReferences = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ColumnTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            tabPage2 = new System.Windows.Forms.TabPage();
-            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            button1 = new System.Windows.Forms.Button();
-            txtNote = new System.Windows.Forms.TextBox();
-            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
-            editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            tabPage2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
+            tabPage2.SuspendLayout();
             SuspendLayout();
             // 
             // lblName
@@ -71,6 +74,7 @@
             txtName.Name = "txtName";
             txtName.Size = new System.Drawing.Size(402, 23);
             txtName.TabIndex = 1;
+            txtName.KeyDown += txtName_KeyDown;
             // 
             // tabControl1
             // 
@@ -97,7 +101,8 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { ColumnName, ColumnDescription, ColumnType, Required, ColumnPK, DefaultValue, ColumnReferences, ColumnTag });
+            dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { ColumnName, ColumnDescription, dataGridViewComboBoxColumn1, Required, ColumnPK, DefaultValue, ColumnReferences, ColumnTag });
+            dataGridView1.ContextMenuStrip = contextMenuStrip1;
             dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             dataGridView1.Location = new System.Drawing.Point(3, 3);
             dataGridView1.Name = "dataGridView1";
@@ -105,49 +110,46 @@
             dataGridView1.Size = new System.Drawing.Size(924, 347);
             dataGridView1.TabIndex = 0;
             // 
-            // ColumnName
+            // contextMenuStrip1
             // 
-            ColumnName.HeaderText = "Name";
-            ColumnName.Name = "ColumnName";
-            ColumnName.Width = 150;
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem, deleteToolStripMenuItem, moveUpToolStripMenuItem, moveDownToolStripMenuItem, removeFKToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(139, 114);
             // 
-            // ColumnDescription
+            // editToolStripMenuItem
             // 
-            ColumnDescription.HeaderText = "Description";
-            ColumnDescription.Name = "ColumnDescription";
-            ColumnDescription.Width = 230;
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            editToolStripMenuItem.Text = "Edit";
+            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
-            // ColumnType
+            // deleteToolStripMenuItem
             // 
-            ColumnType.HeaderText = "Type";
-            ColumnType.Name = "ColumnType";
+            deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            deleteToolStripMenuItem.Text = "Delete";
+            deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             // 
-            // Required
+            // moveUpToolStripMenuItem
             // 
-            Required.HeaderText = "Required";
-            Required.Name = "Required";
+            moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
+            moveUpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            moveUpToolStripMenuItem.Text = "Move Up";
+            moveUpToolStripMenuItem.Click += moveUpToolStripMenuItem_Click;
             // 
-            // ColumnPK
+            // moveDownToolStripMenuItem
             // 
-            ColumnPK.HeaderText = "Key";
-            ColumnPK.Name = "ColumnPK";
+            moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
+            moveDownToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            moveDownToolStripMenuItem.Text = "Move Down";
+            moveDownToolStripMenuItem.Click += moveDownToolStripMenuItem_Click;
             // 
-            // DefaultValue
+            // removeFKToolStripMenuItem
             // 
-            DefaultValue.HeaderText = "Default";
-            DefaultValue.Name = "DefaultValue";
-            // 
-            // ColumnReferences
-            // 
-            ColumnReferences.HeaderText = "FK";
-            ColumnReferences.Name = "ColumnReferences";
-            ColumnReferences.ReadOnly = true;
-            // 
-            // ColumnTag
-            // 
-            ColumnTag.HeaderText = "Tag";
-            ColumnTag.Name = "ColumnTag";
-            ColumnTag.Visible = false;
+            removeFKToolStripMenuItem.Name = "removeFKToolStripMenuItem";
+            removeFKToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            removeFKToolStripMenuItem.Text = "Remove FK";
+            removeFKToolStripMenuItem.Click += removeFKToolStripMenuItem_Click;
             // 
             // tabPage2
             // 
@@ -192,25 +194,53 @@
             txtNote.TabIndex = 1;
             txtNote.KeyDown += txtNote_KeyDown;
             // 
-            // contextMenuStrip1
+            // ColumnName
             // 
-            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem, deleteToolStripMenuItem });
-            contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new System.Drawing.Size(108, 48);
+            ColumnName.HeaderText = "Name";
+            ColumnName.Name = "ColumnName";
+            ColumnName.Width = 150;
             // 
-            // editToolStripMenuItem
+            // ColumnDescription
             // 
-            editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            editToolStripMenuItem.Text = "Edit";
-            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+            ColumnDescription.HeaderText = "Description";
+            ColumnDescription.Name = "ColumnDescription";
+            ColumnDescription.Width = 230;
             // 
-            // deleteToolStripMenuItem
+            // dataGridViewComboBoxColumn1
             // 
-            deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            deleteToolStripMenuItem.Text = "Delete";
-            deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
+            dataGridViewComboBoxColumn1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            dataGridViewComboBoxColumn1.HeaderText = "Type";
+            dataGridViewComboBoxColumn1.Items.AddRange(new object[] { "int", "bigint", "tinyint", "long", "uniqueidentifier", "datetime", "varchar(30)", "varchar(100)" });
+            dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
+            dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            dataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Required
+            // 
+            Required.HeaderText = "Required";
+            Required.Name = "Required";
+            // 
+            // ColumnPK
+            // 
+            ColumnPK.HeaderText = "Key";
+            ColumnPK.Name = "ColumnPK";
+            // 
+            // DefaultValue
+            // 
+            DefaultValue.HeaderText = "Default";
+            DefaultValue.Name = "DefaultValue";
+            // 
+            // ColumnReferences
+            // 
+            ColumnReferences.HeaderText = "FK";
+            ColumnReferences.Name = "ColumnReferences";
+            ColumnReferences.ReadOnly = true;
+            // 
+            // ColumnTag
+            // 
+            ColumnTag.HeaderText = "Tag";
+            ColumnTag.Name = "ColumnTag";
+            ColumnTag.Visible = false;
             // 
             // TableForm
             // 
@@ -220,6 +250,7 @@
             Controls.Add(tabControl1);
             Controls.Add(txtName);
             Controls.Add(lblName);
+            KeyPreview = true;
             Name = "TableForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             Text = "Table";
@@ -228,9 +259,9 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
-            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -249,9 +280,12 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeFKToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDescription;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnType;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Required;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPK;
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;

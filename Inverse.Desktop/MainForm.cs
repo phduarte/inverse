@@ -474,7 +474,7 @@ namespace Inverse.Desktop
 
         private void contextMenuStripDatabase_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = _database.IsEmpty;
+            addTableToolStripMenuItem1.Enabled = readOnlyToolStripMenuItem.Enabled;
         }
 
         private void readOnlyToolStripMenuItem_Click(object sender, EventArgs e)

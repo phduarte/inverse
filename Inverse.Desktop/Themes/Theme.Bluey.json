@@ -26,9 +26,9 @@
     },
     "line": {
       "size": 1,
-      "normal": "#FFFFFF",
-      "hover": "#FFFFFF",
-      "selected": "#FFFFFF"
+      "normal": "#0F92FF",
+      "hover": "#0F92FF",
+      "selected": "#0F92FF"
     }
   },
   "balloon": {
@@ -53,8 +53,8 @@
     "text": {
       "size": 12,
       "normal": "#000000",
-      "hover": "#000000",
-      "selected": "#000000"
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
     },
     "line": {
       "size": 1,
@@ -72,8 +72,8 @@
     "text": {
       "size": 12,
       "normal": "#000000",
-      "hover": "#000000",
-      "selected": "#000000"
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
     },
     "line": {
       "size": 1,
@@ -91,8 +91,8 @@
     "text": {
       "size": 12,
       "normal": "#000000",
-      "hover": "#000000",
-      "selected": "#000000"
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
     },
     "line": {
       "size": 1,
@@ -110,8 +110,8 @@
     "text": {
       "size": 12,
       "normal": "#000000",
-      "hover": "#000000",
-      "selected": "#000000"
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
     }
   },
   "type": {
@@ -123,8 +123,8 @@
     "text": {
       "size": 12,
       "normal": "#000000",
-      "hover": "#000000",
-      "selected": "#000000"
+      "hover": "#FFFFFF",
+      "selected": "#FFFFFF"
     }
   },
   "relationship": {

@@ -6,11 +6,11 @@
     },
     "Inverse.Desktop - IABOC": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\phdua\\Desktop\\iaboc.idb -theme dbDiffo"
+      "commandLineArgs": "C:\\Users\\phdua\\Desktop\\iaboc.idb -theme Bluey"
     },
     "Inverse.Desktop - CNN": {
       "commandName": "Project",
-      "commandLineArgs": "-provider MSSQLServer -connectionstring Server=(localdb)\\MSSQLLocalDB;Database=Organo;Trusted_Connection=True; -theme Light"
+      "commandLineArgs": "-provider MSSQLServer -connectionstring Server=(localdb)\\MSSQLLocalDB;Database=Organo;Trusted_Connection=True; -theme Bluey"
     }
   }
 }

@@ -21,5 +21,10 @@
                 Id = column.Id,
             };
         }
+
+        public void RemoveRelation()
+        {
+            RelatedTable = RelatedColumn = null;
+        }
     }
 }

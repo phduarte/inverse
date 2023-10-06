@@ -73,6 +73,15 @@ namespace Inverse.Domain
         public void Remove(Table activeTable)
         {
             _tables.Remove(activeTable);
+
+            foreach (var c in _tables
+                .SelectMany(t => t.Columns)
+                .OfType<ForeignKey>()
+                .Where(fk => fk.RelatedTable == activeTable.Name)
+                )
+            {
+                c.RemoveRelation();
+            }
         }
 
         public Column GetColumnByPosition(int x, int y)

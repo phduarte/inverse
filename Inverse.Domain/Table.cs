@@ -136,6 +136,25 @@ namespace Inverse.Domain
             return newColumn;
         }
 
+        public Column ChangeToColumn(Column column)
+        {
+            var idx = _columns.IndexOf(column);
+            var newColumn = new Column
+            {
+                Name = column.Name,
+                Description = column.Description,
+                Type = column.Type,
+                Index = column.Index,
+                DefaultValue = column.DefaultValue,
+                IsRequired = column.IsRequired
+            };
+
+            _columns.Remove(column);
+            _columns.Insert(idx, newColumn);
+
+            return newColumn;
+        }
+
         public void Join(Table referencedTable, Column origin, Column destination)
         {
             if (origin.IsPrimaryKey && destination.IsPrimaryKey)
@@ -205,6 +224,32 @@ namespace Inverse.Domain
         public override string ToString()
         {
             return Name;
+        }
+
+        public void MoveColumnUp(Column column)
+        {
+            if (column is null) return;
+
+            if (_columns.Count == 0) return;
+
+            var index = _columns.IndexOf(column);
+            if (index - 1 < 0) return;
+
+            _columns.Remove(column);
+            _columns.Insert(index - 1, column);
+        }
+
+        public void MoveColumnDown(Column column)
+        {
+            if (column is null) return;
+
+            if (_columns.Count == 0) return;
+
+            var index = _columns.IndexOf(column);
+            if (index + 1 > _columns.Count - 1) return;
+
+            _columns.Remove(column);
+            _columns.Insert(index + 1, column);
         }
     }
 }

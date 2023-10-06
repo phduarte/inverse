@@ -72,6 +72,7 @@ namespace Inverse.Desktop
                 if (destColumn != null && !destColumn.Id.Equals(_originColumn.Id))
                 {
                     _originColumn.Table.Join(_activeTable, _originColumn, destColumn);
+                    _selectedTables.Clear();
                 }
             }
 
