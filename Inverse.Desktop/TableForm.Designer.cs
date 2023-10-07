@@ -210,7 +210,7 @@
             // 
             dataGridViewComboBoxColumn1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
             dataGridViewComboBoxColumn1.HeaderText = "Type";
-            dataGridViewComboBoxColumn1.Items.AddRange(new object[] { "int", "bigint", "tinyint", "long", "uniqueidentifier", "datetime", "varchar(30)", "varchar(100)" });
+            dataGridViewComboBoxColumn1.Items.AddRange(new object[] { "int", "bigint", "bit", "decimal", "money", "smallmoney", "real", "date", "time", "datetime2", "datetimeoffset", "smalldate", "tinyint", "long", "numeric", "smallint", "uniqueidentifier", "datetime", "varchar(10)", "varchar(20)", "varchar(30)", "varchar(40)", "varchar(50)", "varchar(100)", "varchar(200)", "varchar(255)", "varchar(300)", "varchar(400)", "varchar(500)", "char", "text", "nvarchar", "nchar", "ntext", "binary", "image", "varbinary", "xml", "rowversion", "table", "cursor", "sql_variant", "hierarchyid", "geometry", "geography" });
             dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
             dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             dataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;

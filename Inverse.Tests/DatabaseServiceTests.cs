@@ -15,40 +15,50 @@ namespace Inverse.Tests
         public void ShouldExportDatabaseWithOneTableToFile()
         {
             var db = CreateDatabaseWithOneTable();
-            var expected = "CREATE DATABASE security_users_db;\r\n\r\nGO\r\n\r\nUSE security_users_db;\r\n\r\nCREATE TABLE [users]\r\n(\r\n\tuser_id STRING NOT NULL PRIMARY KEY,\r\n\tusername STRING NOT NULL\r\n)\r\n\r\n";
-            Assert.EndsWith(expected, ExportAndReadScript(db, "test1.sql"));
+            var expected = "CREATE DATABASE [security_users_db];\r\n\r\nGO\r\n\r\nUSE [security_users_db];\r\n\r\nCREATE TABLE [users]\r\n(\r\n\t [user_id] STRING NOT NULL PRIMARY KEY,\r\n\t [username] STRING NOT NULL\r\n)\r\n\r\n";
+            var actual = ExportAndReadScript(db, "test1.sql");
+
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void ShouldExportDatabaseWithRelations()
         {
             var db = CreateDatabaseWithTwoTables();
-            var expected = "CREATE TABLE [users]\r\n(\r\n\tuser_id INT NOT NULL PRIMARY KEY,\r\n\tusername STRING NOT NULL\r\n)\r\n\r\nCREATE TABLE [permissions]\r\n(\r\n\tpermission_id INT NOT NULL PRIMARY KEY,\r\n\tpermission STRING NOT NULL,\r\n\tuser_id INT NOT NULL REFERENCES users(user_id)\r\n)\r\n\r\n";
-            Assert.EndsWith(expected, ExportAndReadScript(db, "test2.sql"));
+            var expected = "CREATE TABLE [users]\r\n(\r\n\t [user_id] INT NOT NULL PRIMARY KEY,\r\n\t [username] STRING NOT NULL\r\n)\r\n\r\nCREATE TABLE [permissions]\r\n(\r\n\t [permission_id] INT NOT NULL PRIMARY KEY,\r\n\t [permission] STRING NOT NULL,\r\n\t [user_id] INT NOT NULL REFERENCES [users](user_id)\r\n)\r\n\r\n";
+            var actual = ExportAndReadScript(db, "test2.sql");
+
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void ShouldExportDatabaseWithCompositePrimaryKey()
         {
             var db = CreateDatabaseWithCompositePrimaryKey();
-            var expected = "CREATE TABLE [grant]\r\n(\r\n\tuser_id INT NOT NULL,\r\n\tpermission_id INT NOT NULL,\r\n\tcreated_dt DATETIME,\r\n\r\n\tCONSTRAINT PK_GRANT PRIMARY KEY (user_id,permission_id)\r\n)\r\n\r\n";
-            Assert.EndsWith(expected, ExportAndReadScript(db, "test3.sql"));
+            var expected = "CREATE TABLE [grant]\r\n(\r\n\t [user_id] INT NOT NULL,\r\n\t [permission_id] INT NOT NULL,\r\n\t [created_dt] DATETIME,\r\n\r\n\tCONSTRAINT PK_GRANT PRIMARY KEY (user_id,permission_id)\r\n)\r\n\r\n";
+            var actual = ExportAndReadScript(db, "test3.sql");
+
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void ShouldExportDatabaseWithCompositeForeignKey()
         {
             var db = CreateDatabaseWithCompositeForeignKey();
-            var expected = "CREATE TABLE [cadastro]\r\n(\r\n\talmope INT NOT NULL,\r\n\tdata DATE NOT NULL,\r\n\r\n\tCONSTRAINT PK_CADASTRO PRIMARY KEY (almope,data)\r\n)\r\n\r\nCREATE TABLE [headcount]\r\n(\r\n\talmope INT NOT NULL,\r\n\tdata DATE NOT NULL,\r\n\tpresente INT,\r\n\r\n\tCONSTRAINT FK_HEADCOUNT_CADASTRO FOREIGN KEY (almope,data) REFERENCES cadastro(almope,data)\r\n)\r\n\r\n";
-            Assert.EndsWith(expected, ExportAndReadScript(db, "test4.sql"));
+            var expected = "CREATE TABLE [cadastro]\r\n(\r\n\t [almope] INT NOT NULL,\r\n\t [data] DATE NOT NULL,\r\n\r\n\tCONSTRAINT PK_CADASTRO PRIMARY KEY (almope,data)\r\n)\r\n\r\nCREATE TABLE [headcount]\r\n(\r\n\t [almope] INT NOT NULL,\r\n\t [data] DATE NOT NULL,\r\n\t [presente] INT,\r\n\r\n\tCONSTRAINT FK_HEADCOUNT_CADASTRO FOREIGN KEY (almope,data) REFERENCES [cadastro](almope,data)\r\n)\r\n\r\n";
+            var actual = ExportAndReadScript(db, "test4.sql");
+
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void ShouldExportDatabaseWithThreeTables()
         {
             var db = CreateDatabaseWithOptionalRelationship();
-            var expected = "CREATE TABLE [people]\r\n(\r\n\tperson_id INT NOT NULL PRIMARY KEY,\r\n\tperson_name STRING NOT NULL\r\n)\r\n\r\nCREATE TABLE [schedule]\r\n(\r\n\tschedule_id INT NOT NULL PRIMARY KEY,\r\n\tstarttime DATETIME NOT NULL,\r\n\tendtime DATETIME,\r\n\tperson_id INT REFERENCES people(person_id)\r\n)\r\n\r\n";
-            Assert.EndsWith(expected, ExportAndReadScript(db, "test5.sql"));
+            var expected = "CREATE TABLE [people]\r\n(\r\n\t [person_id] INT NOT NULL PRIMARY KEY,\r\n\t [person_name] STRING NOT NULL\r\n)\r\n\r\nCREATE TABLE [schedule]\r\n(\r\n\t [schedule_id] INT NOT NULL PRIMARY KEY,\r\n\t [starttime] DATETIME NOT NULL,\r\n\t [endtime] DATETIME,\r\n\t [person_id] INT REFERENCES [people](person_id)\r\n)\r\n\r\n";
+            var actual = ExportAndReadScript(db, "test5.sql");
+
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]

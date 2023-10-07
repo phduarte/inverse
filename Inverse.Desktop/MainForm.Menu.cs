@@ -41,6 +41,8 @@ namespace Inverse.Desktop
             panel1.Invalidate();
 
             ToggleMenuButtons();
+
+            ReWriteTitle();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,7 +68,7 @@ namespace Inverse.Desktop
 
             _databaseService.SaveFile(_database, _currentFilename);
             isSavePending = false;
-            Text = $"Inverse [{_currentFilename}]";
+            ReWriteTitle();
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -117,7 +119,13 @@ namespace Inverse.Desktop
                 ResetPanelSize();
                 ToggleMenuButtons();
                 editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
+                ReWriteTitle();
             }
+        }
+
+        private void ReWriteTitle()
+        {
+            Text = _currentFilename is null ? $"Inverse" : $"Inverse [{_currentFilename}]";
         }
 
         private void scriptToolStripMenuItem_Click(object sender, EventArgs e)

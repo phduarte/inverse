@@ -7,6 +7,7 @@
         public override bool IsForeignKey => true;
         public override string Prefix => FOREIGN_KEY_PREFIX;
         public bool IsOneOrNone => IsPrimaryKey && IsForeignKey && Table.PrimaryKeysCount == 1;
+        public string SimpleName => $"[{RelatedTable}]({RelatedColumn})";
 
         public static ForeignKey Parse(Column column)
         {

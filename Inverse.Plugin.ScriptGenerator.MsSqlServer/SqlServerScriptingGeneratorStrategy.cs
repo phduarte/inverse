@@ -1,5 +1,6 @@
 ﻿using Inverse.Domain;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -26,11 +27,11 @@ namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
             sql.AppendLine($"Created At: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
             sql.AppendLine($"Original: {database.ConnectionString}");
             sql.AppendLine($"*/");
-            sql.AppendLine($"CREATE DATABASE {database.Name};");
+            sql.AppendLine($"CREATE DATABASE [{database.Name}];");
             sql.AppendLine();
             sql.AppendLine($"GO");
             sql.AppendLine();
-            sql.AppendLine($"USE {database.Name};");
+            sql.AppendLine($"USE [{database.Name}];");
             sql.AppendLine();
 
             foreach (var t in relacionadas.Union(naoRelacionadas))
@@ -60,7 +61,7 @@ namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
                             })
                                 .Where(w => w.Related != null);
 
-                            sql.AppendLine($"\tCONSTRAINT FK_{t.Name.ToUpper()}_{relatedTableName.ToUpper()} FOREIGN KEY ({string.Join(",", chavesOriginal.Select(s => s.Name))}) REFERENCES {relatedTableName}({string.Join(",", chavesOriginal.Select(s => s.Related.Name))}),");
+                            sql.AppendLine($"\tCONSTRAINT FK_{t.Name.ToUpper()}_{relatedTableName.ToUpper()} FOREIGN KEY ({string.Join(",", chavesOriginal.Select(s => s.Name))}) REFERENCES [{relatedTableName}]({string.Join(",", chavesOriginal.Select(s => s.Related.Name))}),");
                         }
                     }
                 }
@@ -77,31 +78,34 @@ namespace Inverse.Plugin.ScriptGenerator.MsSqlServer
 
         private static string GetColumnScript<T>(T column) where T : Column
         {
-            var defaultValue = !string.IsNullOrEmpty(column.DefaultValue) ? $" DEFAULT({column.DefaultValue})" : string.Empty;
+            var spec = new List<string>
+            {
+                "\t",
+                $"[{column.Name}]",
+                column.Type.ToUpper()
+            };
 
-            if (column is PrimaryKey pk && column.Table.PrimaryKeysCount == 1)
+            if (column.IsRequired)
             {
-                return $"\t{pk.Name} {pk.Type.ToUpper()} NOT NULL PRIMARY KEY{defaultValue}";
+                spec.Add("NOT NULL");
             }
-            else if (column is ForeignKey fk && fk.Table.ForeignKeysCount == 1)
+
+            if (column is PrimaryKey && column.Table.PrimaryKeysCount == 1)
             {
-                if (column.IsRequired)
-                {
-                    return $"\t{fk.Name} {fk.Type.ToUpper()} NOT NULL{defaultValue} REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
-                }
-                else
-                {
-                    return $"\t{fk.Name} {fk.Type.ToUpper()}{defaultValue} REFERENCES {fk.RelatedTable}({fk.RelatedColumn})";
-                }
+                spec.Add("PRIMARY KEY");
             }
-            else if (column.IsRequired)
+
+            if (!string.IsNullOrEmpty(column.DefaultValue))
             {
-                return $"\t{column.Name} {column.Type.ToUpper()} NOT NULL{defaultValue}";
+                spec.Add($"DEFAULT({column.DefaultValue})");
             }
-            else
+
+            if (column is ForeignKey fk && fk.Table.ForeignKeysCount == 1)
             {
-                return $"\t{column.Name} {column.Type.ToUpper()}{defaultValue}";
+                spec.Add($"REFERENCES [{fk.RelatedTable}]({fk.RelatedColumn})");
             }
+
+            return string.Join(" ", spec);
         }
     }
 }

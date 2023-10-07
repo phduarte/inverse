@@ -44,7 +44,7 @@ namespace Inverse.Desktop
             foreach (var column in _table.Columns)
             {
                 var fk = column as ForeignKey;
-                var fkName = fk is not null ? $"{fk.RelatedTable}" : string.Empty;
+                var fkName = fk?.SimpleName ?? string.Empty;
 
                 dataGridView1.Rows.Add(
                         column.Name,
@@ -202,6 +202,17 @@ namespace Inverse.Desktop
             }
 
             BindGridView();
+
+            Select(selectedRows);
+        }
+
+        private void Select(IList<Column> selectedRows)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                var ob = row.Cells[7].Value as Column;
+                row.Selected = selectedRows.Contains(ob);
+            }
         }
 
         private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
@@ -214,6 +225,7 @@ namespace Inverse.Desktop
             }
 
             BindGridView();
+            Select(selectedRows);
         }
 
         private IList<Column> GetSelectedColumns()
