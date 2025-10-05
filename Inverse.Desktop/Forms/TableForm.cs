@@ -1,4 +1,6 @@
-﻿using Inverse.Domain;
+﻿using Inverse.Desktop.Extensions;
+using Inverse.Domain;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,10 @@ public partial class TableForm : Form
         {
             AddComment(comment.Date, comment.Author, comment.Text);
         }
+
+        dataGridViewSeed.DataSource = null;
+        dataGridViewSeed.FillWithJson(_table.SeedData);
+        //dataGridViewSeed.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
     }
 
     private void BindGridView()
@@ -72,6 +78,7 @@ public partial class TableForm : Form
 
         _table.Name = txtName.Text;
         _table.Clear();
+        _table.SeedData = dataGridViewSeed.AsJson();
 
         foreach (DataGridViewRow row in dataGridView1.Rows)
         {
@@ -162,7 +169,7 @@ public partial class TableForm : Form
                     var column = r.Tag as Column;
                     _table.RemoveColumn(column);
                 }
-                BindGridView(); 
+                BindGridView();
             }
         }
         else
@@ -252,5 +259,83 @@ public partial class TableForm : Form
         }
 
         BindGridView();
+    }
+
+    private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+    {
+        var newRow = dataGridView1.Rows[e.RowIndex];
+        var columnName = newRow.Cells[0].FormattedValue.ToString();
+
+        if (string.IsNullOrEmpty(columnName))
+        {
+            return;
+        }
+
+        dataGridViewSeed.Columns.Add(new DataGridViewColumn
+        {
+            CellTemplate = new DataGridViewTextBoxCell(),
+            Name = columnName,
+            HeaderText = columnName,
+            ValueType = typeof(string),
+            Width = 100,
+            ReadOnly = false,
+            AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        });
+    }
+
+    private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+    {
+        var existingColumnNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(c => c.Cells[0].Value.ToString());
+
+        if (existingColumnNames.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        foreach (DataGridViewColumn c in dataGridViewSeed.Columns)
+        {
+            if (!existingColumnNames.Contains(c.Name))
+            {
+                dataGridViewSeed.Columns.Remove(c);
+            }
+        }
+    }
+
+    private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+    {
+
+    }
+
+    private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+    {
+
+    }
+
+    private void dataGridView1_UserAddedRow(object sender, DataGridViewRowEventArgs e)
+    {
+
+    }
+
+    private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+    {
+        // deve atualizar o nome da coluna na seed quando o nome da coluna for alterado
+        if (e.ColumnIndex == 0) // Nome da coluna
+        {
+            var editedRow = dataGridView1.Rows[e.RowIndex];
+            var oldColumn = editedRow.Tag as Column;
+            var newColumnName = editedRow.Cells[0].Value?.ToString();
+            if (oldColumn is not null && !string.IsNullOrEmpty(newColumnName) && oldColumn.Name != newColumnName)
+            {
+                // Atualiza o nome da coluna na seed
+                var seedColumn = dataGridViewSeed.Columns
+                    .OfType<DataGridViewColumn>()
+                    .FirstOrDefault(c => c.Name == oldColumn.Name);
+                if (seedColumn is not null)
+                {
+                    seedColumn.Name = newColumnName;
+                    seedColumn.HeaderText = newColumnName;
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Inverse.Plugin.FileManager.EncryptedXml;
 
-internal static class Base64Extensions
+public static class Base64Extensions
 {
     public static string ToBase64(this string plainText)
     {

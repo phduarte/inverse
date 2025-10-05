@@ -33,7 +33,10 @@ public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStr
         sql.AppendLine($"GO");
         sql.AppendLine();
         sql.AppendLine($"USE [{database.Name}];");
+        sql.AppendLine();
         sql.AppendLine("BEGIN TRANSACTION");
+        sql.AppendLine();
+        sql.AppendLine("-------- CLEAR DB -----------------------------------------------------------");
         sql.AppendLine();
 
         for (var u = exportTables.Count(); u > 0; u--)
@@ -41,6 +44,8 @@ public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStr
             sql.AppendLine($"DROP TABLE IF EXISTS [{exportTables.ElementAt(u - 1).Name}];");
         }
 
+        sql.AppendLine();
+        sql.AppendLine("-------- CREATE TABLES -----------------------------------------------------------");
         sql.AppendLine();
 
         foreach (var t in exportTables)
@@ -82,8 +87,97 @@ public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStr
             sql.AppendLine();
         }
 
+        sql.AppendLine();
+        sql.AppendLine("-------- SEED -----------------------------------------------------------");
+
+        // script de seed
+        foreach (var t in exportTables)
+        {
+            var insertSqlStatement = ConvertJsonToInsertStatement(t.Name, t.SeedData);
+            if (insertSqlStatement != null)
+            {
+                sql.AppendLine(insertSqlStatement.ToString());
+                sql.AppendLine();
+            }
+        }
+
+        sql.AppendLine("-------- COMMIT -----------------------------------------------------------");
+
         sql.AppendLine("COMMIT;");
         sw.Write(sql.ToString());
+    }
+
+    private string ConvertJsonToInsertStatement(string tableName, string seedData)
+    {
+        if (string.IsNullOrEmpty(seedData))
+        {
+            return null;
+        }
+        try
+        {
+            var jsonArray = System.Text.Json.JsonDocument.Parse(seedData).RootElement;
+            if (jsonArray.ValueKind != System.Text.Json.JsonValueKind.Array)
+            {
+                throw new InvalidDataException("Seed data is not a valid JSON array.");
+            }
+            var insertStatements = new List<string>();
+            var insertAdded = false;
+
+            foreach (var jsonObject in jsonArray.EnumerateArray())
+            {
+                if (jsonObject.ValueKind != System.Text.Json.JsonValueKind.Object)
+                {
+                    throw new InvalidDataException("Seed data array contains non-object elements.");
+                }
+                var columns = new List<string>();
+                var values = new List<string>();
+                foreach (var property in jsonObject.EnumerateObject())
+                {
+                    columns.Add($"[{property.Name}]");
+                    switch (property.Value.ValueKind)
+                    {
+                        case System.Text.Json.JsonValueKind.String:
+                            values.Add($"'{property.Value.GetString().Replace("'", "''")}'");
+                            break;
+                        case System.Text.Json.JsonValueKind.Number:
+                            values.Add(property.Value.GetRawText());
+                            break;
+                        case System.Text.Json.JsonValueKind.True:
+                        case System.Text.Json.JsonValueKind.False:
+                            values.Add(property.Value.GetBoolean() ? "1" : "0");
+                            break;
+                        case System.Text.Json.JsonValueKind.Null:
+                            values.Add("NULL");
+                            break;
+                        default:
+                            throw new InvalidDataException($"Unsupported JSON value kind: {property.Value.ValueKind}");
+                    }
+                }
+
+                if (!insertAdded)
+                {
+                    insertStatements.Add($"INSERT INTO [{tableName}] ({string.Join(", ", columns)})");
+                    insertStatements.Add("VALUES");
+                    insertAdded = true;
+                }
+
+                var insertStatement = $"      ({string.Join(", ", values)}),";
+                insertStatements.Add(insertStatement);
+            }
+
+            if (insertStatements.Any())
+            {
+                var ultimo = insertStatements.Last().Remove(insertStatements.Last().Length - 1, 1);
+
+                insertStatements[insertStatements.Count - 1] = ultimo + ";";
+            }
+
+            return string.Join(Environment.NewLine, insertStatements);
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            throw new InvalidDataException("Seed data is not a valid JSON format.", ex);
+        }
     }
 
     private static string GetColumnScript<T>(T column) where T : Column

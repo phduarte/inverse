@@ -1,5 +1,6 @@
 ﻿using Inverse.Application;
 using Inverse.Desktop.Extensions;
+using Inverse.Desktop.Models;
 using Inverse.Desktop.Themes;
 using Inverse.Domain;
 using System;
@@ -60,7 +61,7 @@ public partial class MainForm : Form
     private Point _currentPoint = Point.Empty;
     private Point _pressedPointCorrection = Point.Empty;
     private readonly IList<Table> _selectedTables = new List<Table>();
-    private readonly IList<TableViewStatus> _tablePositions = new List<TableViewStatus>();
+    private readonly IList<TableStatusViewModel> _tablePositions = new List<TableStatusViewModel>();
     private DateTime _lastUpdate = DateTime.MinValue;
     protected bool HasStateChange => _lastUpdate > DateTime.Now.AddSeconds(-5);
 

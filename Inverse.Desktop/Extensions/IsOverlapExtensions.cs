@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Inverse.Desktop.Extensions;
 
-internal static class IsBetweenExtensions
+internal static class IsOverlapExtensions
 {
     public static bool IsOverlap(this Point point1, Rectangle rectangle)
     {

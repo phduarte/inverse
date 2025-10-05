@@ -1,4 +1,5 @@
-﻿using Inverse.Domain;
+﻿using Inverse.Desktop.Models;
+using Inverse.Domain;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -80,7 +81,7 @@ public partial class MainForm
 
         foreach (var t in _database.Tables)
         {
-            _tablePositions.Add(new TableViewStatus
+            _tablePositions.Add(new TableStatusViewModel
             {
                 Table = t.Name,
                 Left = t.Left,
@@ -95,7 +96,7 @@ public partial class MainForm
 
         foreach (var t in _database.Tables)
         {
-            if (_tablePositions.FirstOrDefault(a => a.Table.Equals(t.Name)) is TableViewStatus view)
+            if (_tablePositions.FirstOrDefault(a => a.Table.Equals(t.Name)) is TableStatusViewModel view)
             {
                 if (!view.Visible)
                 {

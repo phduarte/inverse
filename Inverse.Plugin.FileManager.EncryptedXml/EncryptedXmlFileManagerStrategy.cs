@@ -57,6 +57,7 @@ public sealed class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
             var tbLeft = xmlTable.GetFromAttribute("left");
             var tbTop = xmlTable.GetFromAttribute("top");
             var isHidden = xmlTable.GetFromAttribute("isHidden") ?? "false";
+            var seedData = xmlTable.SelectSingleNode(".//data")?.InnerText.FromBase64();
 
             var table = new Table
             {
@@ -65,7 +66,8 @@ public sealed class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
                 Database = database,
                 Left = int.Parse(tbLeft),
                 Top = int.Parse(tbTop),
-                IsHidden = bool.Parse(isHidden)
+                IsHidden = bool.Parse(isHidden),
+                SeedData = seedData
             };
 
             table.AddComments(Comment.FromNotes(tabNotes));
@@ -191,6 +193,7 @@ public sealed class EncryptedXmlFileManagerStrategy : IFileManagerStrategy
             }
 
             content.AppendLine($"            </columns>");
+            content.AppendLine($"            <data>{table.SeedData.ToBase64()}</data>");
             content.AppendLine($"        </table>");
         }
         content.AppendLine($"    </tables>");

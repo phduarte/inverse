@@ -38,6 +38,8 @@ public class Table : Entity<string>, IDraggableElement
     public bool IsModified { get; set; }
     public string Notes => Comment.ToNotes(Comments);
 
+    public string SeedData { get; set; }
+
     public Table()
     {
         Id = Guid.NewGuid().ToString();

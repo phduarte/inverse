@@ -32,18 +32,8 @@ partial class TableForm
         lblName = new System.Windows.Forms.Label();
         txtName = new System.Windows.Forms.TextBox();
         tabControl1 = new System.Windows.Forms.TabControl();
-        tabPage1 = new System.Windows.Forms.TabPage();
+        tabPageColumns = new System.Windows.Forms.TabPage();
         dataGridView1 = new System.Windows.Forms.DataGridView();
-        contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
-        editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        removeFKToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        tabPage2 = new System.Windows.Forms.TabPage();
-        flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-        button1 = new System.Windows.Forms.Button();
-        txtNote = new System.Windows.Forms.TextBox();
         ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
         ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
         dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -52,11 +42,25 @@ partial class TableForm
         DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
         ColumnReferences = new System.Windows.Forms.DataGridViewTextBoxColumn();
         ColumnTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+        contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+        editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        removeFKToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        tabPageSeed = new System.Windows.Forms.TabPage();
+        dataGridViewSeed = new System.Windows.Forms.DataGridView();
+        tabPageNotes = new System.Windows.Forms.TabPage();
+        flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+        button1 = new System.Windows.Forms.Button();
+        txtNote = new System.Windows.Forms.TextBox();
         tabControl1.SuspendLayout();
-        tabPage1.SuspendLayout();
+        tabPageColumns.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
         contextMenuStrip1.SuspendLayout();
-        tabPage2.SuspendLayout();
+        tabPageSeed.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewSeed).BeginInit();
+        tabPageNotes.SuspendLayout();
         SuspendLayout();
         // 
         // lblName
@@ -79,24 +83,25 @@ partial class TableForm
         // tabControl1
         // 
         tabControl1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-        tabControl1.Controls.Add(tabPage1);
-        tabControl1.Controls.Add(tabPage2);
+        tabControl1.Controls.Add(tabPageColumns);
+        tabControl1.Controls.Add(tabPageSeed);
+        tabControl1.Controls.Add(tabPageNotes);
         tabControl1.Location = new System.Drawing.Point(12, 64);
         tabControl1.Name = "tabControl1";
         tabControl1.SelectedIndex = 0;
         tabControl1.Size = new System.Drawing.Size(938, 381);
         tabControl1.TabIndex = 2;
         // 
-        // tabPage1
+        // tabPageColumns
         // 
-        tabPage1.Controls.Add(dataGridView1);
-        tabPage1.Location = new System.Drawing.Point(4, 24);
-        tabPage1.Name = "tabPage1";
-        tabPage1.Padding = new System.Windows.Forms.Padding(3);
-        tabPage1.Size = new System.Drawing.Size(930, 353);
-        tabPage1.TabIndex = 0;
-        tabPage1.Text = "Columns";
-        tabPage1.UseVisualStyleBackColor = true;
+        tabPageColumns.Controls.Add(dataGridView1);
+        tabPageColumns.Location = new System.Drawing.Point(4, 24);
+        tabPageColumns.Name = "tabPageColumns";
+        tabPageColumns.Padding = new System.Windows.Forms.Padding(3);
+        tabPageColumns.Size = new System.Drawing.Size(930, 353);
+        tabPageColumns.TabIndex = 0;
+        tabPageColumns.Text = "Columns";
+        tabPageColumns.UseVisualStyleBackColor = true;
         // 
         // dataGridView1
         // 
@@ -106,93 +111,14 @@ partial class TableForm
         dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
         dataGridView1.Location = new System.Drawing.Point(3, 3);
         dataGridView1.Name = "dataGridView1";
-        dataGridView1.RowTemplate.Height = 25;
         dataGridView1.Size = new System.Drawing.Size(924, 347);
         dataGridView1.TabIndex = 0;
-        // 
-        // contextMenuStrip1
-        // 
-        contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem, deleteToolStripMenuItem, moveUpToolStripMenuItem, moveDownToolStripMenuItem, removeFKToolStripMenuItem });
-        contextMenuStrip1.Name = "contextMenuStrip1";
-        contextMenuStrip1.Size = new System.Drawing.Size(139, 114);
-        // 
-        // editToolStripMenuItem
-        // 
-        editToolStripMenuItem.Name = "editToolStripMenuItem";
-        editToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-        editToolStripMenuItem.Text = "Edit";
-        editToolStripMenuItem.Click += editToolStripMenuItem_Click;
-        // 
-        // deleteToolStripMenuItem
-        // 
-        deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-        deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-        deleteToolStripMenuItem.Text = "Delete";
-        deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
-        // 
-        // moveUpToolStripMenuItem
-        // 
-        moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
-        moveUpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-        moveUpToolStripMenuItem.Text = "Move Up";
-        moveUpToolStripMenuItem.Click += moveUpToolStripMenuItem_Click;
-        // 
-        // moveDownToolStripMenuItem
-        // 
-        moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
-        moveDownToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-        moveDownToolStripMenuItem.Text = "Move Down";
-        moveDownToolStripMenuItem.Click += moveDownToolStripMenuItem_Click;
-        // 
-        // removeFKToolStripMenuItem
-        // 
-        removeFKToolStripMenuItem.Name = "removeFKToolStripMenuItem";
-        removeFKToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-        removeFKToolStripMenuItem.Text = "Remove FK";
-        removeFKToolStripMenuItem.Click += removeFKToolStripMenuItem_Click;
-        // 
-        // tabPage2
-        // 
-        tabPage2.Controls.Add(flowLayoutPanel1);
-        tabPage2.Controls.Add(button1);
-        tabPage2.Controls.Add(txtNote);
-        tabPage2.Location = new System.Drawing.Point(4, 24);
-        tabPage2.Name = "tabPage2";
-        tabPage2.Padding = new System.Windows.Forms.Padding(3);
-        tabPage2.Size = new System.Drawing.Size(930, 353);
-        tabPage2.TabIndex = 1;
-        tabPage2.Text = "Notes";
-        tabPage2.UseVisualStyleBackColor = true;
-        // 
-        // flowLayoutPanel1
-        // 
-        flowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-        flowLayoutPanel1.AutoScroll = true;
-        flowLayoutPanel1.Location = new System.Drawing.Point(3, 6);
-        flowLayoutPanel1.Name = "flowLayoutPanel1";
-        flowLayoutPanel1.Size = new System.Drawing.Size(830, 289);
-        flowLayoutPanel1.TabIndex = 3;
-        // 
-        // button1
-        // 
-        button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-        button1.Location = new System.Drawing.Point(754, 301);
-        button1.Name = "button1";
-        button1.Size = new System.Drawing.Size(79, 49);
-        button1.TabIndex = 2;
-        button1.Text = "Send";
-        button1.UseVisualStyleBackColor = true;
-        button1.Click += button1_Click;
-        // 
-        // txtNote
-        // 
-        txtNote.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-        txtNote.Location = new System.Drawing.Point(3, 301);
-        txtNote.Multiline = true;
-        txtNote.Name = "txtNote";
-        txtNote.Size = new System.Drawing.Size(745, 49);
-        txtNote.TabIndex = 1;
-        txtNote.KeyDown += txtNote_KeyDown;
+        dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
+        dataGridView1.RowsAdded += dataGridView1_RowsAdded;
+        dataGridView1.RowsRemoved += dataGridView1_RowsRemoved;
+        dataGridView1.UserAddedRow += dataGridView1_UserAddedRow;
+        dataGridView1.UserDeletedRow += dataGridView1_UserDeletedRow;
+        dataGridView1.UserDeletingRow += dataGridView1_UserDeletingRow;
         // 
         // ColumnName
         // 
@@ -242,6 +168,111 @@ partial class TableForm
         ColumnTag.Name = "ColumnTag";
         ColumnTag.Visible = false;
         // 
+        // contextMenuStrip1
+        // 
+        contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem, deleteToolStripMenuItem, moveUpToolStripMenuItem, moveDownToolStripMenuItem, removeFKToolStripMenuItem });
+        contextMenuStrip1.Name = "contextMenuStrip1";
+        contextMenuStrip1.Size = new System.Drawing.Size(139, 114);
+        // 
+        // editToolStripMenuItem
+        // 
+        editToolStripMenuItem.Name = "editToolStripMenuItem";
+        editToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+        editToolStripMenuItem.Text = "Edit";
+        editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+        // 
+        // deleteToolStripMenuItem
+        // 
+        deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+        deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+        deleteToolStripMenuItem.Text = "Delete";
+        deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
+        // 
+        // moveUpToolStripMenuItem
+        // 
+        moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
+        moveUpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+        moveUpToolStripMenuItem.Text = "Move Up";
+        moveUpToolStripMenuItem.Click += moveUpToolStripMenuItem_Click;
+        // 
+        // moveDownToolStripMenuItem
+        // 
+        moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
+        moveDownToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+        moveDownToolStripMenuItem.Text = "Move Down";
+        moveDownToolStripMenuItem.Click += moveDownToolStripMenuItem_Click;
+        // 
+        // removeFKToolStripMenuItem
+        // 
+        removeFKToolStripMenuItem.Name = "removeFKToolStripMenuItem";
+        removeFKToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+        removeFKToolStripMenuItem.Text = "Remove FK";
+        removeFKToolStripMenuItem.Click += removeFKToolStripMenuItem_Click;
+        // 
+        // tabPageSeed
+        // 
+        tabPageSeed.Controls.Add(dataGridViewSeed);
+        tabPageSeed.Location = new System.Drawing.Point(4, 24);
+        tabPageSeed.Name = "tabPageSeed";
+        tabPageSeed.Padding = new System.Windows.Forms.Padding(3);
+        tabPageSeed.Size = new System.Drawing.Size(930, 353);
+        tabPageSeed.TabIndex = 2;
+        tabPageSeed.Text = "Seed";
+        tabPageSeed.UseVisualStyleBackColor = true;
+        // 
+        // dataGridViewSeed
+        // 
+        dataGridViewSeed.AllowUserToOrderColumns = true;
+        dataGridViewSeed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridViewSeed.Dock = System.Windows.Forms.DockStyle.Fill;
+        dataGridViewSeed.Location = new System.Drawing.Point(3, 3);
+        dataGridViewSeed.Name = "dataGridViewSeed";
+        dataGridViewSeed.Size = new System.Drawing.Size(924, 347);
+        dataGridViewSeed.TabIndex = 0;
+        // 
+        // tabPageNotes
+        // 
+        tabPageNotes.Controls.Add(flowLayoutPanel1);
+        tabPageNotes.Controls.Add(button1);
+        tabPageNotes.Controls.Add(txtNote);
+        tabPageNotes.Location = new System.Drawing.Point(4, 24);
+        tabPageNotes.Name = "tabPageNotes";
+        tabPageNotes.Padding = new System.Windows.Forms.Padding(3);
+        tabPageNotes.Size = new System.Drawing.Size(930, 353);
+        tabPageNotes.TabIndex = 1;
+        tabPageNotes.Text = "Notes";
+        tabPageNotes.UseVisualStyleBackColor = true;
+        // 
+        // flowLayoutPanel1
+        // 
+        flowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        flowLayoutPanel1.AutoScroll = true;
+        flowLayoutPanel1.Location = new System.Drawing.Point(3, 6);
+        flowLayoutPanel1.Name = "flowLayoutPanel1";
+        flowLayoutPanel1.Size = new System.Drawing.Size(924, 289);
+        flowLayoutPanel1.TabIndex = 3;
+        // 
+        // button1
+        // 
+        button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+        button1.Location = new System.Drawing.Point(848, 301);
+        button1.Name = "button1";
+        button1.Size = new System.Drawing.Size(79, 49);
+        button1.TabIndex = 2;
+        button1.Text = "Save";
+        button1.UseVisualStyleBackColor = true;
+        button1.Click += button1_Click;
+        // 
+        // txtNote
+        // 
+        txtNote.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        txtNote.Location = new System.Drawing.Point(3, 301);
+        txtNote.Multiline = true;
+        txtNote.Name = "txtNote";
+        txtNote.Size = new System.Drawing.Size(839, 49);
+        txtNote.TabIndex = 1;
+        txtNote.KeyDown += txtNote_KeyDown;
+        // 
         // TableForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -257,11 +288,13 @@ partial class TableForm
         FormClosing += FrmTableEdit_FormClosing;
         Load += FrmTableEdit_Load;
         tabControl1.ResumeLayout(false);
-        tabPage1.ResumeLayout(false);
+        tabPageColumns.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
         contextMenuStrip1.ResumeLayout(false);
-        tabPage2.ResumeLayout(false);
-        tabPage2.PerformLayout();
+        tabPageSeed.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dataGridViewSeed).EndInit();
+        tabPageNotes.ResumeLayout(false);
+        tabPageNotes.PerformLayout();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -271,9 +304,9 @@ partial class TableForm
     private System.Windows.Forms.Label lblName;
     private System.Windows.Forms.TextBox txtName;
     private System.Windows.Forms.TabControl tabControl1;
-    private System.Windows.Forms.TabPage tabPage1;
+    private System.Windows.Forms.TabPage tabPageColumns;
     private System.Windows.Forms.DataGridView dataGridView1;
-    private System.Windows.Forms.TabPage tabPage2;
+    private System.Windows.Forms.TabPage tabPageNotes;
     private System.Windows.Forms.Button button1;
     private System.Windows.Forms.TextBox txtNote;
     private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -291,4 +324,6 @@ partial class TableForm
     private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
     private System.Windows.Forms.DataGridViewTextBoxColumn ColumnReferences;
     private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTag;
+    private System.Windows.Forms.TabPage tabPageSeed;
+    private System.Windows.Forms.DataGridView dataGridViewSeed;
 }

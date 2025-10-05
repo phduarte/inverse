@@ -1,6 +1,6 @@
-﻿namespace Inverse.Desktop;
+﻿namespace Inverse.Desktop.Models;
 
-internal class TableViewStatus
+internal class TableStatusViewModel
 {
     public string Table { get; set; }
     public int Left { get; set; }
