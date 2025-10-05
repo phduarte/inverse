@@ -1,9 +1,8 @@
-﻿namespace Inverse.Domain
-{
-    public interface IDatabaseGeneratorStrategy
-    {
-        Provider Provider { get; }
+﻿namespace Inverse.Domain;
 
-        Database LoadDatabase(string connectionString);
-    }
+public interface IDatabaseGeneratorStrategy
+{
+    Provider Provider { get; }
+
+    Database LoadDatabase(string connectionString);
 }

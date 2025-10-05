@@ -1,6 +1,5 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public interface IAggregateRoot
 {
-    public interface IAggregateRoot
-    {
-    }
 }

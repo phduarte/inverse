@@ -1,9 +1,8 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public interface IForeignKey : IColumn
 {
-    public interface IForeignKey : IColumn
-    {
-        string RelatedColumn { get; set; }
-        string RelatedTable { get; set; }
-        bool IsOneOrNone { get; }
-    }
+    string RelatedColumn { get; set; }
+    string RelatedTable { get; set; }
+    bool IsOneOrNone { get; }
 }

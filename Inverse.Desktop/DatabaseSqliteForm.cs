@@ -3,43 +3,42 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Inverse.Desktop
+namespace Inverse.Desktop;
+
+public partial class DatabaseSqliteForm : Form
 {
-    public partial class DatabaseSqliteForm : Form
+    private readonly MainForm _parentForm;
+    private static string _filename;
+
+    public DatabaseSqliteForm(MainForm parentForm)
     {
-        private readonly MainForm _parentForm;
-        private static string _filename;
+        _parentForm = parentForm;
+        InitializeComponent();
 
-        public DatabaseSqliteForm(MainForm parentForm)
+        txtFilename.Text = _filename;
+        btnRevert.Enabled = File.Exists(txtFilename.Text);
+    }
+
+    private void btnSearch_Click(object sender, EventArgs e)
+    {
+        var dialog = new OpenFileDialog
         {
-            _parentForm = parentForm;
-            InitializeComponent();
+            Filter = "Arquivo de Banco de Dados SQLite|*.db"
+        };
 
-            txtFilename.Text = _filename;
-            btnRevert.Enabled = File.Exists(txtFilename.Text);
+        dialog.ShowDialog();
+
+        if (!string.IsNullOrWhiteSpace(dialog.FileName))
+        {
+            txtFilename.Text = _filename = dialog.FileName;
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            var dialog = new OpenFileDialog
-            {
-                Filter = "Arquivo de Banco de Dados SQLite|*.db"
-            };
+        btnRevert.Enabled = File.Exists(txtFilename.Text);
+    }
 
-            dialog.ShowDialog();
-
-            if (!string.IsNullOrWhiteSpace(dialog.FileName))
-            {
-                txtFilename.Text = _filename = dialog.FileName;
-            }
-
-            btnRevert.Enabled = File.Exists(txtFilename.Text);
-        }
-
-        private void btnRevert_Click(object sender, EventArgs e)
-        {
-            _parentForm.UseDatabase(Provider.SQLite, $"Data source={_filename};");
-            Close();
-        }
+    private void btnRevert_Click(object sender, EventArgs e)
+    {
+        _parentForm.UseDatabase(Provider.SQLite, $"Data source={_filename};");
+        Close();
     }
 }

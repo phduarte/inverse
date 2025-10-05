@@ -3,214 +3,213 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Inverse.Desktop
+namespace Inverse.Desktop;
+
+public partial class MainForm
 {
-    public partial class MainForm
+    private string _currentFilename = string.Empty;
+    private bool isSavePending = false;
+
+    private void newToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        private string _currentFilename = string.Empty;
-        private bool isSavePending = false;
+        var form = new DatabaseForm(this);
+        form.ShowDialog();
+        ToggleMenuButtons();
+        isSavePending = true;
+    }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+    private void openToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var dialog = new OpenFileDialog
         {
-            var form = new DatabaseForm(this);
-            form.ShowDialog();
-            ToggleMenuButtons();
-            isSavePending = true;
+            Filter = GetCompatibleFilesFilter()
+        };
+
+        dialog.ShowDialog();
+
+        if (!string.IsNullOrEmpty(dialog.FileName))
+        {
+            OpenFile(dialog.FileName);
         }
+    }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+    private void OpenFile(string filename)
+    {
+        _currentFilename = filename;
+        _database = _databaseService.OpenFile(_currentFilename);
+        _connectionString = _database.ConnectionString;
+        panel1.Invalidate();
+
+        ToggleMenuButtons();
+
+        ReWriteTitle();
+    }
+
+    private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (_database.IsEmpty)
+            return;
+
+        if (string.IsNullOrEmpty(_currentFilename))
         {
-            var dialog = new OpenFileDialog
+            var dialog = new SaveFileDialog
             {
-                Filter = GetCompatibleFilesFilter()
+                Filter = GetCompatibleFilesFilter(),
+                FileName = _database.Name
             };
 
-            dialog.ShowDialog();
+            var res = dialog.ShowDialog();
 
-            if (!string.IsNullOrEmpty(dialog.FileName))
-            {
-                OpenFile(dialog.FileName);
-            }
+            _currentFilename = res != DialogResult.Cancel ? dialog.FileName : null;
         }
 
-        private void OpenFile(string filename)
+        if (string.IsNullOrEmpty(_currentFilename))
+            return;
+
+        _databaseService.SaveFile(_database, _currentFilename);
+        isSavePending = false;
+        ReWriteTitle();
+    }
+
+    private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_connectionString) || _database.IsEmpty)
+            return;
+
+        _tablePositions.Clear();
+
+        foreach (var t in _database.Tables)
         {
-            _currentFilename = filename;
-            _database = _databaseService.OpenFile(_currentFilename);
-            _connectionString = _database.ConnectionString;
-            panel1.Invalidate();
-
-            ToggleMenuButtons();
-
-            ReWriteTitle();
+            _tablePositions.Add(new TableViewStatus
+            {
+                Table = t.Name,
+                Left = t.Left,
+                Top = t.Top,
+                Visible = !t.IsHidden
+            });
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        var database = _databaseService.LoadDatabase(_provider, _connectionString);
+
+        UseDatabase(database);
+
+        foreach (var t in _database.Tables)
         {
-            if (_database.IsEmpty)
-                return;
-
-            if (string.IsNullOrEmpty(_currentFilename))
+            if (_tablePositions.FirstOrDefault(a => a.Table.Equals(t.Name)) is TableViewStatus view)
             {
-                var dialog = new SaveFileDialog
+                if (!view.Visible)
                 {
-                    Filter = GetCompatibleFilesFilter(),
-                    FileName = _database.Name
-                };
-
-                var res = dialog.ShowDialog();
-
-                _currentFilename = res != DialogResult.Cancel ? dialog.FileName : null;
-            }
-
-            if (string.IsNullOrEmpty(_currentFilename))
-                return;
-
-            _databaseService.SaveFile(_database, _currentFilename);
-            isSavePending = false;
-            ReWriteTitle();
-        }
-
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(_connectionString) || _database.IsEmpty)
-                return;
-
-            _tablePositions.Clear();
-
-            foreach (var t in _database.Tables)
-            {
-                _tablePositions.Add(new TableViewStatus
-                {
-                    Table = t.Name,
-                    Left = t.Left,
-                    Top = t.Top,
-                    Visible = !t.IsHidden
-                });
-            }
-
-            var database = _databaseService.LoadDatabase(_provider, _connectionString);
-
-            UseDatabase(database);
-
-            foreach (var t in _database.Tables)
-            {
-                if (_tablePositions.FirstOrDefault(a => a.Table.Equals(t.Name)) is TableViewStatus view)
-                {
-                    if (!view.Visible)
-                    {
-                        t.Hide();
-                    }
-
-                    t.MoveTo(view.Left, view.Top);
+                    t.Hide();
                 }
-            }
 
-            _tablePositions.Clear();
-            isSavePending = true;
-        }
-
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!isSavePending || UserWantsClose())
-            {
-                _database = new Database();
-                _currentFilename = null;
-                ResetPanelSize();
-                ToggleMenuButtons();
-                editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
-                ReWriteTitle();
+                t.MoveTo(view.Left, view.Top);
             }
         }
 
-        private void ReWriteTitle()
+        _tablePositions.Clear();
+        isSavePending = true;
+    }
+
+    private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (!isSavePending || UserWantsClose())
         {
-            Text = _currentFilename is null ? $"Inverse" : $"Inverse [{_currentFilename}]";
-        }
-
-        private void scriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_database.IsEmpty)
-                return;
-
-            var dialog = new SaveFileDialog();
-
-            var exportables = _databaseService.GetCompatiblesScriptings();
-
-            dialog.Filter = string.Join("|", exportables);
-            dialog.FileName = _database.Name;
-            dialog.ShowDialog();
-
-            if (string.IsNullOrEmpty(dialog.FileName))
-                return;
-
-            _databaseService.Export(_database, dialog.FileName);
-
-            UpdateStatus("Script exportado com sucesso.");
-        }
-
-        private void showHiddenTablesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
-        {
-            panel1.Invalidate();
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var lastFilename = _currentFilename;
+            _database = new Database();
             _currentFilename = null;
-
-            saveToolStripMenuItem_Click(sender, e);
-
-            _currentFilename = string.IsNullOrEmpty(_currentFilename) ? lastFilename : _currentFilename;
+            ResetPanelSize();
+            ToggleMenuButtons();
+            editToolStripMenuItem1.Visible = diagramToolStripMenuItem.Visible = false;
+            ReWriteTitle();
         }
+    }
 
-        private void arrangeToolStripMenuItem_Click(object sender, EventArgs e)
+    private void ReWriteTitle()
+    {
+        Text = _currentFilename is null ? $"Inverse" : $"Inverse [{_currentFilename}]";
+    }
+
+    private void scriptToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (_database.IsEmpty)
+            return;
+
+        var dialog = new SaveFileDialog();
+
+        var exportables = _databaseService.GetCompatiblesScriptings();
+
+        dialog.Filter = string.Join("|", exportables);
+        dialog.FileName = _database.Name;
+        dialog.ShowDialog();
+
+        if (string.IsNullOrEmpty(dialog.FileName))
+            return;
+
+        _databaseService.Export(_database, dialog.FileName);
+
+        UpdateStatus("Script exportado com sucesso.");
+    }
+
+    private void showHiddenTablesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+    {
+        panel1.Invalidate();
+    }
+
+    private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Close();
+    }
+
+    private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var lastFilename = _currentFilename;
+        _currentFilename = null;
+
+        saveToolStripMenuItem_Click(sender, e);
+
+        _currentFilename = string.IsNullOrEmpty(_currentFilename) ? lastFilename : _currentFilename;
+    }
+
+    private void arrangeToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Arrange().GetAwaiter();
+    }
+
+    private void ToggleMenuButtons()
+    {
+        editToolStripMenuItem1.Visible
+            = diagramToolStripMenuItem.Visible = !_database.IsEmpty;
+
+        saveAsToolStripMenuItem.Enabled
+            = saveToolStripMenuItem.Enabled
+            = refreshToolStripMenuItem.Enabled
+            = scriptToolStripMenuItem.Enabled
+            = closeToolStripMenuItem.Enabled
+            = exportToolStripMenuItem.Enabled
+            = arrangeToolStripMenuItem.Enabled = !_database.IsEmpty;
+    }
+
+    private string GetCompatibleFilesFilter()
+    {
+        var exportables = _databaseService.GetCompatiblesFileTypes().ToList();
+        var extensions = exportables.Select(x => x.Split("|")[1]);
+        var todos = "All files|" + string.Join(";", extensions);
+        exportables.Insert(0, todos);
+        return string.Join("|", exportables);
+    }
+
+    private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        foreach (var t in _database.Tables)
         {
-            Arrange().GetAwaiter();
+            _selectedTables.Add(t);
         }
+        panel1.Invalidate();
+    }
 
-        private void ToggleMenuButtons()
-        {
-            editToolStripMenuItem1.Visible
-                = diagramToolStripMenuItem.Visible = !_database.IsEmpty;
-
-            saveAsToolStripMenuItem.Enabled
-                = saveToolStripMenuItem.Enabled
-                = refreshToolStripMenuItem.Enabled
-                = scriptToolStripMenuItem.Enabled
-                = closeToolStripMenuItem.Enabled
-                = exportToolStripMenuItem.Enabled
-                = arrangeToolStripMenuItem.Enabled = !_database.IsEmpty;
-        }
-
-        private string GetCompatibleFilesFilter()
-        {
-            var exportables = _databaseService.GetCompatiblesFileTypes().ToList();
-            var extensions = exportables.Select(x => x.Split("|")[1]);
-            var todos = "All files|" + string.Join(";", extensions);
-            exportables.Insert(0, todos);
-            return string.Join("|", exportables);
-        }
-
-        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (var t in _database.Tables)
-            {
-                _selectedTables.Add(t);
-            }
-            panel1.Invalidate();
-        }
-
-        private void releaseTablesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _activeTable = null;
-            _selectedTables.Clear();
-            panel1.Invalidate();
-        }
+    private void releaseTablesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        _activeTable = null;
+        _selectedTables.Clear();
+        panel1.Invalidate();
     }
 }

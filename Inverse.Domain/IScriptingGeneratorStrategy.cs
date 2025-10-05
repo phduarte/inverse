@@ -1,10 +1,9 @@
-﻿namespace Inverse.Domain
-{
-    public interface IScriptingGeneratorStrategy
-    {
-        string Name { get; }
-        string Extension { get; }
+﻿namespace Inverse.Domain;
 
-        void ExportToFile(Database database, string filename);
-    }
+public interface IScriptingGeneratorStrategy
+{
+    string Name { get; }
+    string Extension { get; }
+
+    void ExportToFile(Database database, string filename);
 }

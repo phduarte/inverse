@@ -1,10 +1,9 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public static class LayoutDefinition
 {
-    public static class LayoutDefinition
+    public static class Chars
     {
-        public static class Chars
-        {
-            public const int WIDTH = 9;
-        }
+        public const int WIDTH = 9;
     }
 }

@@ -3,81 +3,80 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Inverse.Desktop
+namespace Inverse.Desktop;
+
+public partial class DatabaseSqlServerForm : Form
 {
-    public partial class DatabaseSqlServerForm : Form
+    private readonly MainForm _parentForm;
+    private static string _server;
+    private static string _database;
+    private static string _username;
+    private static string _password;
+
+    public DatabaseSqlServerForm(MainForm parentForm)
     {
-        private readonly MainForm _parentForm;
-        private static string _server;
-        private static string _database;
-        private static string _username;
-        private static string _password;
+        _parentForm = parentForm;
+        InitializeComponent();
+        txtServer.Text = _server;
+        txtDatabase.Text = _database;
+        txtUsername.Text = _username;
+        txtPassword.Text = _password;
+    }
 
-        public DatabaseSqlServerForm(MainForm parentForm)
+    private async void btnRevert_Click(object sender, EventArgs e)
+    {
+        btnRevert.Enabled = false;
+        var database = new Database
         {
-            _parentForm = parentForm;
-            InitializeComponent();
-            txtServer.Text = _server;
-            txtDatabase.Text = _database;
-            txtUsername.Text = _username;
-            txtPassword.Text = _password;
-        }
+            Provider = Provider.MSSQLServer
+        };
 
-        private async void btnRevert_Click(object sender, EventArgs e)
+        try
         {
-            btnRevert.Enabled = false;
-            var database = new Database
+            var connectionString = $"Server={_server = txtServer.Text};Database={_database = txtDatabase.Text};";
+
+            if (!chkWindowsAuth.Checked)
             {
-                Provider = Provider.MSSQLServer
+                connectionString += $"User ID={_username = txtUsername.Text};Password={_password = txtPassword.Text};";
+            }
+            else
+            {
+                connectionString += "Trusted_Connection=True;";
+            }
+
+            database.Name = txtDatabase.Text;
+            database.ConnectionString = connectionString;
+            database.OnTableAdded += (t) =>
+            {
+                progressBar1.Value++;
             };
 
-            try
+            await Task.Run(() =>
             {
-                var connectionString = $"Server={_server = txtServer.Text};Database={_database = txtDatabase.Text};";
+                _parentForm.UseDatabase(database);
+            });
 
-                if (!chkWindowsAuth.Checked)
-                {
-                    connectionString += $"User ID={_username = txtUsername.Text};Password={_password = txtPassword.Text};";
-                }
-                else
-                {
-                    connectionString += "Trusted_Connection=True;";
-                }
+            progressBar1.Value = progressBar1.Maximum;
 
-                database.Name = txtDatabase.Text;
-                database.ConnectionString = connectionString;
-                database.OnTableAdded += (t) =>
-                {
-                    progressBar1.Value++;
-                };
-
-                await Task.Run(() =>
-                {
-                    _parentForm.UseDatabase(database);
-                });
-
-                progressBar1.Value = progressBar1.Maximum;
-
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                btnRevert.Enabled = true;
-            }
+            Close();
         }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            txtUsername.Enabled = txtPassword.Enabled = !chkWindowsAuth.Checked;
+            MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-        private void txtServer_Leave(object sender, EventArgs e)
+        finally
         {
-            // TODO validar se o servidor existe
+            btnRevert.Enabled = true;
         }
+    }
+
+    private void checkBox1_CheckedChanged(object sender, EventArgs e)
+    {
+        txtUsername.Enabled = txtPassword.Enabled = !chkWindowsAuth.Checked;
+    }
+
+    private void txtServer_Leave(object sender, EventArgs e)
+    {
+        // TODO validar se o servidor existe
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace Inverse.Desktop.Themes
+﻿namespace Inverse.Desktop.Themes;
+
+internal class ThemeItem
 {
-    internal class ThemeItem
-    {
-        public ThemeConfiguration Background { get; set; }
-        public ThemeConfiguration Text { get; set; }
-        public ThemeConfiguration Line { get; set; }
-        public ThemeConfiguration Arrow { get; set; }
-    }
+    public ThemeConfiguration Background { get; set; }
+    public ThemeConfiguration Text { get; set; }
+    public ThemeConfiguration Line { get; set; }
+    public ThemeConfiguration Arrow { get; set; }
 }

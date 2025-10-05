@@ -1,109 +1,108 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Inverse.Domain
+namespace Inverse.Domain;
+
+public class DatabaseService : IDatabaseService
 {
-    public class DatabaseService : IDatabaseService
+    private readonly IDictionary<Provider, IDatabaseGeneratorStrategy> _databaseGenetorStrategies = new Dictionary<Provider, IDatabaseGeneratorStrategy>();
+    private readonly IDictionary<string, IScriptingGeneratorStrategy> _scriptingGeneratorStrategies = new Dictionary<string, IScriptingGeneratorStrategy>();
+    private readonly IDictionary<string, IFileManagerStrategy> _fileManagerStrategies = new Dictionary<string, IFileManagerStrategy>();
+
+    public void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy)
     {
-        private readonly IDictionary<Provider, IDatabaseGeneratorStrategy> _databaseGenetorStrategies = new Dictionary<Provider, IDatabaseGeneratorStrategy>();
-        private readonly IDictionary<string, IScriptingGeneratorStrategy> _scriptingGeneratorStrategies = new Dictionary<string, IScriptingGeneratorStrategy>();
-        private readonly IDictionary<string, IFileManagerStrategy> _fileManagerStrategies = new Dictionary<string, IFileManagerStrategy>();
-
-        public void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy)
+        if (!_databaseGenetorStrategies.ContainsKey(databaseGeneratorStrategy.Provider))
         {
-            if (!_databaseGenetorStrategies.ContainsKey(databaseGeneratorStrategy.Provider))
-            {
-                _databaseGenetorStrategies.Add(databaseGeneratorStrategy.Provider, databaseGeneratorStrategy);
-            }
+            _databaseGenetorStrategies.Add(databaseGeneratorStrategy.Provider, databaseGeneratorStrategy);
+        }
+    }
+
+    public void Install(IScriptingGeneratorStrategy scriptingGeneratorStrategy)
+    {
+        if (!_scriptingGeneratorStrategies.ContainsKey(scriptingGeneratorStrategy.Extension))
+        {
+            _scriptingGeneratorStrategies.Add(scriptingGeneratorStrategy.Extension, scriptingGeneratorStrategy);
+        }
+    }
+
+    public void Install(IFileManagerStrategy fileManagerStrategy)
+    {
+        if (!_fileManagerStrategies.ContainsKey(fileManagerStrategy.Extension))
+        {
+            _fileManagerStrategies.Add(fileManagerStrategy.Extension, fileManagerStrategy);
+        }
+    }
+
+    public DatabaseService With<T>(T strategy)
+    {
+        if (strategy is IScriptingGeneratorStrategy s)
+        {
+            Install(s);
+        }
+        else if (strategy is IFileManagerStrategy f)
+        {
+            Install(f);
+        }
+        else if (strategy is IDatabaseGeneratorStrategy d)
+        {
+            Install(d);
         }
 
-        public void Install(IScriptingGeneratorStrategy scriptingGeneratorStrategy)
-        {
-            if (!_scriptingGeneratorStrategies.ContainsKey(scriptingGeneratorStrategy.Extension))
-            {
-                _scriptingGeneratorStrategies.Add(scriptingGeneratorStrategy.Extension, scriptingGeneratorStrategy);
-            }
-        }
+        return this;
+    }
 
-        public void Install(IFileManagerStrategy fileManagerStrategy)
-        {
-            if (!_fileManagerStrategies.ContainsKey(fileManagerStrategy.Extension))
-            {
-                _fileManagerStrategies.Add(fileManagerStrategy.Extension, fileManagerStrategy);
-            }
-        }
+    public void SaveFile(Database database, string fileName)
+    {
+        var strategy = GetStrategyByFile(fileName);
+        strategy.SaveFile(database, fileName);
+    }
 
-        public DatabaseService With<T>(T strategy)
-        {
-            if (strategy is IScriptingGeneratorStrategy s)
-            {
-                Install(s);
-            }
-            else if (strategy is IFileManagerStrategy f)
-            {
-                Install(f);
-            }
-            else if (strategy is IDatabaseGeneratorStrategy d)
-            {
-                Install(d);
-            }
+    public Database OpenFile(string fileName)
+    {
+        var strategy = GetStrategyByFile(fileName);
+        return strategy.OpenFile(fileName);
+    }
 
-            return this;
-        }
+    public Database LoadDatabase(Provider provider, string connectionString)
+    {
+        return CreateGeneratorStrategy(provider).LoadDatabase(connectionString);
+    }
 
-        public void SaveFile(Database database, string fileName)
-        {
-            var strategy = GetStrategyByFile(fileName);
-            strategy.SaveFile(database, fileName);
-        }
+    public void Export(Database database, string fileName)
+    {
+        GetScriptingGeneratorStrategy(fileName).ExportToFile(database, fileName);
+    }
 
-        public Database OpenFile(string fileName)
-        {
-            var strategy = GetStrategyByFile(fileName);
-            return strategy.OpenFile(fileName);
-        }
+    public string[] GetCompatiblesFileTypes()
+    {
+        return _fileManagerStrategies.Values.Select(r => $"{r.Description}|*{r.Extension}").ToArray();
+    }
 
-        public Database LoadDatabase(Provider provider, string connectionString)
-        {
-            return CreateGeneratorStrategy(provider).LoadDatabase(connectionString);
-        }
+    public string[] GetCompatiblesScriptings()
+    {
+        return _scriptingGeneratorStrategies.Values.Select(r => $"{r.Name}|*{r.Extension}").ToArray();
+    }
 
-        public void Export(Database database, string fileName)
-        {
-            GetScriptingGeneratorStrategy(fileName).ExportToFile(database, fileName);
-        }
+    private IDatabaseGeneratorStrategy CreateGeneratorStrategy(Provider provider)
+    {
+        return _databaseGenetorStrategies[provider];
+    }
 
-        public string[] GetCompatiblesFileTypes()
-        {
-            return _fileManagerStrategies.Values.Select(r => $"{r.Description}|*{r.Extension}").ToArray();
-        }
+    private IScriptingGeneratorStrategy GetScriptingGeneratorStrategy(string filename)
+    {
+        var ext = GetExtension(filename);
+        return _scriptingGeneratorStrategies[ext];
+    }
 
-        public string[] GetCompatiblesScriptings()
-        {
-            return _scriptingGeneratorStrategies.Values.Select(r => $"{r.Name}|*{r.Extension}").ToArray();
-        }
+    private IFileManagerStrategy GetStrategyByFile(string filename)
+    {
+        var ext = GetExtension(filename);
+        return _fileManagerStrategies.FirstOrDefault(x => x.Value.Extension == ext).Value;
+    }
 
-        private IDatabaseGeneratorStrategy CreateGeneratorStrategy(Provider provider)
-        {
-            return _databaseGenetorStrategies[provider];
-        }
-
-        private IScriptingGeneratorStrategy GetScriptingGeneratorStrategy(string filename)
-        {
-            var ext = GetExtension(filename);
-            return _scriptingGeneratorStrategies[ext];
-        }
-
-        private IFileManagerStrategy GetStrategyByFile(string filename)
-        {
-            var ext = GetExtension(filename);
-            return _fileManagerStrategies.FirstOrDefault(x => x.Value.Extension == ext).Value;
-        }
-
-        private string GetExtension(string filename)
-        {
-            var fi = new System.IO.FileInfo(filename);
-            return fi.Extension;
-        }
+    private string GetExtension(string filename)
+    {
+        var fi = new System.IO.FileInfo(filename);
+        return fi.Extension;
     }
 }

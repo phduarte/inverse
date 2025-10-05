@@ -5,57 +5,57 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
+namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer;
+
+public sealed class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
 {
-    public sealed class SqlServerDatabaseGeneratorStrategy : IDatabaseGeneratorStrategy
+    public Provider Provider { get; } = Provider.MSSQLServer;
+
+    public Database LoadDatabase(string connectionString)
     {
-        public Provider Provider { get; } = Provider.MSSQLServer;
-
-        public Database LoadDatabase(string connectionString)
+        var database = new Database
         {
-            var database = new Database
-            {
-                Id = Guid.NewGuid(),
-                ConnectionString = connectionString,
-                Name = GetDatabaseNameByConnectionString(connectionString),
-                Provider = Provider
-            };
+            Id = Guid.NewGuid(),
+            ConnectionString = connectionString,
+            Name = GetDatabaseNameByConnectionString(connectionString),
+            Provider = Provider
+        };
 
-            var commandText = @"select object_id, name
+        var commandText = @"select object_id, name
                                 from sys.all_objects
                                 where type = 'U'
                                   and name not in ('sysdiagrams','trace_xe_action_map','trace_xe_event_map')
                                 order by name";
 
-            foreach (var rdr in ExecuteReader(connectionString, commandText))
+        foreach (var rdr in ExecuteReader(connectionString, commandText))
+        {
+            var table = new Table
             {
-                var table = new Table
-                {
-                    Id = rdr["object_id"].ToString(),
-                    Name = rdr["name"].ToString(),
-                    Database = database
-                };
+                Id = rdr["object_id"].ToString(),
+                Name = rdr["name"].ToString(),
+                Database = database
+            };
 
-                table.AddRange(GetColumns(connectionString, table));
-                table.AddRange(GetForeignKeys(connectionString, table));
+            table.AddColumns(GetColumns(connectionString, table));
+            table.AddColumns(GetForeignKeys(connectionString, table));
 
-                database.Add(table);
-            }
-
-            return database;
+            database.AddTable(table);
         }
 
-        private static string GetDatabaseNameByConnectionString(string connectionString)
-        {
-            using var cnn = new SqlConnection(connectionString);
+        return database;
+    }
 
-            return cnn.Database;
-        }
+    private static string GetDatabaseNameByConnectionString(string connectionString)
+    {
+        using var cnn = new SqlConnection(connectionString);
 
-        private static IEnumerable<ForeignKey> GetForeignKeys(string connectionString, Table table)
-        {
-            var tableId = new SqlParameter("tableId", table.Id);
-            var commandText = $@"SELECT
+        return cnn.Database;
+    }
+
+    private static IEnumerable<ForeignKey> GetForeignKeys(string connectionString, Table table)
+    {
+        var tableId = new SqlParameter("tableId", table.Id);
+        var commandText = $@"SELECT
                                     f.name AS foreign_key_name,
                                     OBJECT_NAME(f.parent_object_id) AS table_name,
                                     COL_NAME(fc.parent_object_id, fc.parent_column_id) AS constraint_column_name,
@@ -69,30 +69,30 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
                                     ON f.object_id = fc.constraint_object_id
                                 WHERE f.parent_object_id = @tableId";
 
-            foreach (var rdr in ExecuteReader(connectionString, commandText, tableId))
-            {
-                var relatedTable = rdr["referenced_object"].ToString();
-                var from = rdr["constraint_column_name"].ToString();
-                var to = rdr["referenced_column_name"].ToString();
-                var col = table.Columns.FirstOrDefault(x => x.Name.Equals(from));
-
-                yield return new ForeignKey
-                {
-                    Id = col.Id,
-                    Name = from,
-                    Type = col.Type,
-                    RelatedTable = relatedTable,
-                    RelatedColumn = to,
-                    Table = table,
-                    IsRequired = col.IsRequired
-                };
-            }
-        }
-
-        private static IEnumerable<Column> GetColumns(string connectionString, Table table)
+        foreach (var rdr in ExecuteReader(connectionString, commandText, tableId))
         {
-            var tableId = new SqlParameter("tableId", table.Id);
-            var commandText = $@"select	c.column_id,
+            var relatedTable = rdr["referenced_object"].ToString();
+            var from = rdr["constraint_column_name"].ToString();
+            var to = rdr["referenced_column_name"].ToString();
+            var col = table.Columns.FirstOrDefault(x => x.Name.Equals(from));
+
+            yield return new ForeignKey
+            {
+                Id = col.Id,
+                Name = from,
+                Type = col.Type,
+                RelatedTable = relatedTable,
+                RelatedColumn = to,
+                Table = table,
+                IsRequired = col.IsRequired
+            };
+        }
+    }
+
+    private static IEnumerable<Column> GetColumns(string connectionString, Table table)
+    {
+        var tableId = new SqlParameter("tableId", table.Id);
+        var commandText = $@"select	c.column_id,
 		                                c.name as column_name,
 		                                c.is_nullable,
 		                                t.name as type_name,
@@ -109,71 +109,70 @@ namespace Inverse.Plugin.DatabaseGenerator.MsSqlServer
                                 where object_id = @tableId
                                 order by c.column_id";
 
-            foreach (var rdr in ExecuteReader(connectionString, commandText, tableId))
+        foreach (var rdr in ExecuteReader(connectionString, commandText, tableId))
+        {
+            var id = rdr["column_id"].ToString();
+            var name = rdr["column_name"].ToString();
+            var type = rdr["type_name"].ToString();
+            var required = rdr["is_nullable"].ToString()?.Equals("False") ?? false;
+            var pk = rdr["primary_key_name"].ToString();
+            var size = rdr["max_length"].ToString();
+            var precision = rdr["precision"].ToString();
+
+            if (type == "varchar" || type == "nvarchar" || type == "char")
             {
-                var id = rdr["column_id"].ToString();
-                var name = rdr["column_name"].ToString();
-                var type = rdr["type_name"].ToString();
-                var required = rdr["is_nullable"].ToString()?.Equals("False") ?? false;
-                var pk = rdr["primary_key_name"].ToString();
-                var size = rdr["max_length"].ToString();
-                var precision = rdr["precision"].ToString();
+                size = size == "-1" ? "max" : size;
 
-                if (type == "varchar" || type == "nvarchar" || type == "char")
-                {
-                    size = size == "-1" ? "max" : size;
+                type = $"{type}({size})";
+            }
+            else if (type == "numeric" || type == "decimal")
+            {
+                type = $"{type}({precision},{size})";
+            }
 
-                    type = $"{type}({size})";
-                }
-                else if (type == "numeric" || type == "decimal")
+            if (!string.IsNullOrEmpty(pk))
+            {
+                yield return new PrimaryKey
                 {
-                    type = $"{type}({precision},{size})";
-                }
-
-                if (!string.IsNullOrEmpty(pk))
+                    Id = id,
+                    Name = name,
+                    Type = type,
+                    Table = table,
+                    IsRequired = required,
+                };
+            }
+            else
+            {
+                yield return new Column
                 {
-                    yield return new PrimaryKey
-                    {
-                        Id = id,
-                        Name = name,
-                        Type = type,
-                        Table = table,
-                        IsRequired = required,
-                    };
-                }
-                else
-                {
-                    yield return new Column
-                    {
-                        Id = id,
-                        Name = name,
-                        Type = type,
-                        Table = table,
-                        IsRequired = required,
-                    };
-                }
+                    Id = id,
+                    Name = name,
+                    Type = type,
+                    Table = table,
+                    IsRequired = required,
+                };
             }
         }
+    }
 
-        private static IEnumerable<IDataReader> ExecuteReader(string connectionString, string commandText, params SqlParameter[] parameters)
+    private static IEnumerable<IDataReader> ExecuteReader(string connectionString, string commandText, params SqlParameter[] parameters)
+    {
+        using var cnn = new SqlConnection(connectionString);
+        using var cmd = cnn.CreateCommand();
+        cmd.CommandText = commandText;
+        cmd.Parameters.AddRange(parameters);
+        cnn.Open();
+
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
         {
-            using var cnn = new SqlConnection(connectionString);
-            using var cmd = cnn.CreateCommand();
-            cmd.CommandText = commandText;
-            cmd.Parameters.AddRange(parameters);
-            cnn.Open();
-
-            using var reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                yield return reader;
-            }
+            yield return reader;
         }
+    }
 
-        public static IDatabaseGeneratorStrategy Create()
-        {
-            return new SqlServerDatabaseGeneratorStrategy();
-        }
+    public static IDatabaseGeneratorStrategy Create()
+    {
+        return new SqlServerDatabaseGeneratorStrategy();
     }
 }

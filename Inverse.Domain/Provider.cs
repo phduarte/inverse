@@ -1,9 +1,9 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public enum Provider
 {
-    public enum Provider
-    {
-        Undefined = -1,
-        MSSQLServer = 0,
-        SQLite = 1,
-    }
+    Undefined = -1,
+    MSSQLServer = 0,
+    SQLite = 1,
+    PostgreSQL = 2,
 }

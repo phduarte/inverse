@@ -2,58 +2,57 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inverse.Domain
+namespace Inverse.Domain;
+
+public class Comment : Entity<Guid>
 {
-    public class Comment : Entity<Guid>
+    public Table Table { get; set; }
+    public string Author { get; set; }
+    public DateTime Date { get; set; }
+    public string Text { get; set; }
+
+    public Comment()
     {
-        public Table Table { get; set; }
-        public string Author { get; set; }
-        public DateTime Date { get; set; }
-        public string Text { get; set; }
+        Id = Guid.NewGuid();
+    }
 
-        public Comment()
+    public static IEnumerable<Comment> FromNotes(string notes)
+    {
+        if (notes is not null)
         {
-            Id = Guid.NewGuid();
-        }
+            var lines = notes.Split('\n');
 
-        public static IEnumerable<Comment> FromNotes(string notes)
-        {
-            if (notes is not null)
+            foreach (var line in lines)
             {
-                var lines = notes.Split('\n');
+                var fields = line.Split(';');
 
-                foreach (var line in lines)
+                if (fields.Length >= 3)
                 {
-                    var fields = line.Split(';');
-
-                    if (fields.Length >= 3)
+                    yield return new Comment
                     {
-                        yield return new Comment
-                        {
-                            Date = DateTime.Parse(fields[0]),
-                            Author = fields[1],
-                            Text = fields[2].Replace("<br />", "\n")
-                        };
-                    }
+                        Date = DateTime.Parse(fields[0]),
+                        Author = fields[1],
+                        Text = fields[2].Replace("<br />", "\n")
+                    };
                 }
             }
         }
+    }
 
-        public static string ToNotes(IEnumerable<Comment> comments)
+    public static string ToNotes(IEnumerable<Comment> comments)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var comment in comments)
         {
-            var sb = new StringBuilder();
-
-            foreach (var comment in comments)
-            {
-                sb.AppendLine($"{comment.Date.ToString("yyyy-MM-dd HH:mm:ss.fff")};{comment.Author.Replace(';', ',')};{comment.Text.Replace("\n", "<br />").Replace(';', ',')}");
-            }
-
-            return sb.ToString();
+            sb.AppendLine($"{comment.Date.ToString("yyyy-MM-dd HH:mm:ss.fff")};{comment.Author.Replace(';', ',')};{comment.Text.Replace("\n", "<br />").Replace(';', ',')}");
         }
 
-        public override string ToString()
-        {
-            return $"{DateTime.Now:dd/MM/yyyy HH:mm:ss.fff}-{Author}:\n{Text}";
-        }
+        return sb.ToString();
+    }
+
+    public override string ToString()
+    {
+        return $"{DateTime.Now:dd/MM/yyyy HH:mm:ss.fff}-{Author}:\n{Text}";
     }
 }

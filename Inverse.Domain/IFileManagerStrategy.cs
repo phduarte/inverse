@@ -1,13 +1,12 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public interface IFileManagerStrategy
 {
-    public interface IFileManagerStrategy
-    {
-        string Name { get; }
-        string Description { get; }
-        string Extension { get; }
+    string Name { get; }
+    string Description { get; }
+    string Extension { get; }
 
-        void SaveFile(Database database, string fileName);
+    void SaveFile(Database database, string fileName);
 
-        Database OpenFile(string fileName);
-    }
+    Database OpenFile(string fileName);
 }

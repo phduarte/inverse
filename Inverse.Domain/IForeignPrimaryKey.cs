@@ -1,6 +1,5 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public interface IForeignPrimaryKey : IPrimaryKey, IForeignKey
 {
-    public interface IForeignPrimaryKey : IPrimaryKey, IForeignKey
-    {
-    }
 }

@@ -1,16 +1,15 @@
-﻿namespace Inverse.Domain
-{
-    public interface IVisualElement
-    {
-        int Width { get; }
-        int Height { get; }
-        int Left { get; }
-        int Right { get; }
-        int Top { get; }
-        int Bottom { get; }
-        int Center { get; }
-        int Middle { get; }
+﻿namespace Inverse.Domain;
 
-        bool IsHover(int x, int y);
-    }
+public interface IVisualElement
+{
+    int Width { get; }
+    int Height { get; }
+    int Left { get; }
+    int Right { get; }
+    int Top { get; }
+    int Bottom { get; }
+    int Center { get; }
+    int Middle { get; }
+
+    bool IsHover(int x, int y);
 }

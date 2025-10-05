@@ -1,25 +1,24 @@
-﻿namespace Inverse.Domain
+﻿namespace Inverse.Domain;
+
+public interface IDatabaseService
 {
-    public interface IDatabaseService
-    {
-        Database LoadDatabase(Provider provider, string connectionString);
+    Database LoadDatabase(Provider provider, string connectionString);
 
-        void Export(Database database, string fileName);
+    void Export(Database database, string fileName);
 
-        Database OpenFile(string fileName);
+    Database OpenFile(string fileName);
 
-        void SaveFile(Database database, string fileName);
+    void SaveFile(Database database, string fileName);
 
-        void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy);
+    void Install(IDatabaseGeneratorStrategy databaseGeneratorStrategy);
 
-        void Install(IScriptingGeneratorStrategy scriptingGeneratorStrategy);
+    void Install(IScriptingGeneratorStrategy scriptingGeneratorStrategy);
 
-        void Install(IFileManagerStrategy fileManagerStrategy);
+    void Install(IFileManagerStrategy fileManagerStrategy);
 
-        string[] GetCompatiblesFileTypes();
+    string[] GetCompatiblesFileTypes();
 
-        string[] GetCompatiblesScriptings();
+    string[] GetCompatiblesScriptings();
 
-        DatabaseService With<T>(T strategy);
-    }
+    DatabaseService With<T>(T strategy);
 }

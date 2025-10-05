@@ -4,247 +4,253 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Inverse.Desktop
+namespace Inverse.Desktop;
+
+public partial class TableForm : Form
 {
-    public partial class TableForm : Form
+    private Table _table;
+
+    public TableForm(Table table)
     {
-        private Table _table;
+        InitializeComponent();
+        _table = table;
+    }
 
-        public TableForm(Table table)
+    private void FrmTableEdit_Load(object sender, EventArgs e)
+    {
+        txtName.Text = _table.Name;
+        BindGridView();
+
+        foreach (var comment in _table.Comments.OrderBy(x => x.Date))
         {
-            InitializeComponent();
-            _table = table;
+            AddComment(comment.Date, comment.Author, comment.Text);
         }
+    }
 
-        private void FrmTableEdit_Load(object sender, EventArgs e)
+    private void BindGridView()
+    {
+        dataGridView1.Rows.Clear();
+
+        var types = _table.Columns.Select(c => c.Type);
+
+        foreach (var type in types)
         {
-            txtName.Text = _table.Name;
-            BindGridView();
-
-            foreach (var comment in _table.Comments.OrderBy(x => x.Date))
+            if (!dataGridViewComboBoxColumn1.Items.Contains(type))
             {
-                AddComment(comment.Date, comment.Author, comment.Text);
+                dataGridViewComboBoxColumn1.Items.Add(type);
             }
         }
 
-        private void BindGridView()
+        foreach (var column in _table.Columns)
         {
-            dataGridView1.Rows.Clear();
+            var fk = column as ForeignKey;
+            var fkName = fk?.SimpleName ?? string.Empty;
 
-            var types = _table.Columns.Select(c => c.Type);
+            var idx = dataGridView1.Rows.Add(
+                    column.Name,
+                    column.Description,
+                    column.Type,
+                    column.IsRequired,
+                    column.IsPrimaryKey,
+                    column.DefaultValue,
+                    fkName,
+                    column
+                    );
 
-            foreach (var type in types)
-            {
-                if (!dataGridViewComboBoxColumn1.Items.Contains(type))
-                {
-                    dataGridViewComboBoxColumn1.Items.Add(type);
-                }
-            }
-
-            foreach (var column in _table.Columns)
-            {
-                var fk = column as ForeignKey;
-                var fkName = fk?.SimpleName ?? string.Empty;
-
-                dataGridView1.Rows.Add(
-                        column.Name,
-                        column.Description,
-                        column.Type,
-                        column.IsRequired,
-                        column.IsPrimaryKey,
-                        column.DefaultValue,
-                        fkName,
-                        column
-                        );
-            }
+            dataGridView1.Rows[idx].Tag = column;
         }
+    }
 
-        private void button1_Click(object sender, EventArgs e)
+    private void button1_Click(object sender, EventArgs e)
+    {
+        AddComment(DateTime.Now, Environment.UserName, txtNote.Text);
+    }
+
+    private void FrmTableEdit_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        var index = _table.Columns.Count;
+
+        _table.Name = txtName.Text;
+        _table.Clear();
+
+        foreach (DataGridViewRow row in dataGridView1.Rows)
         {
-            AddComment(DateTime.Now, Environment.UserName, txtNote.Text);
-        }
+            var columnName = row.Cells[0].Value as string;
+            var columnDesc = row.Cells[1].Value as string;
+            var columnType = row.Cells[2].Value as string;
+            var columnIsRequired = row.Cells[3].Value;
+            var columnIsPrimaryKey = row.Cells[4].Value;
+            var defaultValue = row.Cells[5].Value as string;
+            var column = row.Cells[7].Value as Column;
 
-        private void FrmTableEdit_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            var index = _table.Columns.Count;
+            if (columnName is null && columnType is null)
+                break;
 
-            _table.Name = txtName.Text;
-            _table.Clear();
-
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            if (column is null)
             {
-                var columnName = row.Cells[0].Value as string;
-                var columnDesc = row.Cells[1].Value as string;
-                var columnType = row.Cells[2].Value as string;
-                var columnIsRequired = row.Cells[3].Value;
-                var columnIsPrimaryKey = row.Cells[4].Value;
-                var defaultValue = row.Cells[5].Value as string;
-                var column = row.Cells[7].Value as Column;
-
-                if (columnName is null && columnType is null)
-                    break;
-
-                if (column is null)
+                column = new Column
                 {
-                    column = new Column
-                    {
-                        Name = columnName,
-                        Description = columnDesc,
-                        Type = columnType,
-                        Index = index++,
-                        DefaultValue = defaultValue,
-                        IsRequired = Convert.ToBoolean(columnIsRequired)
-                    };
-
-                    if (Convert.ToBoolean(columnIsPrimaryKey))
-                    {
-                        column = PrimaryKey.Parse(column);
-                    }
-                }
-                else
-                {
-                    column.Name = columnName;
-                    column.Description = columnDesc;
-                    column.Type = columnType;
-                    column.DefaultValue = defaultValue;
-                    column.IsRequired = Convert.ToBoolean(columnIsRequired);
-                }
-
-                _table.Add(column);
-            }
-
-            foreach (Label note in flowLayoutPanel1.Controls)
-            {
-                var campos = note.Text.Split('\n');
-                var headers = campos[0].Split('-');
-                var text = string.Join("<br />", campos.Skip(1));
-                var date = Convert.ToDateTime(headers[0]);
-                var author = headers[1].Replace(":", string.Empty);
-
-                var comment = new Comment
-                {
-                    Id = Guid.NewGuid(),
-                    Date = date,
-                    Author = author,
-                    Text = text
+                    Name = columnName,
+                    Description = columnDesc,
+                    Type = columnType,
+                    Index = index++,
+                    DefaultValue = defaultValue,
+                    IsRequired = Convert.ToBoolean(columnIsRequired)
                 };
 
-                _table.Add(comment);
-            }
-        }
-
-        private void txtNote_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && !e.Shift)
-            {
-                button1_Click(sender, e);
-                txtNote.ResetText();
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (sender is ToolStripMenuItem toolstrip
-                        && toolstrip.Owner is ContextMenuStrip contextMenu
-                        && contextMenu.SourceControl is Label label)
-            {
-                if (MessageBox.Show(string.Format("Are you sure you want to remove BOL {0} from this Job?", label.Text), "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (Convert.ToBoolean(columnIsPrimaryKey))
                 {
-                    flowLayoutPanel1.Controls.Remove(label);
+                    column = PrimaryKey.Parse(column);
                 }
             }
             else
             {
-                MessageBox.Show("Invalid item selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                column.Name = columnName;
+                column.Description = columnDesc;
+                column.Type = columnType;
+                column.DefaultValue = defaultValue;
+                column.IsRequired = Convert.ToBoolean(columnIsRequired);
             }
+
+            _table.AddColumn(column);
         }
 
-        private void AddComment(DateTime date, string author, string text)
+        foreach (Label note in flowLayoutPanel1.Controls)
         {
-            var height = (txtNote.Text.Split('\n').Length * 18) + 20;
+            var campos = note.Text.Split('\n');
+            var headers = campos[0].Split('-');
+            var text = string.Join("<br />", campos.Skip(1));
+            var date = Convert.ToDateTime(headers[0]);
+            var author = headers[1].Replace(":", string.Empty);
 
-            var label = new Label
+            var comment = new Comment
             {
-                Text = $"{date:dd/MM/yyyy HH:mm:ss.fff}-{author}:\n{text}",
-                Width = flowLayoutPanel1.Width - 15,
-                Height = height,
-                BackColor = System.Drawing.Color.LightBlue,
-                Margin = new Padding(0, 0, 0, 5),
-                Padding = new(5),
-                Anchor = AnchorStyles.Left | AnchorStyles.Right,
-                ContextMenuStrip = contextMenuStrip1
+                Id = Guid.NewGuid(),
+                Date = date,
+                Author = author,
+                Text = text
             };
 
-            flowLayoutPanel1.Controls.Add(label);
-            flowLayoutPanel1.ScrollControlIntoView(label);
+            _table.AddComment(comment);
         }
+    }
 
-        private void txtName_KeyDown(object sender, KeyEventArgs e)
+    private void txtNote_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter && !e.Shift)
         {
-            if (e.KeyCode == Keys.Enter)
+            button1_Click(sender, e);
+            txtNote.ResetText();
+            e.SuppressKeyPress = true;
+        }
+    }
+
+    private void editToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+    }
+
+    private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (sender is ToolStripMenuItem toolstrip
+                    && toolstrip.Owner is ContextMenuStrip contextMenu
+                    && contextMenu.SourceControl is DataGridView dgv)
+        {
+            if (MessageBox.Show("Are you sure you want to remove the selected columns", "Confirme Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Close();
+                foreach (DataGridViewRow r in dgv.SelectedRows)
+                {
+                    var column = r.Tag as Column;
+                    _table.RemoveColumn(column);
+                }
+                BindGridView(); 
             }
         }
-
-        private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
+        else
         {
-            var selectedRows = GetSelectedColumns();
+            MessageBox.Show("Invalid item selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
 
-            foreach (var column in selectedRows)
-            {
-                _table.MoveColumnUp(column);
-            }
+    private void AddComment(DateTime date, string author, string text)
+    {
+        var height = (txtNote.Text.Split('\n').Length * 18) + 20;
 
-            BindGridView();
+        var label = new Label
+        {
+            Text = $"{date:dd/MM/yyyy HH:mm:ss.fff}-{author}:\n{text}",
+            Width = flowLayoutPanel1.Width - 15,
+            Height = height,
+            BackColor = System.Drawing.Color.LightBlue,
+            Margin = new Padding(0, 0, 0, 5),
+            Padding = new(5),
+            Anchor = AnchorStyles.Left | AnchorStyles.Right,
+            ContextMenuStrip = contextMenuStrip1
+        };
 
-            Select(selectedRows);
+        flowLayoutPanel1.Controls.Add(label);
+        flowLayoutPanel1.ScrollControlIntoView(label);
+    }
+
+    private void txtName_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            Close();
+        }
+    }
+
+    private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var selectedRows = GetSelectedColumns();
+
+        foreach (var column in selectedRows)
+        {
+            _table.MoveColumnUp(column);
         }
 
-        private void Select(IList<Column> selectedRows)
+        BindGridView();
+
+        Select(selectedRows);
+    }
+
+    private void Select(IList<Column> selectedRows)
+    {
+        foreach (DataGridViewRow row in dataGridView1.Rows)
         {
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                var ob = row.Cells[7].Value as Column;
-                row.Selected = selectedRows.Contains(ob);
-            }
+            var ob = row.Cells[7].Value as Column;
+            row.Selected = selectedRows.Contains(ob);
+        }
+    }
+
+    private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var selectedRows = GetSelectedColumns();
+
+        foreach (var column in selectedRows)
+        {
+            _table.MoveColumnDown(column);
         }
 
-        private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
+        BindGridView();
+        Select(selectedRows);
+    }
+
+    private IList<Column> GetSelectedColumns()
+        => dataGridView1.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(r => r.Cells[7].Value as Column)
+                .ToList();
+
+    private void removeFKToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (dataGridView1
+            .SelectedCells
+            .OfType<DataGridViewCell>()
+            .FirstOrDefault() is DataGridViewCell cell && cell.OwningRow.Cells[7].Value is ForeignKey fk)
         {
-            var selectedRows = GetSelectedColumns();
-
-            foreach (var column in selectedRows)
-            {
-                _table.MoveColumnDown(column);
-            }
-
-            BindGridView();
-            Select(selectedRows);
+            _table.ChangeToColumn(fk);
         }
 
-        private IList<Column> GetSelectedColumns()
-            => dataGridView1.SelectedRows
-                    .Cast<DataGridViewRow>()
-                    .Select(r => r.Cells[7].Value as Column)
-                    .ToList();
-
-        private void removeFKToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1
-                .SelectedCells
-                .OfType<DataGridViewCell>()
-                .FirstOrDefault() is DataGridViewCell cell && cell.OwningRow.Cells[7].Value is ForeignKey fk)
-            {
-                _table.ChangeToColumn(fk);
-            }
-
-            BindGridView();
-        }
+        BindGridView();
     }
 }
