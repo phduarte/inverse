@@ -501,7 +501,14 @@ public partial class MainForm : Form
     {
         if (_activeColumn is not null)
         {
-            _activeColumn.Table.ChangeToPrimaryKey(_activeColumn);
+            if (_activeColumn.IsForeignKey)
+            {
+                _activeColumn.Table.ChangeToPrimaryForeignKey(_activeColumn);
+            }
+            else
+            {
+                _activeColumn.Table.ChangeToPrimaryKey(_activeColumn);
+            }
         }
     }
 
@@ -509,7 +516,14 @@ public partial class MainForm : Form
     {
         if (_activeColumn is not null)
         {
-            _activeColumn.Table.ChangeToForeignKey(_activeColumn);
+            if (_activeColumn.IsPrimaryKey)
+            {
+                _activeColumn.Table.ChangeToPrimaryForeignKey(_activeColumn);
+            }
+            else
+            {
+                _activeColumn.Table.ChangeToForeignKey(_activeColumn);
+            }
         }
     }
 
@@ -517,7 +531,14 @@ public partial class MainForm : Form
     {
         if (_activeColumn is not null)
         {
-            _activeColumn.Table.ChangeToColumn(_activeColumn);
+            if (_activeColumn.IsPrimaryKey)
+            {
+                _activeColumn.Table.ChangeToPrimaryKey(_activeColumn);
+            }
+            else
+            {
+                _activeColumn.Table.ChangeToColumn(_activeColumn);
+            }
         }
     }
 
@@ -525,7 +546,14 @@ public partial class MainForm : Form
     {
         if (_activeColumn is not null)
         {
-            _activeColumn.Table.ChangeToColumn(_activeColumn);
+            if (_activeColumn.IsForeignKey)
+            {
+                _activeColumn.Table.ChangeToForeignKey(_activeColumn);
+            }
+            else
+            {
+                _activeColumn.Table.ChangeToColumn(_activeColumn);
+            }
         }
     }
 
@@ -537,10 +565,53 @@ public partial class MainForm : Form
             removeForeignKeyToolStripMenuItem.Visible = _activeColumn.IsForeignKey;
             setAsForeignKeyToolStripMenuItem.Visible = !_activeColumn.IsForeignKey;
             setAsPrimaryKeyToolStripMenuItem.Visible = !_activeColumn.IsPrimaryKey;
+            setAsNullableToolStripMenuItem.Visible = _activeColumn.IsRequired;
+            setAsRequiredToolStripMenuItem.Visible = !_activeColumn.IsRequired;
         }
         else
         {
             e.Cancel = true;
+        }
+    }
+
+    private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+    {
+        if (_activeColumn is not null)
+        {
+            if (MessageBox.Show($"Are you sure you want to remove the '{_activeColumn.Name}' column?", "Confirme Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                _activeColumn.Table.RemoveColumn(_activeColumn);
+                panel1.Invalidate();
+            }
+        }
+        else
+        {
+            MessageBox.Show("Invalid item selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void setAsRequiredToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (_activeColumn is not null)
+        {
+            _activeColumn.IsRequired = true;
+            panel1.Invalidate();
+        }
+    }
+
+    private void setAsNullableToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (_activeColumn is not null)
+        {
+            if (_activeColumn.IsPrimaryKey)
+            {
+                MessageBox.Show("Primary key columns can not accept null values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                _activeColumn.IsRequired = false;
+                panel1.Invalidate();
+            }
         }
     }
 }

@@ -177,8 +177,8 @@ public partial class MainForm
             {
                 var destTable = _database.Tables.FirstOrDefault(x => x.Name.Equals(source.RelatedTable));
 
-                if (destTable is null) continue;
-
+                if (destTable is null || !destTable.Columns.Any()) continue;
+                
                 var target = destTable.Columns.First(x => x.Name.Equals(source.RelatedColumn));
 
                 var isGoingToRight = source.Right < target.Left;

@@ -285,7 +285,7 @@ public partial class TableForm : Form
 
     private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
     {
-        var existingColumnNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(c => c.Cells[0].Value.ToString());
+        var existingColumnNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(c => c.Cells[0].Value?.ToString());
 
         if (existingColumnNames.IsNullOrEmpty())
         {
@@ -308,19 +308,58 @@ public partial class TableForm : Form
 
     private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
     {
+        var existingColumnNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(c => c.Cells[0].Value.ToString());
 
+        if (existingColumnNames.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        foreach (DataGridViewColumn c in dataGridViewSeed.Columns)
+        {
+            if (!existingColumnNames.Contains(c.Name))
+            {
+                dataGridViewSeed.Columns.Remove(c);
+            }
+        }
+
+        // deve remover todas as foreign keys que referenciam a coluna removida
+        var removedColumn = e.Row.Cells[0].FormattedValue.ToString();
+        foreach (var table in _table.Database.Tables)
+        {
+            foreach (Column fk in table.ForeignKeys.Where(fk => fk.RelatedTable == _table.Name && fk.RelatedColumn == removedColumn).ToList())
+            {
+                table.RemoveColumn(fk);
+            }
+        }
     }
 
     private void dataGridView1_UserAddedRow(object sender, DataGridViewRowEventArgs e)
     {
+        var columnName = e.Row.Cells[0].FormattedValue.ToString();
 
+        if (string.IsNullOrEmpty(columnName))
+        {
+            return;
+        }
+
+        dataGridViewSeed.Columns.Add(new DataGridViewColumn
+        {
+            CellTemplate = new DataGridViewTextBoxCell(),
+            Name = columnName,
+            HeaderText = columnName,
+            ValueType = typeof(string),
+            Width = 100,
+            ReadOnly = false,
+            AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        });
     }
 
     private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
     {
-        // deve atualizar o nome da coluna na seed quando o nome da coluna for alterado
         if (e.ColumnIndex == 0) // Nome da coluna
         {
+            // deve atualizar o nome da coluna na seed quando o nome da coluna for alterado
             var editedRow = dataGridView1.Rows[e.RowIndex];
             var oldColumn = editedRow.Tag as Column;
             var newColumnName = editedRow.Cells[0].Value?.ToString();
@@ -334,6 +373,20 @@ public partial class TableForm : Form
                 {
                     seedColumn.Name = newColumnName;
                     seedColumn.HeaderText = newColumnName;
+                }
+            }
+
+            // deve alterar o nome da coluna em todas as tabelas que refenciava a coluna com nome antigo
+            if (oldColumn is not null)
+            {
+                foreach (var table in _table.Database.Tables)
+                {
+                    foreach (var fk in table.ForeignKeys.Where(fk => fk.RelatedTable == _table.Name && fk.RelatedColumn == oldColumn.Name))
+                    {
+                        fk.RelatedColumn = newColumnName;
+
+                        table.RenameColumn(oldColumn.Name, newColumnName);
+                    }
                 }
             }
         }

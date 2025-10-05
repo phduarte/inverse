@@ -11,6 +11,8 @@ public class ForeignKey : Column, IForeignKey
 
     public static ForeignKey Parse(Column column)
     {
+        var fk = column as IForeignKey;
+
         return new ForeignKey()
         {
             Index = column.Index,
@@ -20,11 +22,9 @@ public class ForeignKey : Column, IForeignKey
             Table = column.Table,
             IsRequired = column.IsRequired,
             Id = column.Id,
+            DefaultValue = column.DefaultValue,
+            RelatedColumn = fk?.RelatedColumn,
+            RelatedTable = fk?.RelatedTable
         };
-    }
-
-    public void RemoveRelation()
-    {
-        RelatedTable = RelatedColumn = null;
     }
 }

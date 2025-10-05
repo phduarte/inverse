@@ -128,7 +128,7 @@ public class Table : Entity<string>, IDraggableElement
         return newColumn;
     }
 
-    private ForeignPrimaryKey ChangeToPrimaryForeignKey(Column column)
+    public ForeignPrimaryKey ChangeToPrimaryForeignKey(Column column)
     {
         var idx = _columns.IndexOf(column);
         var newColumn = ForeignPrimaryKey.Parse(column);
@@ -149,7 +149,8 @@ public class Table : Entity<string>, IDraggableElement
             Type = column.Type,
             Index = column.Index,
             DefaultValue = column.DefaultValue,
-            IsRequired = column.IsRequired
+            IsRequired = column.IsRequired,
+            Table = this
         };
 
         _columns.Remove(column);
@@ -219,6 +220,11 @@ public class Table : Entity<string>, IDraggableElement
 
     private void Resize()
     {
+        if (!Columns.Any())
+        {
+            return;
+        }
+
         var max = Columns.Max(x => x.Name.Length);
         Width = Max(Name.Length, max) * LayoutDefinition.Chars.WIDTH + PREFIX_WIDTH + TYPE_WIDTH;
         Height = Columns.Sum(x => x.Height) + HEIGHT;
@@ -259,11 +265,33 @@ public class Table : Entity<string>, IDraggableElement
     {
         if (column is null) return;
         if (_columns.Count == 0) return;
+
         _columns.Remove(column);
+
         for (var i = 0; i < _columns.Count; i++)
         {
             _columns[i].Index = i + 1;
         }
         Resize();
+
+        var allColumns = Database.Tables
+            .SelectMany(c => c.Columns).OfType<IForeignKey>()
+            .Where(fk => fk.RelatedColumn == column.Name && fk.RelatedTable == Name)
+            .ToList();
+
+        foreach (Column fk in allColumns)
+        {
+            fk.Table.RemoveColumn(fk);
+        }
+    }
+
+    public void RenameColumn(string name, string newColumnName)
+    {
+        var column = _columns.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        if (column is not null)
+        {
+            column.Name = newColumnName;
+            Resize();
+        }
     }
 }

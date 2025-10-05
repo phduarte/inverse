@@ -75,7 +75,7 @@ public class Database : Entity<Guid>, IAggregateRoot
             .Where(fk => fk.RelatedTable == activeTable.Name)
             )
         {
-            c.RemoveRelation();
+            c.Table.RemoveColumn(c);
         }
     }
 

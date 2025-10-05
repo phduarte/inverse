@@ -8,14 +8,14 @@ public class ForeignPrimaryKey : ForeignKey, IForeignPrimaryKey
 
     public new static ForeignPrimaryKey Parse(Column foreignKey)
     {
-        var fk = foreignKey as ForeignKey;
+        var fk = foreignKey as IForeignKey;
 
         return new ForeignPrimaryKey
         {
             Id = foreignKey.Id,
             Index = foreignKey.Index,
             Name = foreignKey.Name,
-            IsRequired = foreignKey.IsRequired,
+            IsRequired = true,
             Table = foreignKey.Table,
             Type = foreignKey.Type,
             DefaultValue = foreignKey.DefaultValue,

@@ -97,10 +97,15 @@ partial class MainForm
         toolTip1 = new System.Windows.Forms.ToolTip(components);
         contextMenuStripColumn = new System.Windows.Forms.ContextMenuStrip(components);
         editToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+        toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+        setAsRequiredToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        setAsNullableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        removePrimaryKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         setAsPrimaryKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         setAsForeignKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         removeForeignKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        removePrimaryKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+        deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
         contextMenuStripDatabase.SuspendLayout();
         contextMenuStripTable.SuspendLayout();
         flowLayoutPanel1.SuspendLayout();
@@ -566,9 +571,9 @@ partial class MainForm
         // 
         // contextMenuStripColumn
         // 
-        contextMenuStripColumn.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem2, setAsPrimaryKeyToolStripMenuItem, setAsForeignKeyToolStripMenuItem, removeForeignKeyToolStripMenuItem, removePrimaryKeyToolStripMenuItem });
+        contextMenuStripColumn.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { editToolStripMenuItem2, toolStripSeparator13, setAsRequiredToolStripMenuItem, setAsNullableToolStripMenuItem, removePrimaryKeyToolStripMenuItem, setAsPrimaryKeyToolStripMenuItem, setAsForeignKeyToolStripMenuItem, removeForeignKeyToolStripMenuItem, toolStripSeparator14, deleteToolStripMenuItem1 });
         contextMenuStripColumn.Name = "contextMenuStripColumn";
-        contextMenuStripColumn.Size = new System.Drawing.Size(183, 136);
+        contextMenuStripColumn.Size = new System.Drawing.Size(183, 192);
         contextMenuStripColumn.Opening += contextMenuStripColumn_Opening;
         // 
         // editToolStripMenuItem2
@@ -577,6 +582,32 @@ partial class MainForm
         editToolStripMenuItem2.Size = new System.Drawing.Size(182, 22);
         editToolStripMenuItem2.Text = "Edit";
         editToolStripMenuItem2.Click += editToolStripMenuItem2_Click;
+        // 
+        // toolStripSeparator13
+        // 
+        toolStripSeparator13.Name = "toolStripSeparator13";
+        toolStripSeparator13.Size = new System.Drawing.Size(179, 6);
+        // 
+        // setAsRequiredToolStripMenuItem
+        // 
+        setAsRequiredToolStripMenuItem.Name = "setAsRequiredToolStripMenuItem";
+        setAsRequiredToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+        setAsRequiredToolStripMenuItem.Text = "Set as Required";
+        setAsRequiredToolStripMenuItem.Click += setAsRequiredToolStripMenuItem_Click;
+        // 
+        // setAsNullableToolStripMenuItem
+        // 
+        setAsNullableToolStripMenuItem.Name = "setAsNullableToolStripMenuItem";
+        setAsNullableToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+        setAsNullableToolStripMenuItem.Text = "Set as Nullable";
+        setAsNullableToolStripMenuItem.Click += setAsNullableToolStripMenuItem_Click;
+        // 
+        // removePrimaryKeyToolStripMenuItem
+        // 
+        removePrimaryKeyToolStripMenuItem.Name = "removePrimaryKeyToolStripMenuItem";
+        removePrimaryKeyToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+        removePrimaryKeyToolStripMenuItem.Text = "Remove Primary key";
+        removePrimaryKeyToolStripMenuItem.Click += removePrimaryKeyToolStripMenuItem_Click;
         // 
         // setAsPrimaryKeyToolStripMenuItem
         // 
@@ -599,12 +630,17 @@ partial class MainForm
         removeForeignKeyToolStripMenuItem.Text = "Remove Foreign Key";
         removeForeignKeyToolStripMenuItem.Click += removeForeignKeyToolStripMenuItem_Click;
         // 
-        // removePrimaryKeyToolStripMenuItem
+        // toolStripSeparator14
         // 
-        removePrimaryKeyToolStripMenuItem.Name = "removePrimaryKeyToolStripMenuItem";
-        removePrimaryKeyToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-        removePrimaryKeyToolStripMenuItem.Text = "Remove Primary key";
-        removePrimaryKeyToolStripMenuItem.Click += removePrimaryKeyToolStripMenuItem_Click;
+        toolStripSeparator14.Name = "toolStripSeparator14";
+        toolStripSeparator14.Size = new System.Drawing.Size(179, 6);
+        // 
+        // deleteToolStripMenuItem1
+        // 
+        deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+        deleteToolStripMenuItem1.Size = new System.Drawing.Size(182, 22);
+        deleteToolStripMenuItem1.Text = "Delete";
+        deleteToolStripMenuItem1.Click += deleteToolStripMenuItem1_Click;
         // 
         // MainForm
         // 
@@ -710,5 +746,10 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem2;
     private System.Windows.Forms.ToolStripMenuItem removeForeignKeyToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem removePrimaryKeyToolStripMenuItem;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+    private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
+    private System.Windows.Forms.ToolStripMenuItem setAsRequiredToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem setAsNullableToolStripMenuItem;
 }
 

@@ -14,8 +14,9 @@ public class PrimaryKey : Column, IPrimaryKey
             Description = column.Description,
             Type = column.Type,
             Table = column.Table,
-            IsRequired = column.IsRequired,
-            Id = column.Id
+            IsRequired = true,
+            Id = column.Id,
+            DefaultValue = column.DefaultValue
         };
     }
 }
