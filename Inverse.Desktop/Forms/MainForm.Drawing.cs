@@ -153,17 +153,13 @@ public partial class MainForm
         }
     }
 
-    internal record LineModel(int X1, int Y1, int X2, int Y2);
-
-    internal record CirculeModel(int X, int Y, int Radius);
-
-    List<LineModel> _selectedRelationship = new();
+    List<(int X, int Y)> _selectedRelationship = new();
 
     private void DrawRelationships(Graphics g, IOrderedEnumerable<Table> tables)
     {
         _selectedRelationship.Clear();
 
-        var lines = new List<LineModel>();
+        var line = new List<(int X, int Y)>();
 
         var relationBorder = Theme.Relationship.Line.AsPen();
         var canvasText = Theme.Canvas.Text.AsBrush();
@@ -177,12 +173,12 @@ public partial class MainForm
 
         foreach (var table in tables)
         {
-            foreach (var source in tables.SelectMany(t => t.ForeignKeys))
+            foreach (var source in table.ForeignKeys)
             {
                 var destTable = _database.Tables.FirstOrDefault(x => x.Name.Equals(source.RelatedTable));
 
                 if (destTable is null || !destTable.Columns.Any()) continue;
-
+                
                 var target = destTable.Columns.First(x => x.Name.Equals(source.RelatedColumn));
 
                 var isGoingToRight = source.Right < target.Left;
@@ -194,12 +190,15 @@ public partial class MainForm
                 {
                     var midway = source.Right + ((target.Left - source.Right) / 2);
 
-                    lines =
-                    [
-                        new(midway, source.Middle,midway, target.Middle),
-                        new(source.Right, source.Middle,midway, source.Middle),
-                        new(midway, target.Middle,target.Left, target.Middle)
-                    ];
+                    line = new List<(int X, int Y)>
+                    {
+                        new(midway, source.Middle),
+                        new(midway, target.Middle),
+                        new(source.Right, source.Middle),
+                        new(midway, source.Middle),
+                        new(midway, target.Middle),
+                        new(target.Left, target.Middle)
+                    };
 
                     if (target.IsPrimaryKey)
                     {
@@ -220,6 +219,11 @@ public partial class MainForm
                             {
                                 g.DrawLine(relationBorder, source.Right, source.Middle + SETE, source.Right + DEZ, source.Middle);
                                 g.DrawLine(relationBorder, source.Right, source.Middle - SETE, source.Right + DEZ, source.Middle);
+
+                                //if (source.Required)
+                                //{
+                                //    g.DrawLine(relationBorder, source.Right + DOZE, source.Middle - CINCO, source.Right + DOZE, source.Middle + CINCO);
+                                //}
                             }
                         }
                         else if (numberToolStripMenuItem.Checked)
@@ -240,12 +244,15 @@ public partial class MainForm
                 {
                     var midway = target.Right + ((source.Left - target.Right) / 2);
 
-                    lines =
-                    [
-                        new(midway, source.Middle,midway, target.Middle),
-                        new(target.Right, target.Middle,midway, target.Middle),
-                        new(midway, source.Middle,source.Left, source.Middle)
-                    ];
+                    line = new List<(int X, int Y)>
+                    {
+                        new(midway, source.Middle),
+                        new(midway, target.Middle),
+                        new(target.Right, target.Middle),
+                        new(midway, target.Middle),
+                        new(midway, source.Middle),
+                        new(source.Left, source.Middle)
+                    };
 
                     if (target.IsPrimaryKey)
                     {
@@ -266,6 +273,11 @@ public partial class MainForm
                             {
                                 g.DrawLine(relationBorder, source.Left, source.Middle - SETE, source.Left - DEZ, source.Middle);
                                 g.DrawLine(relationBorder, source.Left, source.Middle + SETE, source.Left - DEZ, source.Middle);
+
+                                //if (source.Required)
+                                //{
+                                //    g.DrawLine(relationBorder, source.Left - DOZE, source.Middle - CINCO, source.Left - DOZE, source.Middle + CINCO);
+                                //}
                             }
                         }
                         else if (numberToolStripMenuItem.Checked)
@@ -286,12 +298,15 @@ public partial class MainForm
                 {
                     var midway = table.Top + ((destTable.Bottom - table.Top) / 2);
 
-                    lines =
-                    [
-                        new(table.Center, table.Top,table.Center, midway),
-                        new(table.Center, midway,destTable.Center, midway),
-                        new(destTable.Center, midway,destTable.Center, destTable.Bottom),
-                    ];
+                    line = new List<(int X, int Y)>
+                    {
+                        new(table.Center, table.Top),
+                        new(table.Center, midway),
+                        new(table.Center, midway),
+                        new(destTable.Center, midway),
+                        new(destTable.Center, midway),
+                        new(destTable.Center, destTable.Bottom),
+                    };
 
                     if (table.Top > destTable.Bottom)
                     {
@@ -314,6 +329,11 @@ public partial class MainForm
                                 {
                                     g.DrawLine(relationBorder, table.Center - SETE, table.Top, table.Center, table.Top - DEZ);
                                     g.DrawLine(relationBorder, table.Center + SETE, table.Top, table.Center, table.Top - DEZ);
+
+                                    //if (source.Required)
+                                    //{
+                                    //    g.DrawLine(relationBorder, table.Center - CINCO, table.Top - DOZE, table.Center + CINCO, table.Top - DOZE);
+                                    //}
                                 }
                             }
                             else if (numberToolStripMenuItem.Checked)
@@ -336,12 +356,15 @@ public partial class MainForm
                 {
                     var midway = table.Bottom + ((destTable.Top - table.Bottom) / 2);
 
-                    lines =
-                    [
-                        new(table.Center, table.Bottom,table.Center, midway),
-                        new(table.Center, midway,destTable.Center, midway),
-                        new(destTable.Center, midway,destTable.Center, destTable.Top)
-                    ];
+                    line = new List<(int X, int Y)>
+                    {
+                        new(table.Center, table.Bottom),
+                        new(table.Center, midway),
+                        new(table.Center, midway),
+                        new(destTable.Center, midway),
+                        new(destTable.Center, midway),
+                        new(destTable.Center, destTable.Top)
+                    };
 
                     if (destTable.Top > table.Bottom)
                     {
@@ -364,6 +387,11 @@ public partial class MainForm
                                 {
                                     g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center - SETE, table.Bottom);
                                     g.DrawLine(relationBorder, table.Center, table.Bottom + DEZ, table.Center + SETE, table.Bottom);
+
+                                    //if (source.Required)
+                                    //{
+                                    //    g.DrawLine(relationBorder, table.Center - CINCO, table.Bottom + DOZE, table.Center + CINCO, table.Bottom + DOZE);
+                                    //}
                                 }
                             }
                             else if (numberToolStripMenuItem.Checked)
@@ -383,14 +411,14 @@ public partial class MainForm
                     }
                 }
 
-                foreach (var p in lines)
+                foreach (var p in line.Chunk(2))
                 {
-                    g.DrawLine(relationBorder, p.X1, p.Y1, p.X2, p.Y2);
+                    g.DrawLine(relationBorder, p[0].X, p[0].Y, p[1].X, p[1].Y);
                 }
 
-                if (lines.Any(p => p.X1 == _currentPoint.X || p.X1 <= _currentPoint.Y))
+                if (line.Any(p => p.X == _currentPoint.X || p.X <= _currentPoint.Y))
                 {
-                    _selectedRelationship.AddRange(lines);
+                    _selectedRelationship.AddRange(line);
                 }
             }
         }
