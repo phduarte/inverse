@@ -245,7 +245,6 @@ public partial class MainForm
                     }
 
                     isSavePending = true;
-                    panel1.Invalidate();
                 }
                 break;
 
@@ -270,6 +269,8 @@ public partial class MainForm
 
         isControlPressed = e.KeyCode == Keys.ControlKey;
         isDeleting = e.Alt;
+
+        panel1.Invalidate();
     }
 
     private void MainForm_KeyUp(object sender, KeyEventArgs e)
