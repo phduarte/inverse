@@ -94,6 +94,7 @@ partial class DatabaseForm
         pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
         pictureBox1.TabIndex = 9;
         pictureBox1.TabStop = false;
+        pictureBox1.Click += pictureBox1_Click;
         // 
         // DatabaseForm
         // 

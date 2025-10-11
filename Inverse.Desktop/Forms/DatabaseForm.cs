@@ -34,4 +34,12 @@ public partial class DatabaseForm : Form
         _parentForm.UseEmptyDatabase();
         Close();
     }
+
+    private void pictureBox1_Click(object sender, EventArgs e)
+    {
+        var frm = new DatabasePostgreSql(_parentForm);
+        Hide();
+        frm.ShowDialog();
+        Close();
+    }
 }

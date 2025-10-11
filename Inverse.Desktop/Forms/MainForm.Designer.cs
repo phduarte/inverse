@@ -69,6 +69,12 @@ partial class MainForm
         addTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
         databaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        alignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        topToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        leftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        rightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        centerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        middleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         diagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,6 +112,10 @@ partial class MainForm
         removeForeignKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
         deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+        bottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+        toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
+        toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
         contextMenuStripDatabase.SuspendLayout();
         contextMenuStripTable.SuspendLayout();
         flowLayoutPanel1.SuspendLayout();
@@ -362,7 +372,7 @@ partial class MainForm
         // 
         // editToolStripMenuItem1
         // 
-        editToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { addTableToolStripMenuItem, toolStripSeparator9, databaseToolStripMenuItem });
+        editToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { addTableToolStripMenuItem, toolStripSeparator9, alignToolStripMenuItem, toolStripSeparator17, databaseToolStripMenuItem });
         editToolStripMenuItem1.Name = "editToolStripMenuItem1";
         editToolStripMenuItem1.Size = new System.Drawing.Size(39, 20);
         editToolStripMenuItem1.Text = "Edit";
@@ -385,6 +395,48 @@ partial class MainForm
         databaseToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
         databaseToolStripMenuItem.Text = "Database";
         databaseToolStripMenuItem.Click += databaseToolStripMenuItem_Click;
+        // 
+        // alignToolStripMenuItem
+        // 
+        alignToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { topToolStripMenuItem, bottomToolStripMenuItem, toolStripSeparator15, leftToolStripMenuItem, rightToolStripMenuItem, toolStripSeparator16, centerToolStripMenuItem, middleToolStripMenuItem });
+        alignToolStripMenuItem.Name = "alignToolStripMenuItem";
+        alignToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+        alignToolStripMenuItem.Text = "Align";
+        // 
+        // topToolStripMenuItem
+        // 
+        topToolStripMenuItem.Name = "topToolStripMenuItem";
+        topToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+        topToolStripMenuItem.Text = "Top";
+        topToolStripMenuItem.Click += topToolStripMenuItem_Click;
+        // 
+        // leftToolStripMenuItem
+        // 
+        leftToolStripMenuItem.Name = "leftToolStripMenuItem";
+        leftToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+        leftToolStripMenuItem.Text = "Left";
+        leftToolStripMenuItem.Click += leftToolStripMenuItem_Click;
+        // 
+        // rightToolStripMenuItem
+        // 
+        rightToolStripMenuItem.Name = "rightToolStripMenuItem";
+        rightToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+        rightToolStripMenuItem.Text = "Right";
+        rightToolStripMenuItem.Click += rightToolStripMenuItem_Click;
+        // 
+        // centerToolStripMenuItem
+        // 
+        centerToolStripMenuItem.Name = "centerToolStripMenuItem";
+        centerToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+        centerToolStripMenuItem.Text = "Center";
+        centerToolStripMenuItem.Click += centerToolStripMenuItem_Click;
+        // 
+        // middleToolStripMenuItem
+        // 
+        middleToolStripMenuItem.Name = "middleToolStripMenuItem";
+        middleToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+        middleToolStripMenuItem.Text = "Middle";
+        middleToolStripMenuItem.Click += middleToolStripMenuItem_Click;
         // 
         // diagramToolStripMenuItem
         // 
@@ -642,6 +694,27 @@ partial class MainForm
         deleteToolStripMenuItem1.Text = "Delete";
         deleteToolStripMenuItem1.Click += deleteToolStripMenuItem1_Click;
         // 
+        // bottomToolStripMenuItem
+        // 
+        bottomToolStripMenuItem.Name = "bottomToolStripMenuItem";
+        bottomToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+        bottomToolStripMenuItem.Text = "Bottom";
+        // 
+        // toolStripSeparator15
+        // 
+        toolStripSeparator15.Name = "toolStripSeparator15";
+        toolStripSeparator15.Size = new System.Drawing.Size(111, 6);
+        // 
+        // toolStripSeparator16
+        // 
+        toolStripSeparator16.Name = "toolStripSeparator16";
+        toolStripSeparator16.Size = new System.Drawing.Size(111, 6);
+        // 
+        // toolStripSeparator17
+        // 
+        toolStripSeparator17.Name = "toolStripSeparator17";
+        toolStripSeparator17.Size = new System.Drawing.Size(124, 6);
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -751,5 +824,15 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
     private System.Windows.Forms.ToolStripMenuItem setAsRequiredToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem setAsNullableToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem alignToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem topToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem leftToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem rightToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem centerToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem middleToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem bottomToolStripMenuItem;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 }
 

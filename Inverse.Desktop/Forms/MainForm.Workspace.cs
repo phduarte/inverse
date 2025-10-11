@@ -1,4 +1,5 @@
-﻿using Inverse.Domain;
+﻿using Inverse.Desktop.Extensions;
+using Inverse.Domain;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -13,6 +14,7 @@ public partial class MainForm
     private bool isDragging = false;
     private bool isControlPressed = false;
     private bool isDeleting = false;
+    private bool isSelecting = false;
 
     private void panel1_Paint(object sender, PaintEventArgs e)
     {
@@ -54,6 +56,10 @@ public partial class MainForm
                         isDragging = true;
                     }
                 }
+                else if (isControlPressed)
+                {
+                    isSelecting = true;
+                }
                 else
                 {
                     _selectedTables.Clear();
@@ -83,7 +89,7 @@ public partial class MainForm
             {
                 newColumn.Name = _originColumn.Table.Name + "_" + newColumn.Name;
             }
-            
+
             if (_activeTable.Columns.FirstOrDefault(c => c.Name.Equals(newColumn.Name, StringComparison.OrdinalIgnoreCase)) is Column existingColumn)
             {
                 newColumn = existingColumn;
@@ -122,6 +128,8 @@ public partial class MainForm
         }
 
         panel1.Invalidate();
+
+        isSelecting = false;
     }
 
     private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -160,6 +168,26 @@ public partial class MainForm
             {
                 _activeTable.MoveTo(endPointX, endPointY);
                 isSavePending = true;
+            }
+        }
+        else if (isSelecting && _pressedPoint != Point.Empty)
+        {
+            var rect = new Rectangle
+            (
+                Math.Min(_pressedPoint.X, _currentPoint.X),
+                Math.Min(_pressedPoint.Y, _currentPoint.Y),
+                Math.Abs(_pressedPoint.X - _currentPoint.X),
+                Math.Abs(_pressedPoint.Y - _currentPoint.Y)
+            );
+
+            _selectedTables.Clear();
+
+            foreach (var t in _database.Tables.Where(t => showHiddenTablesToolStripMenuItem.Checked || !t.IsHidden))
+            {
+                if (rect.IntersectsWith(t.ToRectangle()))
+                {
+                    _selectedTables.Add(t);
+                }
             }
         }
 

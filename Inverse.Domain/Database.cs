@@ -136,6 +136,6 @@ public class Database : Entity<Guid>, IAggregateRoot
 
     public override string ToString()
     {
-        return ConnectionString;
+        return string.IsNullOrEmpty(ConnectionString) ? Name : ConnectionString;
     }
 }

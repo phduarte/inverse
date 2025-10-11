@@ -11,4 +11,5 @@ internal class Theme
     public ThemeItem Prefix { get; set; }
     public ThemeItem Type { get; set; }
     public ThemeItem Relationship { get; set; }
+    public ThemeItem Selection { get; set; }
 }

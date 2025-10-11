@@ -148,5 +148,19 @@
       "hover": "#000000",
       "selected": "#000000"
     }
+  },
+  "selection": {
+    "line": {
+      "size": 2,
+      "normal": "#CCCCCC",
+      "hover": "#CCCCCC",
+      "selected": "#CCCCCC"
+    },
+    "background": {
+      "size": 1,
+      "normal": "#00FFFFFF",
+      "hover": "#00FFFFFF",
+      "selected": "#00FFFFFF"
+    }
   }
 }

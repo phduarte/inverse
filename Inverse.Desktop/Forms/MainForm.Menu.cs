@@ -44,6 +44,17 @@ public partial class MainForm
         ToggleMenuButtons();
 
         ReWriteTitle();
+
+        ResizePanelToFitTables();
+    }
+
+    private void ResizePanelToFitTables()
+    {
+        if (_database.IsEmpty)
+            return;
+        var maxX = _database.Tables.Max(t => t.Right);
+        var maxY = _database.Tables.Max(t => t.Bottom);
+        panel1.AutoScrollMinSize = new System.Drawing.Size(maxX + 20, maxY + 20);
     }
 
     private void saveToolStripMenuItem_Click(object sender, EventArgs e)

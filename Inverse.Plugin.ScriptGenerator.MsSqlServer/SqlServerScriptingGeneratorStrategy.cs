@@ -10,7 +10,7 @@ public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStr
 {
     public string Name => "SQL Server Scripting";
 
-    public string Extension => ".sql";
+    public string Extension => ".mssql.sql";
 
     public void ExportToFile(Database database, string filename)
     {

@@ -10,7 +10,10 @@ internal class ThemeManager
 {
     public static Theme Load(string themeName = null)
     {
-        var json = File.ReadAllText(GetThemeFileName(themeName));
+        var json = MergeJsonStrings(
+            File.ReadAllText(GetThemeFileName(string.Empty)),
+            File.Exists(GetThemeFileName(themeName)) ? File.ReadAllText(GetThemeFileName(themeName)) : "{}"
+        );
 
         JsonSerializerOptions options = new()
         {
@@ -58,5 +61,22 @@ internal class ThemeManager
         }
 
         return split[1];
+    }
+
+    private static string MergeJsonStrings(string original, string overrideJson)
+    {
+        using var doc1 = JsonDocument.Parse(original);
+        using var doc2 = JsonDocument.Parse(overrideJson);
+        var merged = new Dictionary<string, JsonElement>();
+        foreach (var property in doc1.RootElement.EnumerateObject())
+        {
+            merged[property.Name] = property.Value;
+        }
+        foreach (var property in doc2.RootElement.EnumerateObject())
+        {
+            merged[property.Name] = property.Value;
+        }
+        var mergedJson = JsonSerializer.Serialize(merged);
+        return mergedJson;
     }
 }

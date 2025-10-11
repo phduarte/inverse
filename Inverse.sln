@@ -34,6 +34,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Sol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inverse.Application", "Inverse.Application\Inverse.Application.csproj", "{CDCA0D52-AB12-49CA-8020-5D24306BFB72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.ScriptGenerator.PostgreSql", "Inverse.Plugin.ScriptGenerator.PostgreSQL\Inverse.Plugin.ScriptGenerator.PostgreSql.csproj", "{E6D80FE2-1562-409A-A576-1E131CE3CDAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.ScriptGenerator.EF", "Inverse.Plugin.ScriptGenerator.EF\Inverse.Plugin.ScriptGenerator.EF.csproj", "{1FB39DF6-0894-4DCC-BAD8-9B59003785B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inverse.Plugin.DatabaseGenerator.PostgreSql", "Inverse.Plugin.DatabaseGenerator.PostgreSql\Inverse.Plugin.DatabaseGenerator.PostgreSql.csproj", "{836867FD-C575-455F-813C-ED487C26086E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +78,18 @@ Global
 		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDCA0D52-AB12-49CA-8020-5D24306BFB72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D80FE2-1562-409A-A576-1E131CE3CDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D80FE2-1562-409A-A576-1E131CE3CDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D80FE2-1562-409A-A576-1E131CE3CDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D80FE2-1562-409A-A576-1E131CE3CDAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB39DF6-0894-4DCC-BAD8-9B59003785B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB39DF6-0894-4DCC-BAD8-9B59003785B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB39DF6-0894-4DCC-BAD8-9B59003785B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB39DF6-0894-4DCC-BAD8-9B59003785B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{836867FD-C575-455F-813C-ED487C26086E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{836867FD-C575-455F-813C-ED487C26086E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{836867FD-C575-455F-813C-ED487C26086E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{836867FD-C575-455F-813C-ED487C26086E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +103,9 @@ Global
 		{19A7AD7D-FA33-43A4-87B2-FB5945BA4AF8} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
 		{81E9C5EA-21ED-4612-87C3-035197C078D5} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
 		{CDCA0D52-AB12-49CA-8020-5D24306BFB72} = {CC129F39-76ED-41CC-9EA1-6107E9955D72}
+		{E6D80FE2-1562-409A-A576-1E131CE3CDAF} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
+		{1FB39DF6-0894-4DCC-BAD8-9B59003785B3} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
+		{836867FD-C575-455F-813C-ED487C26086E} = {7493C1F4-7E4F-46D0-9BDE-6B891ED3FDFB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F47E113-B215-4F25-B4DC-A9727BD0A459}

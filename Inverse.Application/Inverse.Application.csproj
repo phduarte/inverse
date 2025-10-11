@@ -8,9 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Inverse.Plugin.DatabaseGenerator.MsSqlServer\Inverse.Plugin.DatabaseGenerator.MsSqlServer.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.DatabaseGenerator.PostgreSql\Inverse.Plugin.DatabaseGenerator.PostgreSql.csproj" />
     <ProjectReference Include="..\Inverse.Plugin.DatabaseGenerator.Sqlite\Inverse.Plugin.DatabaseGenerator.Sqlite.csproj" />
     <ProjectReference Include="..\Inverse.Plugin.FileManager.EncryptedXml\Inverse.Plugin.FileManager.EncryptedXml.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.EF\Inverse.Plugin.ScriptGenerator.EF.csproj" />
     <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.MsSqlServer\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.PostgreSQL\Inverse.Plugin.ScriptGenerator.PostgreSql.csproj" />
   </ItemGroup>
 
 </Project>

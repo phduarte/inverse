@@ -614,4 +614,74 @@ public partial class MainForm : Form
             }
         }
     }
+
+    private void topToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // align selected tables to top
+        if (_selectedTables.Count > 1)
+        {
+            var top = _selectedTables.Min(_ => _.Top);
+            foreach (var t in _selectedTables)
+            {
+                t.Top = top;
+            }
+            panel1.Invalidate();
+        }
+    }
+
+    private void leftToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // align selected tables to left
+        if (_selectedTables.Count > 1)
+        {
+            var left = _selectedTables.Min(_ => _.Left);
+            foreach (var t in _selectedTables)
+            {
+                t.Left = left;
+            }
+            panel1.Invalidate();
+        }
+    }
+
+    private void rightToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // align selected tables to right
+        if (_selectedTables.Count > 1)
+        {
+            var right = _selectedTables.Max(_ => _.Right);
+            foreach (var t in _selectedTables)
+            {
+                t.Left = right - t.Width;
+            }
+            panel1.Invalidate();
+        }
+    }
+
+    private void centerToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // align selected tables to center
+        if (_selectedTables.Count > 1)
+        {
+            var center = _selectedTables.Average(_ => _.Left + (_.Width / 2));
+            foreach (var t in _selectedTables)
+            {
+                t.Left = (int)(center - (t.Width / 2));
+            }
+            panel1.Invalidate();
+        }
+    }
+
+    private void middleToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // align selected tables to middle
+        if (_selectedTables.Count > 1)
+        {
+            var middle = _selectedTables.Average(_ => _.Top + (_.Height / 2));
+            foreach (var t in _selectedTables)
+            {
+                t.Top = (int)(middle - (t.Height / 2));
+            }
+            panel1.Invalidate();
+        }
+    }
 }

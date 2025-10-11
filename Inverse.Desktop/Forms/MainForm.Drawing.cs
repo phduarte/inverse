@@ -25,7 +25,26 @@ public partial class MainForm
             g.DrawLine(Theme.Relationship.Line.AsPen(isSelected: true), _pressedPoint, _currentPoint);
         }
 
+        DrawSelection(g);
+
         g.SmoothingMode = x;
+    }
+
+    private void DrawSelection(Graphics g)
+    {
+        if (isSelecting && !_pressedPoint.IsEmpty && !_currentPoint.IsEmpty)
+        {
+            var color = Theme.Selection.Line.AsColor();
+            var rect = new Rectangle(
+                Math.Min(_pressedPoint.X, _currentPoint.X),
+                Math.Min(_pressedPoint.Y, _currentPoint.Y),
+                Math.Abs(_pressedPoint.X - _currentPoint.X),
+                Math.Abs(_pressedPoint.Y - _currentPoint.Y));
+
+            using var pen = new Pen(color, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash };
+
+            g.DrawRectangle(pen, rect);
+        }
     }
 
     private void DrawTables(Graphics g, IOrderedEnumerable<Table> tables)
