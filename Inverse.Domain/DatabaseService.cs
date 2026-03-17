@@ -68,9 +68,9 @@ public class DatabaseService : IDatabaseService
         return CreateGeneratorStrategy(provider).LoadDatabase(connectionString);
     }
 
-    public void Export(Database database, string fileName)
+    public void Export(Database database, string fileName, int selectedIndex)
     {
-        GetScriptingGeneratorStrategy(fileName).ExportToFile(database, fileName);
+        GetScriptingGeneratorStrategy(selectedIndex).ExportToFile(database, fileName);
     }
 
     public string[] GetCompatiblesFileTypes()
@@ -88,10 +88,9 @@ public class DatabaseService : IDatabaseService
         return _databaseGenetorStrategies[provider];
     }
 
-    private IScriptingGeneratorStrategy GetScriptingGeneratorStrategy(string filename)
+    private IScriptingGeneratorStrategy GetScriptingGeneratorStrategy(int index)
     {
-        var ext = GetExtension(filename);
-        return _scriptingGeneratorStrategies[ext];
+        return _scriptingGeneratorStrategies.ElementAt(index).Value;
     }
 
     private IFileManagerStrategy GetStrategyByFile(string filename)

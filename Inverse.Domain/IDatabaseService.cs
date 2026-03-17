@@ -4,7 +4,7 @@ public interface IDatabaseService
 {
     Database LoadDatabase(Provider provider, string connectionString);
 
-    void Export(Database database, string fileName);
+    void Export(Database database, string fileName, int selectedIndex);
 
     Database OpenFile(string fileName);
 

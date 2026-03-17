@@ -67,6 +67,8 @@ public partial class MainForm : Form
 
     private Theme Theme = new();
 
+    private Column _copiedColumn = null;
+
     public MainForm(params string[] args)
     {
         InitializeComponent();
@@ -247,6 +249,8 @@ public partial class MainForm : Form
     private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
     {
         e.Cancel = _activeTable is null;
+
+        pasteToolStripMenuItem1.Enabled = _activeTable is not null && _copiedColumn is not null;
     }
 
     private void hideToolStripMenuItem_Click(object sender, EventArgs e)
@@ -559,6 +563,8 @@ public partial class MainForm : Form
 
     private void contextMenuStripColumn_Opening(object sender, System.ComponentModel.CancelEventArgs e)
     {
+        pasteToolStripMenuItem.Enabled = _copiedColumn is not null && _activeTable is not null;
+
         if (_activeColumn is not null)
         {
             removePrimaryKeyToolStripMenuItem.Visible = _activeColumn.IsPrimaryKey;
@@ -683,5 +689,38 @@ public partial class MainForm : Form
             }
             panel1.Invalidate();
         }
+    }
+
+    /// <summary>
+    /// verifica se tem alguma coluna em foco e se tiver coloca numa variável
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (_activeColumn is not null)
+        {
+            _copiedColumn = _activeColumn;
+        }
+    }
+
+    /// <summary>
+    /// verifica se tem alguma coluna na variável, se tiver adiciona uma nova coluna na tabela em foco com as mesmas propriedades da coluna copiada, exceto o nome que deve ser "Copy of {nome da coluna copiada}"
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (_copiedColumn is not null && _activeTable is not null)
+        {
+            var newColumn = _copiedColumn.Clone();
+            _activeTable.AddColumn(newColumn);
+            panel1.Invalidate();
+        }
+    }
+
+    private void pasteToolStripMenuItem1_Click(object sender, EventArgs e)
+    {
+        pasteToolStripMenuItem_Click(sender, e);
     }
 }

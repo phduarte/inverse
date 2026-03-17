@@ -295,6 +295,16 @@ public partial class MainForm
             menuStrip1.Visible = !menuStrip1.Visible;
         }
 
+        if (e.KeyCode == Keys.C && isControlPressed && _activeColumn is not null)
+        {
+            copyToolStripMenuItem_Click(sender, e);
+        }
+
+        if (e.KeyCode == Keys.V && isControlPressed && _copiedColumn is not null)
+        {
+            pasteToolStripMenuItem_Click(sender, e);
+        }
+
         isControlPressed = e.KeyCode == Keys.ControlKey;
         isDeleting = e.Alt;
 

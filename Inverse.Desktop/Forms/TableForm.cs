@@ -324,12 +324,16 @@ public partial class TableForm : Form
         }
 
         // deve remover todas as foreign keys que referenciam a coluna removida
-        var removedColumn = e.Row.Cells[0].FormattedValue.ToString();
-        foreach (var table in _table.Database.Tables)
+        var removedColumn = e.Row.Cells[0].FormattedValue?.ToString();
+
+        if (!string.IsNullOrEmpty(removedColumn))
         {
-            foreach (Column fk in table.ForeignKeys.Where(fk => fk.RelatedTable == _table.Name && fk.RelatedColumn == removedColumn).ToList())
+            foreach (var table in _table.Database.Tables)
             {
-                table.RemoveColumn(fk);
+                foreach (Column fk in table.ForeignKeys.Where(fk => fk.RelatedTable == _table.Name && fk.RelatedColumn == removedColumn).ToList())
+                {
+                    table.RemoveColumn(fk);
+                }
             }
         }
     }

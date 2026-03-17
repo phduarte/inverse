@@ -153,10 +153,12 @@ public partial class MainForm
         dialog.FileName = _database.Name;
         dialog.ShowDialog();
 
+        var index = dialog.FilterIndex - 1;
+
         if (string.IsNullOrEmpty(dialog.FileName))
             return;
 
-        _databaseService.Export(_database, dialog.FileName);
+        _databaseService.Export(_database, dialog.FileName, index);
 
         UpdateStatus("Script exportado com sucesso.");
     }
