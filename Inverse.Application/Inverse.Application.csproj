@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.EF\Inverse.Plugin.ScriptGenerator.EF.csproj" />
     <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.MsSqlServer\Inverse.Plugin.ScriptGenerator.MsSqlServer.csproj" />
     <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.PostgreSQL\Inverse.Plugin.ScriptGenerator.PostgreSql.csproj" />
+    <ProjectReference Include="..\Inverse.Plugin.ScriptGenerator.Trino\Inverse.Plugin.ScriptGenerator.Trino.csproj" />
   </ItemGroup>
 
 </Project>
