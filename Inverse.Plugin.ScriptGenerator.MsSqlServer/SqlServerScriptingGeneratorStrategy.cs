@@ -85,6 +85,9 @@ public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStr
             sql.Remove(idx, 1); //remove a última vírgula
             sql.AppendLine($")");
             sql.AppendLine();
+
+            // Annotations / descriptions via extended properties
+            AppendExtendedProperties(sql, t);
         }
 
         sql.AppendLine();
@@ -105,6 +108,66 @@ public sealed class SqlServerScriptingGeneratorStrategy : IScriptingGeneratorStr
 
         sql.AppendLine("COMMIT;");
         sw.Write(sql.ToString());
+    }
+
+    /// <summary>
+    /// Emits EXEC sp_addextendedproperty statements for table-level and column-level
+    /// annotations (Description and Comments).
+    /// </summary>
+    private static void AppendExtendedProperties(System.Text.StringBuilder sql, Table t)
+    {
+        // Collect the table-level description: prefer Comments, fall back to Notes.
+        var tableDescription = BuildTableDescription(t);
+
+        if (!string.IsNullOrWhiteSpace(tableDescription))
+        {
+            sql.AppendLine(FormatTableExtendedProperty(t.Name, "MS_Description", tableDescription));
+        }
+
+        // Column-level descriptions
+        foreach (var col in t.Columns)
+        {
+            if (!string.IsNullOrWhiteSpace(col.Description))
+            {
+                sql.AppendLine(FormatColumnExtendedProperty(t.Name, col.Name, "MS_Description", col.Description));
+            }
+        }
+    }
+
+    private static string BuildTableDescription(Table t)
+    {
+        // If there are structured comments, format them; otherwise use the plain Notes string.
+        if (t.Comments.Count > 0)
+        {
+            var lines = t.Comments.Select(c =>
+                $"[{c.Date:yyyy-MM-dd HH:mm:ss}] {c.Author}: {c.Text}");
+            return string.Join(" | ", lines);
+        }
+
+        return t.Notes?.Trim();
+    }
+
+    private static string FormatTableExtendedProperty(string tableName, string propertyName, string value)
+    {
+        var escaped = value.Replace("'", "''");
+        return
+            $"EXEC sys.sp_addextendedproperty " +
+            $"@name = N'{propertyName}', " +
+            $"@value = N'{escaped}', " +
+            $"@level0type = N'SCHEMA', @level0name = N'dbo', " +
+            $"@level1type = N'TABLE', @level1name = N'{tableName}';";
+    }
+
+    private static string FormatColumnExtendedProperty(string tableName, string columnName, string propertyName, string value)
+    {
+        var escaped = value.Replace("'", "''");
+        return
+            $"EXEC sys.sp_addextendedproperty " +
+            $"@name = N'{propertyName}', " +
+            $"@value = N'{escaped}', " +
+            $"@level0type = N'SCHEMA', @level0name = N'dbo', " +
+            $"@level1type = N'TABLE', @level1name = N'{tableName}', " +
+            $"@level2type = N'COLUMN', @level2name = N'{columnName}';";
     }
 
     private string ConvertJsonToInsertStatement(string tableName, string seedData)

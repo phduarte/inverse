@@ -89,7 +89,7 @@ public class DatabaseServiceTests
 
         var svc = new DatabaseService().With(fake);
 
-        svc.Export(db, "test6.sql");
+        svc.Export(db, "test6.sql", 1);
 
         A.CallTo(() => fake.ExportToFile(A<Database>.Ignored, A<string>.Ignored))
             .MustHaveHappenedOnceExactly();
@@ -185,7 +185,7 @@ public class DatabaseServiceTests
             File.Delete(temp_file);
         }
 
-        svc.Export(db, temp_file);
+        svc.Export(db, temp_file, 1);
 
         return ReadContent(temp_file);
     }
